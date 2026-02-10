@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -78,6 +79,26 @@ serve(async (req) => {
       const regex = new RegExp(`###\\s*${formatId}\\s*\\n([\\s\\S]*?)(?=###|$)`, "i");
       const match = fullResponse.match(regex);
       results[formatId] = match ? match[1].trim() : "Content could not be generated for this format.";
+    }
+
+    // Save generation record if user is authenticated
+    try {
+      const authHeader = req.headers.get("authorization");
+      if (authHeader) {
+        const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+        const supabaseKey = Deno.env.get("SUPABASE_ANON_KEY")!;
+        const sb = createClient(supabaseUrl, supabaseKey, {
+          global: { headers: { Authorization: authHeader } },
+        });
+        await sb.from("generations").insert({
+          user_id: (await sb.auth.getUser()).data.user?.id,
+          tool: "repurpose",
+          input_preview: content.substring(0, 200),
+          output_preview: Object.values(results).join(" ").substring(0, 300),
+        });
+      }
+    } catch (saveErr) {
+      console.error("Failed to save generation record:", saveErr);
     }
 
     return new Response(JSON.stringify({ results }), {

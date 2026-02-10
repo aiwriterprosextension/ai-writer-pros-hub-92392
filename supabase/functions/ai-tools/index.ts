@@ -1,11 +1,12 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const toolPrompts: Record<string, { system: string; buildUserPrompt: (body: any) => string }> = {
+const toolPrompts: Record<string, { system: string; buildUserPrompt: (body: any) => string; getInputPreview: (body: any) => string }> = {
   humanize: {
     system: `You are an expert content rewriter specializing in making AI-generated text sound naturally human. Your goal is to:
 - Rewrite the text to bypass AI detection tools (GPTZero, Turnitin, Originality.ai)
@@ -15,6 +16,7 @@ const toolPrompts: Record<string, { system: string; buildUserPrompt: (body: any)
 - Maintain the original tone and quality
 - Do NOT add any commentary, just output the rewritten text directly.`,
     buildUserPrompt: (body: any) => `Rewrite the following AI-generated content to sound completely human-written:\n\n${body.content}`,
+    getInputPreview: (body: any) => body.content?.substring(0, 150) || "",
   },
   email: {
     system: `You are an expert email marketing copywriter. Generate professional, high-converting email content. Format your output clearly with labeled sections.`,
@@ -37,6 +39,7 @@ The full email body with greeting, content, and CTA. Use line breaks for readabi
 ### AB_VARIANT
 An alternative version of the email body with a different approach/angle.`;
     },
+    getInputPreview: (body: any) => `${body.emailType || 'promotional'}: ${body.topic || ''}`,
   },
   social: {
     system: `You are a social media content strategist who creates platform-optimized posts. Each post should be engaging, use appropriate formatting for the platform, and include relevant hashtags where appropriate.`,
@@ -62,6 +65,7 @@ An engaging Facebook post with conversational tone and a question.
 
 Only include the platforms requested.`;
     },
+    getInputPreview: (body: any) => `${body.topic || ''} (${(body.platforms || []).join(', ')})`,
   },
   blog: {
     system: `You are an SEO content specialist who creates comprehensive, well-structured blog articles. Include proper heading hierarchy, engaging content, and SEO best practices.`,
@@ -85,6 +89,7 @@ A bullet-point outline of the article sections
 ### ARTICLE
 The full article with proper H2/H3 headings (use ## and ###), paragraphs, and a compelling introduction and conclusion. Include internal linking suggestions in [brackets].`;
     },
+    getInputPreview: (body: any) => `${body.topic || ''} (~${body.wordCount || 1500} words)`,
   },
   amazon: {
     system: `You are an expert Amazon affiliate content writer. Create comprehensive, honest, and SEO-optimized product reviews that help readers make informed purchasing decisions. Include pros, cons, and a balanced assessment.`,
@@ -112,6 +117,7 @@ A complete product review with:
 ### SUMMARY
 A 2-3 sentence summary suitable for comparison tables.`;
     },
+    getInputPreview: (body: any) => `${body.productName || ''} (${body.category || 'General'})`,
   },
 };
 
@@ -166,6 +172,26 @@ serve(async (req) => {
 
     const data = await response.json();
     const fullResponse = data.choices?.[0]?.message?.content || "";
+
+    // Save generation record if user is authenticated
+    try {
+      const authHeader = req.headers.get("authorization");
+      if (authHeader) {
+        const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+        const supabaseKey = Deno.env.get("SUPABASE_ANON_KEY")!;
+        const sb = createClient(supabaseUrl, supabaseKey, {
+          global: { headers: { Authorization: authHeader } },
+        });
+        await sb.from("generations").insert({
+          user_id: (await sb.auth.getUser()).data.user?.id,
+          tool,
+          input_preview: toolConfig.getInputPreview(body).substring(0, 200),
+          output_preview: fullResponse.substring(0, 300),
+        });
+      }
+    } catch (saveErr) {
+      console.error("Failed to save generation record:", saveErr);
+    }
 
     return new Response(JSON.stringify({ result: fullResponse }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
