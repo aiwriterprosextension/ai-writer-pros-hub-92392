@@ -16,6 +16,14 @@ import EmailGenerator from "./pages/EmailGenerator";
 import SocialMediaSuite from "./pages/SocialMediaSuite";
 import BlogContentCreator from "./pages/BlogContentCreator";
 import Dashboard from "./pages/Dashboard";
+import DashboardHome from "./pages/dashboard/DashboardHome";
+import DashboardAIHumanizer from "./pages/dashboard/DashboardAIHumanizer";
+import DashboardEmailGenerator from "./pages/dashboard/DashboardEmailGenerator";
+import DashboardSocialMedia from "./pages/dashboard/DashboardSocialMedia";
+import DashboardBlogCreator from "./pages/dashboard/DashboardBlogCreator";
+import DashboardAmazonReviews from "./pages/dashboard/DashboardAmazonReviews";
+import DashboardContentRepurposing from "./pages/dashboard/DashboardContentRepurposing";
+import DashboardProfile from "./pages/dashboard/DashboardProfile";
 import Features from "./pages/Features";
 import Pricing from "./pages/Pricing";
 import Blog from "./pages/Blog";
@@ -43,7 +51,16 @@ const App = () => (
               <Route path="/email-generator" element={<EmailGenerator />} />
               <Route path="/social-media-suite" element={<SocialMediaSuite />} />
               <Route path="/blog-content-creator" element={<BlogContentCreator />} />
-              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}>
+                <Route index element={<DashboardHome />} />
+                <Route path="ai-humanizer" element={<DashboardAIHumanizer />} />
+                <Route path="email-generator" element={<DashboardEmailGenerator />} />
+                <Route path="social-media" element={<DashboardSocialMedia />} />
+                <Route path="blog-creator" element={<DashboardBlogCreator />} />
+                <Route path="amazon-reviews" element={<DashboardAmazonReviews />} />
+                <Route path="content-repurposing" element={<DashboardContentRepurposing />} />
+                <Route path="profile" element={<DashboardProfile />} />
+              </Route>
               <Route path="/features" element={<Features />} />
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/blog" element={<Blog />} />

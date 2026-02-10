@@ -2,15 +2,12 @@
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Mail, CheckCircle, Users, Star, Zap, Copy, Target, TrendingUp, BarChart3, Clock, Layers, Settings, Briefcase, ShoppingCart, Heart } from "lucide-react";
-import { useState, useRef } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Mail, Users, Star, Zap, Target, TrendingUp, BarChart3, Clock, Layers, Settings, Briefcase, ShoppingCart, Heart } from "lucide-react";
+import { useRef } from "react";
 import { SEOHead } from "@/components/landing/SEOHead";
 import { TrustBar } from "@/components/landing/TrustBar";
 import { ProblemSolution } from "@/components/landing/ProblemSolution";
@@ -21,43 +18,11 @@ import { ComparisonTable } from "@/components/landing/ComparisonTable";
 import { FAQSection } from "@/components/landing/FAQSection";
 import { FinalCTA } from "@/components/landing/FinalCTA";
 import { FeaturesGrid } from "@/components/landing/FeaturesGrid";
+import { MockToolPreview } from "@/components/landing/MockToolPreview";
 
 export default function EmailGenerator() {
-  const [topic, setTopic] = useState("");
-  const [emailType, setEmailType] = useState("promotional");
-  const [tone, setTone] = useState("professional");
-  const [audience, setAudience] = useState("");
-  const [sequenceLength, setSequenceLength] = useState("1");
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [result, setResult] = useState("");
-  const { toast } = useToast();
   const toolRef = useRef<HTMLDivElement>(null);
-
   const scrollToTool = () => toolRef.current?.scrollIntoView({ behavior: "smooth" });
-
-  const handleGenerate = async () => {
-    setIsGenerating(true);
-    setResult("");
-    try {
-      const { data, error } = await supabase.functions.invoke('ai-tools', {
-        body: { tool: 'email', topic, emailType, tone, audience, sequenceLength: parseInt(sequenceLength) },
-      });
-      if (error) throw error;
-      if (data?.error) throw new Error(data.error);
-      setResult(data.result || "");
-      const label = parseInt(sequenceLength) > 1 ? `${sequenceLength}-email sequence` : "email";
-      toast({ title: `${label} generated!`, description: "Your email content is ready." });
-    } catch (e: any) {
-      toast({ title: "Error", description: e.message || "Failed to generate email", variant: "destructive" });
-    } finally {
-      setIsGenerating(false);
-    }
-  };
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(result);
-    toast({ title: "Copied!", description: "Email content copied to clipboard." });
-  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -95,91 +60,40 @@ export default function EmailGenerator() {
             </div>
           </div>
 
-          {/* Tool */}
+          {/* Mock Tool */}
           <div className="max-w-6xl mx-auto" ref={toolRef}>
-            <Card className="p-6">
+            <MockToolPreview toolName="Email Generator" dashboardPath="/dashboard/email-generator" gradient="from-red-500 to-pink-500">
               <div className="grid lg:grid-cols-2 gap-8">
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold flex items-center"><Mail className="h-5 w-5 mr-2 text-red-500" />Email Settings</h3>
                   <div className="space-y-2">
                     <Label>Email Topic / Purpose</Label>
-                    <Input placeholder="e.g. Product launch announcement, Summer sale..." value={topic} onChange={(e) => setTopic(e.target.value)} />
+                    <Input placeholder="e.g. Product launch announcement..." disabled />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label>Email Type</Label>
-                      <Select value={emailType} onValueChange={setEmailType}>
-                        <SelectTrigger><SelectValue /></SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="promotional">Promotional</SelectItem>
-                          <SelectItem value="welcome">Welcome Sequence</SelectItem>
-                          <SelectItem value="newsletter">Newsletter</SelectItem>
-                          <SelectItem value="product-launch">Product Launch</SelectItem>
-                          <SelectItem value="re-engagement">Re-engagement</SelectItem>
-                          <SelectItem value="sales">Sales Sequence</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <Select disabled><SelectTrigger><SelectValue placeholder="Promotional" /></SelectTrigger></Select>
                     </div>
                     <div className="space-y-2">
                       <Label>Tone</Label>
-                      <Select value={tone} onValueChange={setTone}>
-                        <SelectTrigger><SelectValue /></SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="professional">Professional</SelectItem>
-                          <SelectItem value="friendly">Friendly</SelectItem>
-                          <SelectItem value="urgent">Urgent</SelectItem>
-                          <SelectItem value="casual">Casual</SelectItem>
-                          <SelectItem value="formal">Formal</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <Select disabled><SelectTrigger><SelectValue placeholder="Professional" /></SelectTrigger></Select>
                     </div>
                   </div>
-                  <div className="space-y-2">
-                    <Label>Target Audience</Label>
-                    <Input placeholder="e.g. SaaS founders, fitness enthusiasts..." value={audience} onChange={(e) => setAudience(e.target.value)} />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Sequence Length</Label>
-                    <Select value={sequenceLength} onValueChange={setSequenceLength}>
-                      <SelectTrigger><SelectValue /></SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="1">Single Email</SelectItem>
-                        <SelectItem value="3">3-Email Sequence</SelectItem>
-                        <SelectItem value="5">5-Email Sequence</SelectItem>
-                        <SelectItem value="7">7-Email Sequence</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    {parseInt(sequenceLength) > 1 && (
-                      <p className="text-xs text-muted-foreground">Generates a {sequenceLength}-email sequence with suggested timing between sends.</p>
-                    )}
-                  </div>
-                  <Button onClick={handleGenerate} disabled={!topic || isGenerating} className="w-full" size="lg">
-                    {isGenerating ? <><Zap className="mr-2 h-4 w-4 animate-spin" />Generating...</> : <><Mail className="mr-2 h-4 w-4" />Generate {parseInt(sequenceLength) > 1 ? `${sequenceLength}-Email Sequence` : 'Email Campaign'}</>}
-                  </Button>
+                  <Button disabled className="w-full" size="lg"><Mail className="mr-2 h-4 w-4" />Generate Email Campaign</Button>
                 </div>
                 <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold flex items-center"><Zap className="h-5 w-5 mr-2 text-red-500" />Generated Email</h3>
-                    {result && <Button variant="outline" size="sm" onClick={handleCopy}><Copy className="h-3 w-3 mr-1" /> Copy</Button>}
-                  </div>
-                  <div className="bg-muted/50 rounded-lg p-4 min-h-[400px] max-h-[600px] overflow-y-auto whitespace-pre-wrap text-sm">
-                    {isGenerating ? (
-                      <div className="animate-pulse text-muted-foreground">Generating your email campaign...</div>
-                    ) : result ? result : (
-                      <div className="text-muted-foreground text-center py-12">
-                        <Mail className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                        <p>Configure your email settings and click generate</p>
-                      </div>
-                    )}
+                  <h3 className="text-lg font-semibold mb-4">Generated Email</h3>
+                  <div className="bg-muted/50 rounded-lg p-4 min-h-[250px] flex items-center justify-center text-muted-foreground">
+                    <Mail className="h-12 w-12 opacity-50" />
                   </div>
                 </div>
               </div>
-            </Card>
+            </MockToolPreview>
           </div>
         </div>
       </section>
 
-      {/* Trust Bar */}
       <TrustBar stats={[
         { label: "Emails Generated", value: "500K+", icon: "star" },
         { label: "Avg. Open Rate Lift", value: "+47%", icon: "award" },
@@ -275,21 +189,16 @@ export default function EmailGenerator() {
           { question: "What email types are supported?", answer: "We support Promotional, Welcome Sequence, Newsletter, Product Launch, Re-engagement, and Sales Sequence templates — covering the most common email marketing needs." },
           { question: "Will these emails actually convert?", answer: "Our emails are based on proven copywriting frameworks (AIDA, PAS, etc.) and optimized with power words, urgency triggers, and clear CTAs. Users report an average 47% increase in open rates." },
           { question: "Can I customize the tone?", answer: "Absolutely! Choose from Professional, Friendly, Urgent, Casual, or Formal tones to match your brand voice perfectly." },
-          { question: "Is it compatible with my email platform?", answer: "Yes! The generated content is plain text that you can paste into any email platform — Mailchimp, ConvertKit, HubSpot, ActiveCampaign, or any other ESP." },
-          { question: "How accurate is the audience targeting?", answer: "The AI uses your audience description to tailor language, examples, and pain points. The more specific your audience input, the more targeted the output." },
-          { question: "Can I generate A/B test variants?", answer: "Yes, our single email generation includes A/B variant suggestions for subject lines and key sections to help you optimize through testing." },
-          { question: "Is there a word limit?", answer: "No hard limit. Single emails are typically 200-500 words, and sequences scale accordingly. The AI calibrates length to the email type." },
-          { question: "Is it free to use?", answer: "Yes, our free tier includes daily email generations. For unlimited access and advanced features, check our pricing page." },
+          { question: "Is there a free tier?", answer: "Yes, you can generate emails for free. Premium plans unlock multi-email sequences and advanced features." },
         ]}
       />
 
       <FinalCTA
-        headline="Write Emails That Get Opened, Read & Clicked"
-        subheadline="Join 8,000+ marketers generating high-converting email campaigns in seconds."
+        headline="Start Writing Emails That Convert"
+        subheadline="Join 8,000+ marketers using AI to create high-performing email campaigns."
         ctaText="Generate My First Email Free"
-        onCtaClick={scrollToTool}
-        secondaryCtaText="View Pricing"
-        benefits={["Free to try", "6 email types", "Multi-email sequences", "A/B variants included"]}
+        ctaLink="/auth"
+        benefits={["6 email types", "Multi-email sequences", "No credit card required", "A/B variants included"]}
       />
 
       <Footer />

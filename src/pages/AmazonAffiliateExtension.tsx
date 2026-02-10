@@ -1,16 +1,15 @@
+
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Chrome, Star, CheckCircle, ArrowRight, Users, TrendingUp, Zap, Copy, Plus, X, ShoppingCart, DollarSign, BarChart3, Target, Briefcase, PenTool, Search, FileText, Award } from "lucide-react";
-import { useState, useRef } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { Chrome, Star, CheckCircle, ArrowRight, Users, TrendingUp, Zap, Copy, ShoppingCart, DollarSign, BarChart3, Target, Briefcase, PenTool, Search, FileText, Award } from "lucide-react";
+import { useRef } from "react";
 import { SEOHead } from "@/components/landing/SEOHead";
 import { TrustBar } from "@/components/landing/TrustBar";
 import { ProblemSolution } from "@/components/landing/ProblemSolution";
@@ -21,64 +20,11 @@ import { ComparisonTable } from "@/components/landing/ComparisonTable";
 import { FAQSection } from "@/components/landing/FAQSection";
 import { FinalCTA } from "@/components/landing/FinalCTA";
 import { FeaturesGrid } from "@/components/landing/FeaturesGrid";
+import { MockToolPreview } from "@/components/landing/MockToolPreview";
 
 export default function AmazonAffiliateExtension() {
-  const [productName, setProductName] = useState("");
-  const [category, setCategory] = useState("electronics");
-  const [features, setFeatures] = useState("");
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [result, setResult] = useState("");
-  const [mode, setMode] = useState<"single" | "compare">("single");
-  const [comparisonProducts, setComparisonProducts] = useState<string[]>([""]);
-  const { toast } = useToast();
   const toolRef = useRef<HTMLDivElement>(null);
-
   const scrollToTool = () => toolRef.current?.scrollIntoView({ behavior: "smooth" });
-
-  const addComparisonProduct = () => {
-    if (comparisonProducts.length < 3) {
-      setComparisonProducts([...comparisonProducts, ""]);
-    }
-  };
-
-  const removeComparisonProduct = (index: number) => {
-    setComparisonProducts(comparisonProducts.filter((_, i) => i !== index));
-  };
-
-  const updateComparisonProduct = (index: number, value: string) => {
-    const updated = [...comparisonProducts];
-    updated[index] = value;
-    setComparisonProducts(updated);
-  };
-
-  const handleGenerate = async () => {
-    setIsGenerating(true);
-    setResult("");
-    try {
-      const body: any = { tool: 'amazon', productName, category, features };
-      if (mode === "compare") {
-        body.comparisonProducts = comparisonProducts.filter(p => p.trim());
-      }
-      const { data, error } = await supabase.functions.invoke('ai-tools', { body });
-      if (error) throw error;
-      if (data?.error) throw new Error(data.error);
-      setResult(data.result || "");
-      toast({ title: mode === "compare" ? "Comparison generated!" : "Review generated!", description: "Your content is ready." });
-    } catch (e: any) {
-      toast({ title: "Error", description: e.message || "Failed to generate content", variant: "destructive" });
-    } finally {
-      setIsGenerating(false);
-    }
-  };
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(result);
-    toast({ title: "Copied!", description: "Content copied to clipboard." });
-  };
-
-  const canGenerate = mode === "single"
-    ? !!productName
-    : !!productName && comparisonProducts.some(p => p.trim());
 
   return (
     <div className="min-h-screen bg-background">
@@ -120,9 +66,6 @@ export default function AmazonAffiliateExtension() {
                 <Button size="lg" className="text-lg px-8" onClick={scrollToTool}>
                   Generate My Review Now <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
-                <Button size="lg" variant="outline" className="text-lg px-8" asChild>
-                  <a href="#demo">See Examples</a>
-                </Button>
               </div>
               <div className="flex items-center flex-wrap gap-6 text-sm text-muted-foreground">
                 <div className="flex items-center"><Star className="h-4 w-4 text-yellow-500 mr-1 fill-yellow-500" />4.9/5 (2,847 reviews)</div>
@@ -131,116 +74,33 @@ export default function AmazonAffiliateExtension() {
               </div>
             </div>
 
-            {/* Review Generator */}
+            {/* Mock Tool */}
             <div ref={toolRef}>
-              <Card className="p-6">
-                <Tabs value={mode} onValueChange={(v) => setMode(v as "single" | "compare")}>
-                  <TabsList className="w-full mb-4">
-                    <TabsTrigger value="single" className="flex-1">Single Review</TabsTrigger>
-                    <TabsTrigger value="compare" className="flex-1">Compare Products</TabsTrigger>
-                  </TabsList>
-
-                  <TabsContent value="single" className="space-y-4">
-                    <div className="space-y-2">
-                      <Label>Product Name</Label>
-                      <Input placeholder="e.g. Sony WH-1000XM5 Wireless Headphones" value={productName} onChange={(e) => setProductName(e.target.value)} />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Category</Label>
-                      <Select value={category} onValueChange={setCategory}>
-                        <SelectTrigger><SelectValue /></SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="electronics">Electronics</SelectItem>
-                          <SelectItem value="home-kitchen">Home & Kitchen</SelectItem>
-                          <SelectItem value="sports-outdoors">Sports & Outdoors</SelectItem>
-                          <SelectItem value="beauty">Beauty & Personal Care</SelectItem>
-                          <SelectItem value="books">Books</SelectItem>
-                          <SelectItem value="toys">Toys & Games</SelectItem>
-                          <SelectItem value="clothing">Clothing</SelectItem>
-                          <SelectItem value="tools">Tools & Home Improvement</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Key Features (optional)</Label>
-                      <Input placeholder="e.g. Noise cancelling, 30h battery, USB-C..." value={features} onChange={(e) => setFeatures(e.target.value)} />
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="compare" className="space-y-4">
-                    <div className="space-y-2">
-                      <Label>Product 1 (Primary)</Label>
-                      <Input placeholder="e.g. Sony WH-1000XM5" value={productName} onChange={(e) => setProductName(e.target.value)} />
-                    </div>
-                    {comparisonProducts.map((product, index) => (
-                      <div key={index} className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <Label>Product {index + 2}</Label>
-                          {comparisonProducts.length > 1 && (
-                            <Button variant="ghost" size="sm" onClick={() => removeComparisonProduct(index)}>
-                              <X className="h-3 w-3" />
-                            </Button>
-                          )}
-                        </div>
-                        <Input placeholder={`e.g. Bose QuietComfort Ultra`} value={product} onChange={(e) => updateComparisonProduct(index, e.target.value)} />
-                      </div>
-                    ))}
-                    {comparisonProducts.length < 3 && (
-                      <Button variant="outline" size="sm" onClick={addComparisonProduct} className="w-full">
-                        <Plus className="h-3 w-3 mr-1" /> Add Product (max 4 total)
-                      </Button>
-                    )}
-                    <div className="space-y-2">
-                      <Label>Category</Label>
-                      <Select value={category} onValueChange={setCategory}>
-                        <SelectTrigger><SelectValue /></SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="electronics">Electronics</SelectItem>
-                          <SelectItem value="home-kitchen">Home & Kitchen</SelectItem>
-                          <SelectItem value="sports-outdoors">Sports & Outdoors</SelectItem>
-                          <SelectItem value="beauty">Beauty & Personal Care</SelectItem>
-                          <SelectItem value="books">Books</SelectItem>
-                          <SelectItem value="toys">Toys & Games</SelectItem>
-                          <SelectItem value="clothing">Clothing</SelectItem>
-                          <SelectItem value="tools">Tools & Home Improvement</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </TabsContent>
-                </Tabs>
-
-                <Button onClick={handleGenerate} disabled={!canGenerate || isGenerating} className="w-full mt-4" size="lg">
-                  {isGenerating ? (
-                    <><Zap className="mr-2 h-4 w-4 animate-spin" />Generating {mode === "compare" ? "Comparison" : "Review"}...</>
-                  ) : (
-                    <><Chrome className="mr-2 h-4 w-4" />{mode === "compare" ? "Generate Comparison Table" : "Generate Product Review"}</>
-                  )}
-                </Button>
-              </Card>
+              <MockToolPreview toolName="Amazon Review Generator" dashboardPath="/dashboard/amazon-reviews" gradient="from-amber-500 to-orange-500">
+                <div className="space-y-4">
+                  <Tabs defaultValue="single">
+                    <TabsList className="w-full mb-4">
+                      <TabsTrigger value="single" className="flex-1" disabled>Single Review</TabsTrigger>
+                      <TabsTrigger value="compare" className="flex-1" disabled>Compare Products</TabsTrigger>
+                    </TabsList>
+                  </Tabs>
+                  <div className="space-y-2">
+                    <Label>Product Name</Label>
+                    <Input placeholder="e.g. Sony WH-1000XM5 Wireless Headphones" disabled />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Category</Label>
+                    <Select disabled><SelectTrigger><SelectValue placeholder="Electronics" /></SelectTrigger></Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Key Features (optional)</Label>
+                    <Input placeholder="e.g. Noise cancelling, 30h battery..." disabled />
+                  </div>
+                  <Button disabled className="w-full" size="lg"><Chrome className="mr-2 h-4 w-4" />Generate Product Review</Button>
+                </div>
+              </MockToolPreview>
             </div>
           </div>
-
-          {/* Generated Content */}
-          {(result || isGenerating) && (
-            <div className="mt-12 max-w-5xl mx-auto" id="demo">
-              <Card className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold flex items-center">
-                    <Zap className="h-5 w-5 mr-2 text-amber-500" />
-                    {mode === "compare" ? "Product Comparison" : "Generated Review"}
-                  </h3>
-                  {result && <Button variant="outline" size="sm" onClick={handleCopy}><Copy className="h-3 w-3 mr-1" /> Copy</Button>}
-                </div>
-                <div className="bg-muted/50 rounded-lg p-4 max-h-[600px] overflow-y-auto whitespace-pre-wrap text-sm">
-                  {isGenerating ? (
-                    <div className="animate-pulse text-muted-foreground">
-                      {mode === "compare" ? "Building product comparison table..." : "Writing your product review..."}
-                    </div>
-                  ) : result}
-                </div>
-              </Card>
-            </div>
-          )}
         </div>
       </section>
 
@@ -252,7 +112,6 @@ export default function AmazonAffiliateExtension() {
         { label: "Commission Increase", value: "340%", icon: "award" },
       ]} />
 
-      {/* Problem-Solution */}
       <ProblemSolution
         problems={[
           "Spending 3-5 hours writing a single product review that may not even rank",
@@ -270,7 +129,6 @@ export default function AmazonAffiliateExtension() {
         ]}
       />
 
-      {/* Features Grid - 6 cards */}
       <FeaturesGrid
         title="Everything You Need for Affiliate Success"
         subtitle="Professional-grade tools to create content that ranks on Google and converts visitors into buyers."
@@ -284,7 +142,6 @@ export default function AmazonAffiliateExtension() {
         ]}
       />
 
-      {/* How It Works */}
       <HowItWorks
         steps={[
           { icon: PenTool, title: "Enter Product Details", description: "Type the product name, select a category, and add key features you want highlighted in the review." },
@@ -295,7 +152,6 @@ export default function AmazonAffiliateExtension() {
         onCtaClick={scrollToTool}
       />
 
-      {/* Use Cases */}
       <UseCases
         title="Perfect for Every Affiliate Strategy"
         subtitle="Whether you're a beginner or earning six figures, our tool adapts to your needs."
@@ -305,68 +161,55 @@ export default function AmazonAffiliateExtension() {
           { icon: Target, title: "YouTube Reviewers", description: "Use generated reviews as video scripts and blog companion content.", example: "Turn a review into a 10-minute video script" },
           { icon: Briefcase, title: "Marketing Agencies", description: "Scale affiliate content production for multiple clients simultaneously.", example: "Produce 100+ reviews monthly for client portfolios" },
           { icon: ShoppingCart, title: "Comparison Bloggers", description: "Create detailed comparison tables that help readers make informed decisions.", example: "Compare 4 laptops with specs, pros/cons, and verdicts" },
-          { icon: FileText, title: "Content Managers", description: "Maintain consistent quality across large content teams and freelancers.", example: "Standardize review format across 20+ writers" },
+          { icon: Award, title: "New Affiliates", description: "Start earning commissions faster with professional-quality reviews from day one.", example: "Launch an affiliate site with 20 reviews in your first week" },
         ]}
       />
 
-      {/* Testimonials */}
       <Testimonials
-        heading="Trusted by 25,000+ Affiliate Marketers"
         testimonials={[
-          { name: "Sarah Chen", title: "Niche Site Owner", rating: 5, quote: "I went from publishing 4 reviews a month to 40. My affiliate income tripled in just 3 months.", metric: "300% increase in affiliate revenue" },
-          { name: "Marcus Thompson", title: "SEO Content Writer", rating: 5, quote: "The comparison table feature alone is worth it. My readers spend 3x longer on comparison pages.", metric: "3x longer time on page" },
-          { name: "Emily Rodriguez", title: "Marketing Agency Owner", rating: 5, quote: "We manage 12 affiliate sites. This tool cut our content production costs by 60% while improving quality.", metric: "60% cost reduction" },
-          { name: "David Kim", title: "YouTube Tech Reviewer", rating: 5, quote: "I use the generated reviews as outlines for my video scripts. It's incredibly well-structured.", metric: "2x faster video production" },
-          { name: "Lisa Patel", title: "Amazon Associates Top Earner", rating: 5, quote: "The SEO optimization is on point. Three of my reviews hit page 1 within two weeks of publishing.", metric: "Page 1 rankings in 14 days" },
-          { name: "James Wilson", title: "Freelance Blogger", rating: 4, quote: "Great starting point for reviews. I add my personal touch and publish in half the time.", metric: "50% faster content creation" },
+          { name: "Marcus Williams", title: "Niche Site Owner", rating: 5, quote: "My affiliate income went from $200/month to $3,400/month after scaling my review output with this tool.", metric: "$200 → $3,400/month" },
+          { name: "Jessica Taylor", title: "Content Writer", rating: 5, quote: "I produce 50+ reviews monthly for my clients. This tool made it possible without sacrificing quality.", metric: "50+ reviews/month" },
+          { name: "David Park", title: "Tech Blogger", rating: 5, quote: "The comparison table feature alone saves me 3 hours per article. Readers love the side-by-side format.", metric: "3 hours saved per article" },
+          { name: "Samantha Brown", title: "Amazon Associate", rating: 5, quote: "My click-through rate increased by 85% after switching to AI-generated reviews with better CTAs.", metric: "85% higher CTR" },
+          { name: "Robert Chen", title: "SEO Specialist", rating: 4, quote: "The SEO optimization is built in. My reviews rank on the first page consistently.", metric: "Page 1 rankings consistently" },
+          { name: "Laura Martinez", title: "Lifestyle Blogger", rating: 5, quote: "I review beauty products across 8 categories. This tool understands the nuances of each one.", metric: "8 categories covered" },
         ]}
       />
 
-      {/* Comparison Table */}
       <ComparisonTable
-        title="Why Choose AI Writer Pros for Amazon Affiliate Content?"
+        title="Why AI Writer Pros for Affiliate Reviews?"
         ourName="AI Writer Pros"
         competitor1Name="Jasper AI"
-        competitor2Name="Manual Writing"
+        competitor2Name="ChatGPT"
         rows={[
-          { feature: "Amazon-specific review templates", us: true, competitor1: false, competitor2: false },
-          { feature: "Comparison table generation", us: true, competitor1: false, competitor2: true },
-          { feature: "SEO optimization built-in", us: true, competitor1: true, competitor2: false },
-          { feature: "Pros/cons auto-generation", us: true, competitor1: false, competitor2: true },
-          { feature: "Star rating integration", us: true, competitor1: false, competitor2: true },
-          { feature: "Time per review", us: "< 60 sec", competitor1: "5-10 min", competitor2: "3-5 hours" },
-          { feature: "Free tier available", us: true, competitor1: false, competitor2: true },
-          { feature: "8 product categories", us: true, competitor1: true, competitor2: true },
+          { feature: "Multi-product comparison tables", us: true, competitor1: false, competitor2: false },
+          { feature: "8 product categories", us: true, competitor1: true, competitor2: false },
+          { feature: "Winner/budget pick logic", us: true, competitor1: false, competitor2: false },
+          { feature: "SEO-optimized structure", us: true, competitor1: true, competitor2: false },
+          { feature: "Pros/cons formatting", us: true, competitor1: true, competitor2: false },
+          { feature: "Free tier", us: true, competitor1: false, competitor2: true },
+          { feature: "Generation speed", us: "< 30 sec", competitor1: "30-60 sec", competitor2: "1-3 min" },
         ]}
       />
 
-      {/* FAQ */}
       <FAQSection
         toolName="the Amazon Affiliate Review Generator"
         faqs={[
-          { question: "How does the Amazon Affiliate Review Generator work?", answer: "Simply enter a product name, select a category, and optionally add key features. Our AI analyzes the product and generates a comprehensive, SEO-optimized review with pros/cons, ratings, and a buyer verdict — all in under 60 seconds." },
-          { question: "What makes this different from other AI writing tools?", answer: "Unlike general-purpose AI writers, our tool is specifically designed for Amazon affiliate content. It understands product review structure, includes comparison table generation, and optimizes for affiliate conversion — not just readability." },
-          { question: "Is the generated content unique and plagiarism-free?", answer: "Yes! Every review is generated fresh and unique. Our AI creates original content tailored to the specific product and features you provide. We recommend adding your personal experience to make it even more authentic." },
-          { question: "Can I generate comparison tables for multiple products?", answer: "Absolutely! Use the 'Compare Products' tab to add up to 4 products. The AI generates a detailed comparison table with feature breakdowns, winner recommendations, and budget/premium picks." },
-          { question: "Is it free to use?", answer: "Yes, you can start generating reviews for free. Our free tier includes a generous number of daily generations. For unlimited access and advanced features, check our pricing page." },
-          { question: "What product categories are supported?", answer: "We support 8 major Amazon categories: Electronics, Home & Kitchen, Sports & Outdoors, Beauty & Personal Care, Books, Toys & Games, Clothing, and Tools & Home Improvement." },
-          { question: "How do I add my affiliate links?", answer: "After generating the review, copy the content and paste it into your blog or website. Then simply add your Amazon affiliate links to the product mentions. The review is structured to make link placement easy and natural." },
-          { question: "Will the reviews rank on Google?", answer: "Our reviews are optimized with SEO best practices including keyword placement, structured headings, and schema-ready formatting. Many users report page 1 rankings within 2-4 weeks of publishing." },
-          { question: "Can I customize the tone and style?", answer: "The generator creates professional, balanced reviews by default. You can edit the output freely to match your brand voice. The key features input also helps guide the AI's focus areas." },
-          { question: "How many reviews can I generate per day?", answer: "Free users get a daily generation allowance. Paid plans offer higher limits and priority processing. Check our pricing page for specific plan details." },
-          { question: "Does it work for any Amazon product?", answer: "Yes! As long as you provide a product name and select a category, the AI can generate a review for any Amazon product. Adding key features helps produce even more accurate and detailed content." },
-          { question: "Is my data secure?", answer: "Absolutely. We don't store your generated content on our servers after you copy it. Your account data is encrypted and protected with enterprise-grade security." },
+          { question: "How does the review generator work?", answer: "Enter the product name, select a category, and optionally add key features. Our AI generates a complete, SEO-optimized product review with pros/cons, ratings, and buyer recommendations." },
+          { question: "Can I compare multiple products?", answer: "Yes! Switch to 'Compare Products' mode to compare up to 4 products with a detailed side-by-side comparison table, including a winner pick and budget alternative." },
+          { question: "What product categories are supported?", answer: "We support 8 categories: Electronics, Home & Kitchen, Sports & Outdoors, Beauty & Personal Care, Books, Toys & Games, Clothing, and Tools & Home Improvement." },
+          { question: "Are the reviews SEO-optimized?", answer: "Absolutely. Every review includes keyword-rich headings, structured formatting, and is designed to rank well on Google for product-related search queries." },
+          { question: "Can I add my affiliate links?", answer: "Yes! The generated reviews include natural CTA placement points where you can insert your Amazon affiliate links for maximum click-through rates." },
+          { question: "Is there a free tier?", answer: "Yes, you can generate reviews for free. Premium plans unlock comparison tables and advanced features." },
         ]}
       />
 
-      {/* Final CTA */}
       <FinalCTA
-        headline="Start Earning More From Amazon Affiliates Today"
-        subheadline="Join 25,000+ affiliate marketers who generate high-converting product reviews in seconds, not hours."
+        headline="Start Earning More from Amazon Affiliate Marketing"
+        subheadline="Join 25,000+ affiliate marketers generating SEO-optimized reviews that convert."
         ctaText="Generate My First Review Free"
-        onCtaClick={scrollToTool}
-        secondaryCtaText="View Pricing Plans"
-        benefits={["Free to start", "No credit card required", "Comparison tables included", "Instant results"]}
+        ctaLink="/auth"
+        benefits={["SEO-optimized reviews", "Comparison tables", "8 categories", "No credit card required"]}
       />
 
       <Footer />
