@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Mail, ArrowRight, CheckCircle, Users, Star, Zap, Copy } from "lucide-react";
@@ -18,6 +17,7 @@ export default function EmailGenerator() {
   const [emailType, setEmailType] = useState("promotional");
   const [tone, setTone] = useState("professional");
   const [audience, setAudience] = useState("");
+  const [sequenceLength, setSequenceLength] = useState("1");
   const [isGenerating, setIsGenerating] = useState(false);
   const [result, setResult] = useState("");
   const { toast } = useToast();
@@ -27,12 +27,13 @@ export default function EmailGenerator() {
     setResult("");
     try {
       const { data, error } = await supabase.functions.invoke('ai-tools', {
-        body: { tool: 'email', topic, emailType, tone, audience },
+        body: { tool: 'email', topic, emailType, tone, audience, sequenceLength: parseInt(sequenceLength) },
       });
       if (error) throw error;
       if (data?.error) throw new Error(data.error);
       setResult(data.result || "");
-      toast({ title: "Email generated!", description: "Your email content is ready." });
+      const label = parseInt(sequenceLength) > 1 ? `${sequenceLength}-email sequence` : "email";
+      toast({ title: `${label} generated!`, description: "Your email content is ready." });
     } catch (e: any) {
       toast({ title: "Error", description: e.message || "Failed to generate email", variant: "destructive" });
     } finally {
@@ -64,12 +65,12 @@ export default function EmailGenerator() {
             </h1>
             <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
               Create professional email campaigns with AI. Generate subject lines, email bodies,
-              A/B variants, and preview text — all optimized for engagement and conversions.
+              A/B variants, and full multi-email sequences — all optimized for engagement and conversions.
             </p>
             <div className="flex items-center justify-center space-x-6 text-sm text-muted-foreground">
               <div className="flex items-center"><Mail className="h-4 w-4 text-red-600 mr-2" />Campaign Templates</div>
               <div className="flex items-center"><Star className="h-4 w-4 text-yellow-500 mr-2" />A/B Testing</div>
-              <div className="flex items-center"><Users className="h-4 w-4 mr-2" />Personalization</div>
+              <div className="flex items-center"><Users className="h-4 w-4 mr-2" />Email Sequences</div>
             </div>
           </div>
 
@@ -119,8 +120,29 @@ export default function EmailGenerator() {
                     <Label>Target Audience</Label>
                     <Input placeholder="e.g. SaaS founders, fitness enthusiasts, new subscribers..." value={audience} onChange={(e) => setAudience(e.target.value)} />
                   </div>
+                  <div className="space-y-2">
+                    <Label>Sequence Length</Label>
+                    <Select value={sequenceLength} onValueChange={setSequenceLength}>
+                      <SelectTrigger><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="1">Single Email</SelectItem>
+                        <SelectItem value="3">3-Email Sequence</SelectItem>
+                        <SelectItem value="5">5-Email Sequence</SelectItem>
+                        <SelectItem value="7">7-Email Sequence</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    {parseInt(sequenceLength) > 1 && (
+                      <p className="text-xs text-muted-foreground">
+                        Generates a {sequenceLength}-email sequence with suggested timing between sends.
+                      </p>
+                    )}
+                  </div>
                   <Button onClick={handleGenerate} disabled={!topic || isGenerating} className="w-full" size="lg">
-                    {isGenerating ? <><Zap className="mr-2 h-4 w-4 animate-spin" />Generating Email...</> : <><Mail className="mr-2 h-4 w-4" />Generate Email Campaign</>}
+                    {isGenerating ? (
+                      <><Zap className="mr-2 h-4 w-4 animate-spin" />Generating {parseInt(sequenceLength) > 1 ? 'Sequence' : 'Email'}...</>
+                    ) : (
+                      <><Mail className="mr-2 h-4 w-4" />Generate {parseInt(sequenceLength) > 1 ? `${sequenceLength}-Email Sequence` : 'Email Campaign'}</>
+                    )}
                   </Button>
                 </div>
 
@@ -128,7 +150,7 @@ export default function EmailGenerator() {
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-lg font-semibold flex items-center">
                       <Zap className="h-5 w-5 mr-2 text-red-500" />
-                      Generated Email
+                      Generated {parseInt(sequenceLength) > 1 ? 'Sequence' : 'Email'}
                     </h3>
                     {result && (
                       <Button variant="outline" size="sm" onClick={handleCopy}>
@@ -138,7 +160,9 @@ export default function EmailGenerator() {
                   </div>
                   <div className="bg-muted/50 rounded-lg p-4 min-h-[400px] max-h-[600px] overflow-y-auto whitespace-pre-wrap text-sm">
                     {isGenerating ? (
-                      <div className="animate-pulse text-muted-foreground">Generating your email campaign...</div>
+                      <div className="animate-pulse text-muted-foreground">
+                        Generating your {parseInt(sequenceLength) > 1 ? `${sequenceLength}-email sequence` : 'email campaign'}...
+                      </div>
                     ) : result ? (
                       result
                     ) : (
@@ -187,15 +211,15 @@ export default function EmailGenerator() {
                 <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center mb-4">
                   <Star className="h-6 w-6 text-white" />
                 </div>
-                <CardTitle>A/B Test Generation</CardTitle>
-                <CardDescription>Multiple variations for optimal performance</CardDescription>
+                <CardTitle>Multi-Email Sequences</CardTitle>
+                <CardDescription>Complete funnel automation</CardDescription>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />Subject line variants</li>
-                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />Content variations</li>
+                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />3, 5, or 7-email series</li>
+                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />Suggested send timing</li>
+                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />Progressive messaging</li>
                   <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />CTA optimization</li>
-                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />Preview text options</li>
                 </ul>
               </CardContent>
             </Card>
@@ -212,7 +236,7 @@ export default function EmailGenerator() {
                   <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />Audience targeting</li>
                   <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />Tone customization</li>
                   <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />Segment targeting</li>
-                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />Dynamic content</li>
+                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />A/B variants</li>
                 </ul>
               </CardContent>
             </Card>

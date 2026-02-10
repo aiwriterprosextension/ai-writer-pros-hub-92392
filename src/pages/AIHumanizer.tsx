@@ -1,32 +1,52 @@
-
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
-import { Bot, Shield, CheckCircle, ArrowRight, Zap, Star, Users, Copy } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Bot, Shield, CheckCircle, ArrowRight, Zap, Star, Users, Copy, RefreshCw } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { Slider } from "@/components/ui/slider";
+
+const intensityLabels: Record<string, { label: string; description: string }> = {
+  light: { label: "Light", description: "Minimal changes, subtle rewording" },
+  medium: { label: "Medium", description: "Balanced rewrite, natural flow" },
+  heavy: { label: "Heavy", description: "Complete rewrite from scratch" },
+};
 
 export default function AIHumanizer() {
   const [inputText, setInputText] = useState("");
   const [outputText, setOutputText] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [intensity, setIntensity] = useState<string>("medium");
   const { toast } = useToast();
+
+  const intensityFromSlider = (val: number) => {
+    if (val <= 33) return "light";
+    if (val <= 66) return "medium";
+    return "heavy";
+  };
+  const sliderFromIntensity = (i: string) => {
+    if (i === "light") return 16;
+    if (i === "heavy") return 83;
+    return 50;
+  };
 
   const handleHumanize = async () => {
     setIsProcessing(true);
     setOutputText("");
     try {
       const { data, error } = await supabase.functions.invoke('ai-tools', {
-        body: { tool: 'humanize', content: inputText },
+        body: { tool: 'humanize', content: inputText, intensity },
       });
       if (error) throw error;
       if (data?.error) throw new Error(data.error);
       setOutputText(data.result || "");
-      toast({ title: "Content humanized!", description: "Your text has been rewritten to sound natural." });
+      toast({ title: "Content humanized!", description: `Intensity: ${intensityLabels[intensity].label}` });
     } catch (e: any) {
       toast({ title: "Error", description: e.message || "Failed to humanize content", variant: "destructive" });
     } finally {
@@ -38,6 +58,9 @@ export default function AIHumanizer() {
     navigator.clipboard.writeText(outputText);
     toast({ title: "Copied!", description: "Humanized content copied to clipboard." });
   };
+
+  const inputWordCount = inputText.trim() ? inputText.trim().split(/\s+/).length : 0;
+  const outputWordCount = outputText.trim() ? outputText.trim().split(/\s+/).length : 0;
 
   return (
     <div className="min-h-screen bg-background">
@@ -71,11 +94,36 @@ export default function AIHumanizer() {
           {/* Interactive Demo */}
           <div className="max-w-5xl mx-auto">
             <Card className="p-6">
+              {/* Intensity Slider */}
+              <div className="mb-6">
+                <Label className="text-sm font-medium mb-3 block">
+                  Humanization Intensity: <span className="text-primary font-semibold">{intensityLabels[intensity].label}</span>
+                </Label>
+                <Slider
+                  value={[sliderFromIntensity(intensity)]}
+                  onValueChange={(val) => setIntensity(intensityFromSlider(val[0]))}
+                  max={100}
+                  step={1}
+                  className="mb-2"
+                />
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>🔵 Light</span>
+                  <span>🟡 Medium</span>
+                  <span>🔴 Heavy</span>
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">{intensityLabels[intensity].description}</p>
+              </div>
+
               <div className="grid lg:grid-cols-2 gap-6">
                 <div>
-                  <h3 className="text-lg font-semibold mb-2 flex items-center">
-                    <Bot className="h-5 w-5 mr-2 text-red-500" />
-                    AI-Generated Content
+                  <h3 className="text-lg font-semibold mb-2 flex items-center justify-between">
+                    <span className="flex items-center">
+                      <Bot className="h-5 w-5 mr-2 text-red-500" />
+                      AI-Generated Content
+                    </span>
+                    {inputWordCount > 0 && (
+                      <span className="text-xs text-muted-foreground font-normal">{inputWordCount} words</span>
+                    )}
                   </h3>
                   <Textarea 
                     placeholder="Paste your AI-generated content here..."
@@ -93,9 +141,14 @@ export default function AIHumanizer() {
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-semibold mb-2 flex items-center">
-                    <Shield className="h-5 w-5 mr-2 text-green-500" />
-                    Humanized Content
+                  <h3 className="text-lg font-semibold mb-2 flex items-center justify-between">
+                    <span className="flex items-center">
+                      <Shield className="h-5 w-5 mr-2 text-green-500" />
+                      Humanized Content
+                    </span>
+                    {outputWordCount > 0 && (
+                      <span className="text-xs text-muted-foreground font-normal">{outputWordCount} words</span>
+                    )}
                   </h3>
                   <Textarea 
                     placeholder="Your humanized content will appear here..."
@@ -103,8 +156,16 @@ export default function AIHumanizer() {
                     readOnly
                     className="min-h-[250px] resize-none bg-green-50 dark:bg-green-950/20"
                   />
-                  <div className="mt-4 flex items-center justify-end">
-                    <Button variant="outline" disabled={!outputText} onClick={handleCopy}>
+                  <div className="mt-4 flex items-center justify-between">
+                    <Button
+                      variant="outline"
+                      disabled={!outputText || isProcessing}
+                      onClick={handleHumanize}
+                      size="sm"
+                    >
+                      <RefreshCw className="h-4 w-4 mr-1" /> Re-humanize
+                    </Button>
+                    <Button variant="outline" disabled={!outputText} onClick={handleCopy} size="sm">
                       <Copy className="h-4 w-4 mr-1" /> Copy Result
                     </Button>
                   </div>

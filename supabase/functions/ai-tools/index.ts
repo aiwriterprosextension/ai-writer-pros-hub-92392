@@ -6,22 +6,52 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+const intensityInstructions: Record<string, string> = {
+  light: `Make minimal changes. Only adjust the most obviously AI-sounding phrases. Keep 90% of the original structure and vocabulary. Subtle rewording only.`,
+  medium: `Make moderate changes. Restructure sentences, vary vocabulary, add natural transitions. Keep the core message but make it sound naturally written. Aim for 60-70% rewritten.`,
+  heavy: `Completely rewrite the content from scratch while preserving the key information and message. Use entirely different sentence structures, vocabulary, and flow. The output should be completely unrecognizable from the input while conveying the same information.`,
+};
+
 const toolPrompts: Record<string, { system: string; buildUserPrompt: (body: any) => string; getInputPreview: (body: any) => string }> = {
   humanize: {
     system: `You are an expert content rewriter specializing in making AI-generated text sound naturally human. Your goal is to:
 - Rewrite the text to bypass AI detection tools (GPTZero, Turnitin, Originality.ai)
 - Preserve the original meaning and key information
 - Use varied sentence structures, natural transitions, and conversational elements
-- Add subtle imperfections that human writers typically have (occasional informal phrasing, varied paragraph lengths)
+- Add subtle imperfections that human writers typically have
 - Maintain the original tone and quality
 - Do NOT add any commentary, just output the rewritten text directly.`,
-    buildUserPrompt: (body: any) => `Rewrite the following AI-generated content to sound completely human-written:\n\n${body.content}`,
-    getInputPreview: (body: any) => body.content?.substring(0, 150) || "",
+    buildUserPrompt: (body: any) => {
+      const intensity = body.intensity || 'medium';
+      return `Humanization intensity: ${intensity.toUpperCase()}
+${intensityInstructions[intensity] || intensityInstructions.medium}
+
+Rewrite the following AI-generated content:\n\n${body.content}`;
+    },
+    getInputPreview: (body: any) => `[${body.intensity || 'medium'}] ${body.content?.substring(0, 120) || ""}`,
   },
   email: {
     system: `You are an expert email marketing copywriter. Generate professional, high-converting email content. Format your output clearly with labeled sections.`,
     buildUserPrompt: (body: any) => {
-      const { emailType, topic, tone, audience } = body;
+      const { emailType, topic, tone, audience, sequenceLength } = body;
+      const numEmails = sequenceLength || 1;
+      
+      if (numEmails > 1) {
+        return `Create a ${numEmails}-email ${emailType || 'promotional'} sequence about "${topic}".
+Tone: ${tone || 'professional'}
+Target audience: ${audience || 'general'}
+
+For each email in the sequence, generate under a ### EMAIL_1, ### EMAIL_2, etc. header:
+
+Each email should contain:
+- SUBJECT: A compelling subject line
+- PREVIEW: Preview text (under 90 chars)
+- BODY: The full email body with greeting, content, and CTA
+- TIMING: Suggested send timing relative to the previous email (e.g., "Send immediately", "Send 2 days after Email 1")
+
+Make each email in the sequence build on the previous one with a clear progression. The sequence should have a logical flow from awareness to action.`;
+      }
+      
       return `Create a ${emailType || 'promotional'} email about "${topic}".
 Tone: ${tone || 'professional'}
 Target audience: ${audience || 'general'}
@@ -39,10 +69,12 @@ The full email body with greeting, content, and CTA. Use line breaks for readabi
 ### AB_VARIANT
 An alternative version of the email body with a different approach/angle.`;
     },
-    getInputPreview: (body: any) => `${body.emailType || 'promotional'}: ${body.topic || ''}`,
+    getInputPreview: (body: any) => `${body.emailType || 'promotional'}: ${body.topic || ''} (${body.sequenceLength || 1} email${(body.sequenceLength || 1) > 1 ? 's' : ''})`,
   },
   social: {
-    system: `You are a social media content strategist who creates platform-optimized posts. Each post should be engaging, use appropriate formatting for the platform, and include relevant hashtags where appropriate.`,
+    system: `You are a social media content strategist who creates platform-optimized posts. Each post should be engaging, use appropriate formatting for the platform, and include relevant hashtags where appropriate.
+
+IMPORTANT: For each platform, after the content, add a line "CHARACTER_COUNT: X" where X is the approximate character count of the main post text (excluding hashtags).`,
     buildUserPrompt: (body: any) => {
       const { topic, platforms, tone } = body;
       const platformList = (platforms || ['twitter', 'linkedin', 'instagram', 'facebook']).join(', ');
@@ -53,15 +85,19 @@ For each platform, output under a ### PLATFORM_ID header:
 
 ### TWITTER
 A tweet or short thread (each tweet under 280 chars). Include hashtags.
+End with: CHARACTER_COUNT: [number]
 
 ### LINKEDIN
 A professional LinkedIn post with hook, body, and CTA. Use line breaks.
+End with: CHARACTER_COUNT: [number]
 
 ### INSTAGRAM
 An Instagram caption with emojis, hashtags, and CTA.
+End with: CHARACTER_COUNT: [number]
 
 ### FACEBOOK
 An engaging Facebook post with conversational tone and a question.
+End with: CHARACTER_COUNT: [number]
 
 Only include the platforms requested.`;
     },
@@ -83,6 +119,12 @@ Title: (SEO-optimized, under 60 chars)
 Meta Description: (under 160 chars)
 Focus Keyword: (primary keyword)
 
+### READABILITY
+Flesch Reading Ease: (score out of 100, higher = easier)
+Grade Level: (e.g., "Grade 8")
+Average Sentence Length: (in words)
+Keyword Density: (percentage for focus keyword)
+
 ### OUTLINE
 A bullet-point outline of the article sections
 
@@ -94,7 +136,35 @@ The full article with proper H2/H3 headings (use ## and ###), paragraphs, and a 
   amazon: {
     system: `You are an expert Amazon affiliate content writer. Create comprehensive, honest, and SEO-optimized product reviews that help readers make informed purchasing decisions. Include pros, cons, and a balanced assessment.`,
     buildUserPrompt: (body: any) => {
-      const { productName, category, features } = body;
+      const { productName, category, features, comparisonProducts } = body;
+      
+      if (comparisonProducts && comparisonProducts.length > 0) {
+        const allProducts = [productName, ...comparisonProducts].filter(Boolean);
+        return `Create a comparison table and analysis for these ${allProducts.length} products:
+${allProducts.map((p: string, i: number) => `${i + 1}. ${p}`).join('\n')}
+Category: ${category || 'General'}
+
+Structure your output as:
+
+### META
+Title: (SEO-optimized comparison title, under 60 chars)
+Meta Description: (under 160 chars)
+
+### COMPARISON_TABLE
+Create a markdown table comparing all products across these dimensions:
+| Feature | ${allProducts.join(' | ')} |
+Include rows for: Price Range, Best For, Key Feature, Rating (/5), Pros, Cons
+
+### INDIVIDUAL_REVIEWS
+For each product, write a brief 2-3 paragraph review with verdict.
+
+### WINNER
+Declare an overall winner with justification, and "best for budget" and "best premium" picks if applicable.
+
+### SUMMARY
+A 2-3 sentence overall summary.`;
+      }
+      
       return `Write a comprehensive Amazon affiliate product review for: "${productName}"
 Category: ${category || 'General'}
 Key features to highlight: ${features || 'Not specified'}
@@ -117,7 +187,12 @@ A complete product review with:
 ### SUMMARY
 A 2-3 sentence summary suitable for comparison tables.`;
     },
-    getInputPreview: (body: any) => `${body.productName || ''} (${body.category || 'General'})`,
+    getInputPreview: (body: any) => {
+      const products = body.comparisonProducts?.length
+        ? `${body.productName} vs ${body.comparisonProducts.join(', ')}`
+        : body.productName || '';
+      return `${products} (${body.category || 'General'})`;
+    },
   },
 };
 

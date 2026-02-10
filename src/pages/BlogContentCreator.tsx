@@ -7,8 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { PenTool, ArrowRight, CheckCircle, Users, Star, Zap, Copy, Search, TrendingUp } from "lucide-react";
-import { useState } from "react";
+import { PenTool, CheckCircle, Users, Star, Zap, Copy, Search, TrendingUp, Download, FileText } from "lucide-react";
+import { useState, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -44,6 +44,59 @@ export default function BlogContentCreator() {
     toast({ title: "Copied!", description: "Blog post copied to clipboard." });
   };
 
+  // Parse readability section
+  const readabilityStats = useMemo(() => {
+    if (!result) return null;
+    const readMatch = result.match(/###\s*READABILITY\s*\n([\s\S]*?)(?=###|$)/i);
+    if (!readMatch) return null;
+    const text = readMatch[1];
+    const flesch = text.match(/Flesch.*?:\s*(\d+)/i)?.[1];
+    const grade = text.match(/Grade.*?:\s*(.+)/i)?.[1]?.trim();
+    const avgSentence = text.match(/Average.*?:\s*(.+)/i)?.[1]?.trim();
+    const density = text.match(/Keyword.*?:\s*(.+)/i)?.[1]?.trim();
+    return { flesch, grade, avgSentence, density };
+  }, [result]);
+
+  // Get article section for export
+  const articleSection = useMemo(() => {
+    if (!result) return "";
+    const match = result.match(/###\s*ARTICLE\s*\n([\s\S]*?)$/i);
+    return match ? match[1].trim() : result;
+  }, [result]);
+
+  const handleExportMarkdown = () => {
+    const blob = new Blob([articleSection], { type: "text/markdown" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${topic.replace(/\s+/g, '-').toLowerCase() || 'blog-post'}.md`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast({ title: "Exported!", description: "Markdown file downloaded." });
+  };
+
+  const handleExportHTML = () => {
+    // Simple markdown to HTML conversion
+    let html = articleSection
+      .replace(/### (.*)/g, '<h3>$1</h3>')
+      .replace(/## (.*)/g, '<h2>$1</h2>')
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.*?)\*/g, '<em>$1</em>')
+      .replace(/\n\n/g, '</p><p>')
+      .replace(/\n/g, '<br>');
+    html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${topic}</title></head><body><p>${html}</p></body></html>`;
+    const blob = new Blob([html], { type: "text/html" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${topic.replace(/\s+/g, '-').toLowerCase() || 'blog-post'}.html`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast({ title: "Exported!", description: "HTML file downloaded." });
+  };
+
+  const resultWordCount = result.trim() ? result.trim().split(/\s+/).length : 0;
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
@@ -62,13 +115,13 @@ export default function BlogContentCreator() {
               Articles That Rank on Google
             </h1>
             <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-              Generate comprehensive, SEO-optimized blog posts with proper structure, 
-              meta tags, keyword optimization, and engaging content that ranks.
+              Generate comprehensive, SEO-optimized blog posts with readability scores,
+              meta tags, keyword optimization, and export to Markdown or HTML.
             </p>
             <div className="flex items-center justify-center space-x-6 text-sm text-muted-foreground">
               <div className="flex items-center"><Search className="h-4 w-4 text-indigo-600 mr-2" />SEO Optimized</div>
-              <div className="flex items-center"><Star className="h-4 w-4 text-yellow-500 mr-2" />Meta Tags</div>
-              <div className="flex items-center"><TrendingUp className="h-4 w-4 mr-2" />Structured Content</div>
+              <div className="flex items-center"><Star className="h-4 w-4 text-yellow-500 mr-2" />Readability Score</div>
+              <div className="flex items-center"><TrendingUp className="h-4 w-4 mr-2" />Export Options</div>
             </div>
           </div>
 
@@ -124,9 +177,49 @@ export default function BlogContentCreator() {
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-lg font-semibold flex items-center">
                       <Zap className="h-5 w-5 mr-2 text-indigo-500" />Generated Article
+                      {resultWordCount > 0 && (
+                        <span className="text-xs text-muted-foreground font-normal ml-2">({resultWordCount} words)</span>
+                      )}
                     </h3>
-                    {result && <Button variant="outline" size="sm" onClick={handleCopy}><Copy className="h-3 w-3 mr-1" /> Copy</Button>}
+                    <div className="flex gap-2">
+                      {result && (
+                        <>
+                          <Button variant="outline" size="sm" onClick={handleExportMarkdown} title="Export Markdown">
+                            <Download className="h-3 w-3 mr-1" /> .md
+                          </Button>
+                          <Button variant="outline" size="sm" onClick={handleExportHTML} title="Export HTML">
+                            <FileText className="h-3 w-3 mr-1" /> .html
+                          </Button>
+                          <Button variant="outline" size="sm" onClick={handleCopy}>
+                            <Copy className="h-3 w-3 mr-1" /> Copy
+                          </Button>
+                        </>
+                      )}
+                    </div>
                   </div>
+
+                  {/* Readability Score Card */}
+                  {readabilityStats && (
+                    <div className="grid grid-cols-4 gap-2 mb-4">
+                      <div className="bg-muted/50 rounded-lg p-2 text-center">
+                        <div className="text-lg font-bold text-primary">{readabilityStats.flesch || '—'}</div>
+                        <div className="text-[10px] text-muted-foreground">Flesch Score</div>
+                      </div>
+                      <div className="bg-muted/50 rounded-lg p-2 text-center">
+                        <div className="text-sm font-bold text-primary">{readabilityStats.grade || '—'}</div>
+                        <div className="text-[10px] text-muted-foreground">Grade Level</div>
+                      </div>
+                      <div className="bg-muted/50 rounded-lg p-2 text-center">
+                        <div className="text-sm font-bold text-primary">{readabilityStats.avgSentence || '—'}</div>
+                        <div className="text-[10px] text-muted-foreground">Avg Sentence</div>
+                      </div>
+                      <div className="bg-muted/50 rounded-lg p-2 text-center">
+                        <div className="text-sm font-bold text-primary">{readabilityStats.density || '—'}</div>
+                        <div className="text-[10px] text-muted-foreground">Keyword Density</div>
+                      </div>
+                    </div>
+                  )}
+
                   <div className="bg-muted/50 rounded-lg p-4 min-h-[400px] max-h-[600px] overflow-y-auto whitespace-pre-wrap text-sm">
                     {isGenerating ? (
                       <div className="animate-pulse text-muted-foreground">Writing your SEO-optimized blog post...</div>
@@ -166,7 +259,7 @@ export default function BlogContentCreator() {
                 <ul className="space-y-2 text-sm text-muted-foreground">
                   <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />Target keyword focus</li>
                   <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />Natural keyword placement</li>
-                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />Long-tail variations</li>
+                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />Keyword density tracking</li>
                   <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />Semantic keywords</li>
                 </ul>
               </CardContent>
@@ -176,32 +269,32 @@ export default function BlogContentCreator() {
                 <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center mb-4">
                   <PenTool className="h-6 w-6 text-white" />
                 </div>
-                <CardTitle>Content Generation</CardTitle>
-                <CardDescription>Full article creation with structure</CardDescription>
+                <CardTitle>Readability Analysis</CardTitle>
+                <CardDescription>Built-in content scoring</CardDescription>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />Structured outlines</li>
-                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />Engaging introductions</li>
-                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />Detailed sections</li>
-                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />Strong conclusions</li>
+                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />Flesch reading score</li>
+                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />Grade level assessment</li>
+                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />Sentence length analysis</li>
+                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />Content structure review</li>
                 </ul>
               </CardContent>
             </Card>
             <Card>
               <CardHeader>
                 <div className="w-12 h-12 bg-gradient-to-r from-amber-500 to-orange-500 rounded-lg flex items-center justify-center mb-4">
-                  <TrendingUp className="h-6 w-6 text-white" />
+                  <Download className="h-6 w-6 text-white" />
                 </div>
-                <CardTitle>SEO Optimization</CardTitle>
-                <CardDescription>Built-in SEO tools</CardDescription>
+                <CardTitle>Export Options</CardTitle>
+                <CardDescription>Multiple export formats</CardDescription>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />Meta descriptions</li>
-                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />Header optimization</li>
-                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />Internal linking suggestions</li>
-                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />Readability optimization</li>
+                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />Markdown export</li>
+                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />HTML export</li>
+                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />Copy to clipboard</li>
+                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />SEO meta included</li>
                 </ul>
               </CardContent>
             </Card>
