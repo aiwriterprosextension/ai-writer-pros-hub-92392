@@ -10,7 +10,7 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { content, formats } = await req.json();
+    const { content, formats, tone } = await req.json();
     
     if (!content || !formats || formats.length === 0) {
       return new Response(JSON.stringify({ error: "Content and formats are required" }), {
@@ -35,7 +35,8 @@ serve(async (req) => {
       .map((f: string) => `### ${f.toUpperCase()}\n${formatDescriptions[f] || `Content formatted for ${f}`}`)
       .join("\n\n");
 
-    const systemPrompt = `You are a professional content repurposing specialist. Transform the given content into the requested formats. Each format should be optimized for its platform while maintaining the original message and tone. Output each format clearly separated with the format name as a header using ### FORMAT_ID syntax.`;
+    const toneInstruction = tone ? `\nAdopt a ${tone} tone throughout all formats.` : '';
+    const systemPrompt = `You are a professional content repurposing specialist. Transform the given content into the requested formats. Each format should be optimized for its platform while maintaining the original message.${toneInstruction} Output each format clearly separated with the format name as a header using ### FORMAT_ID syntax.`;
 
     const userPrompt = `Repurpose the following content into these formats:\n\n${formatInstructions}\n\n---\nORIGINAL CONTENT:\n${content}`;
 
@@ -73,7 +74,6 @@ serve(async (req) => {
     const data = await response.json();
     const fullResponse = data.choices?.[0]?.message?.content || "";
 
-    // Parse response into format sections
     const results: Record<string, string> = {};
     for (const formatId of formats) {
       const regex = new RegExp(`###\\s*${formatId}\\s*\\n([\\s\\S]*?)(?=###|$)`, "i");
@@ -81,7 +81,6 @@ serve(async (req) => {
       results[formatId] = match ? match[1].trim() : "Content could not be generated for this format.";
     }
 
-    // Save generation record if user is authenticated
     try {
       const authHeader = req.headers.get("authorization");
       if (authHeader) {

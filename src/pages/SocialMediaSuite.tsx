@@ -9,15 +9,15 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { MessageSquare, CheckCircle, Users, Star, Zap, Copy, Instagram, Twitter, Linkedin, Facebook } from "lucide-react";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
 const platforms = [
-  { id: 'twitter', name: 'Twitter/X', icon: Twitter },
-  { id: 'linkedin', name: 'LinkedIn', icon: Linkedin },
-  { id: 'instagram', name: 'Instagram', icon: Instagram },
-  { id: 'facebook', name: 'Facebook', icon: Facebook },
+  { id: 'twitter', name: 'Twitter/X', icon: Twitter, charLimit: 280 },
+  { id: 'linkedin', name: 'LinkedIn', icon: Linkedin, charLimit: 3000 },
+  { id: 'instagram', name: 'Instagram', icon: Instagram, charLimit: 2200 },
+  { id: 'facebook', name: 'Facebook', icon: Facebook, charLimit: 63206 },
 ];
 
 export default function SocialMediaSuite() {
@@ -50,10 +50,25 @@ export default function SocialMediaSuite() {
     }
   };
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(result);
+  const handleCopy = (text?: string) => {
+    navigator.clipboard.writeText(text || result);
     toast({ title: "Copied!" });
   };
+
+  // Parse platform sections from result
+  const platformSections = useMemo(() => {
+    if (!result) return {};
+    const sections: Record<string, string> = {};
+    for (const p of platforms) {
+      const regex = new RegExp(`###\\s*${p.id}[\\s/]*(?:\\w*)\\s*\\n([\\s\\S]*?)(?=###|$)`, "i");
+      const match = result.match(regex);
+      if (match) {
+        // Remove CHARACTER_COUNT line for display
+        sections[p.id] = match[1].replace(/CHARACTER_COUNT:\s*\d+/gi, '').trim();
+      }
+    }
+    return sections;
+  }, [result]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -78,7 +93,7 @@ export default function SocialMediaSuite() {
             </p>
             <div className="flex items-center justify-center space-x-6 text-sm text-muted-foreground">
               <div className="flex items-center"><MessageSquare className="h-4 w-4 text-pink-600 mr-2" />4 Platforms</div>
-              <div className="flex items-center"><Star className="h-4 w-4 text-yellow-500 mr-2" />Platform-Optimized</div>
+              <div className="flex items-center"><Star className="h-4 w-4 text-yellow-500 mr-2" />Character Counts</div>
               <div className="flex items-center"><Users className="h-4 w-4 mr-2" />Hashtag Suggestions</div>
             </div>
           </div>
@@ -118,7 +133,10 @@ export default function SocialMediaSuite() {
                           }`}>
                           <Checkbox checked={selectedPlatforms.includes(p.id)} />
                           <p.icon className="h-4 w-4" />
-                          <span className="text-sm font-medium">{p.name}</span>
+                          <div>
+                            <span className="text-sm font-medium">{p.name}</span>
+                            <span className="text-xs text-muted-foreground ml-1">({p.charLimit.toLocaleString()})</span>
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -133,18 +151,51 @@ export default function SocialMediaSuite() {
                     <h3 className="text-lg font-semibold flex items-center">
                       <Zap className="h-5 w-5 mr-2 text-pink-500" />Generated Posts
                     </h3>
-                    {result && <Button variant="outline" size="sm" onClick={handleCopy}><Copy className="h-3 w-3 mr-1" /> Copy All</Button>}
+                    {result && <Button variant="outline" size="sm" onClick={() => handleCopy()}><Copy className="h-3 w-3 mr-1" /> Copy All</Button>}
                   </div>
-                  <div className="bg-muted/50 rounded-lg p-4 min-h-[400px] max-h-[600px] overflow-y-auto whitespace-pre-wrap text-sm">
-                    {isGenerating ? (
-                      <div className="animate-pulse text-muted-foreground">Creating platform-optimized posts...</div>
-                    ) : result ? result : (
-                      <div className="text-muted-foreground text-center py-12">
-                        <MessageSquare className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                        <p>Select platforms and enter a topic to generate posts</p>
-                      </div>
-                    )}
-                  </div>
+
+                  {Object.keys(platformSections).length > 0 ? (
+                    <div className="space-y-4 max-h-[600px] overflow-y-auto">
+                      {selectedPlatforms.map(pId => {
+                        const platform = platforms.find(p => p.id === pId);
+                        const content = platformSections[pId];
+                        if (!platform || !content) return null;
+                        const charCount = content.length;
+                        const isOverLimit = charCount > platform.charLimit;
+                        const PIcon = platform.icon;
+                        return (
+                          <Card key={pId} className="p-4">
+                            <div className="flex items-center justify-between mb-2">
+                              <div className="flex items-center gap-2">
+                                <PIcon className="h-4 w-4" />
+                                <span className="font-medium text-sm">{platform.name}</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <span className={`text-xs ${isOverLimit ? 'text-destructive font-medium' : 'text-muted-foreground'}`}>
+                                  {charCount.toLocaleString()} / {platform.charLimit.toLocaleString()}
+                                </span>
+                                <Button variant="outline" size="sm" onClick={() => handleCopy(content)}>
+                                  <Copy className="h-3 w-3" />
+                                </Button>
+                              </div>
+                            </div>
+                            <div className="text-sm bg-muted/50 p-3 rounded whitespace-pre-wrap">{content}</div>
+                          </Card>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="bg-muted/50 rounded-lg p-4 min-h-[400px] max-h-[600px] overflow-y-auto whitespace-pre-wrap text-sm">
+                      {isGenerating ? (
+                        <div className="animate-pulse text-muted-foreground">Creating platform-optimized posts...</div>
+                      ) : (
+                        <div className="text-muted-foreground text-center py-12">
+                          <MessageSquare className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                          <p>Select platforms and enter a topic to generate posts</p>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             </Card>
@@ -158,15 +209,15 @@ export default function SocialMediaSuite() {
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">Supported Social Platforms</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Create optimized content for every major social media platform.
+              Create optimized content for every major social media platform with character count tracking.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { icon: Instagram, name: 'Instagram', desc: 'Captions, hashtags, stories, reels', colors: 'from-pink-500 to-rose-500' },
-              { icon: Twitter, name: 'Twitter/X', desc: 'Tweets, threads, viral content', colors: 'from-blue-500 to-blue-600' },
-              { icon: Linkedin, name: 'LinkedIn', desc: 'Professional posts, articles', colors: 'from-blue-600 to-blue-700' },
-              { icon: Facebook, name: 'Facebook', desc: 'Posts, stories, community content', colors: 'from-blue-700 to-blue-800' },
+              { icon: Instagram, name: 'Instagram', desc: 'Captions, hashtags, stories (2,200 chars)', colors: 'from-pink-500 to-rose-500' },
+              { icon: Twitter, name: 'Twitter/X', desc: 'Tweets, threads (280 chars/tweet)', colors: 'from-blue-500 to-blue-600' },
+              { icon: Linkedin, name: 'LinkedIn', desc: 'Professional posts (3,000 chars)', colors: 'from-blue-600 to-blue-700' },
+              { icon: Facebook, name: 'Facebook', desc: 'Posts, stories (63,206 chars)', colors: 'from-blue-700 to-blue-800' },
             ].map(p => (
               <Card key={p.name} className="text-center">
                 <CardContent className="pt-6">

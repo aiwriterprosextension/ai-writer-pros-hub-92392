@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { FileText, ArrowRight, CheckCircle, Zap, Star, Users, Instagram, Twitter, Linkedin, Facebook, Copy } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -24,6 +26,7 @@ export default function ContentRepurposing() {
   const [selectedFormats, setSelectedFormats] = useState<string[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [results, setResults] = useState<Record<string, string>>({});
+  const [tone, setTone] = useState("original");
   const { toast } = useToast();
 
   const handleFormatToggle = (formatId: string) => {
@@ -39,7 +42,7 @@ export default function ContentRepurposing() {
     setResults({});
     try {
       const { data, error } = await supabase.functions.invoke('repurpose-content', {
-        body: { content: inputContent, formats: selectedFormats },
+        body: { content: inputContent, formats: selectedFormats, tone: tone === "original" ? undefined : tone },
       });
 
       if (error) throw error;
@@ -58,6 +61,8 @@ export default function ContentRepurposing() {
     navigator.clipboard.writeText(text);
     toast({ title: "Copied!", description: `${formatName} copied to clipboard.` });
   };
+
+  const inputWordCount = inputContent.trim() ? inputContent.trim().split(/\s+/).length : 0;
 
   return (
     <div className="min-h-screen bg-background">
@@ -81,7 +86,7 @@ export default function ContentRepurposing() {
 
             <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
               Transform one piece of content into multiple formats optimized for different platforms.
-              Turn blog posts into social media content, newsletters, and more in seconds.
+              Choose your tone and turn blog posts into social media content, newsletters, and more.
             </p>
 
             <div className="flex items-center justify-center space-x-6 text-sm text-muted-foreground mb-8">
@@ -91,7 +96,7 @@ export default function ContentRepurposing() {
               </div>
               <div className="flex items-center">
                 <Star className="h-4 w-4 text-yellow-500 mr-2" />
-                Platform Optimized
+                Tone Control
               </div>
               <div className="flex items-center">
                 <Users className="h-4 w-4 mr-2" />
@@ -106,18 +111,39 @@ export default function ContentRepurposing() {
               <div className="grid lg:grid-cols-2 gap-8">
                 {/* Input Section */}
                 <div>
-                  <h3 className="text-lg font-semibold mb-4 flex items-center">
-                    <FileText className="h-5 w-5 mr-2 text-blue-500" />
-                    Original Content
+                  <h3 className="text-lg font-semibold mb-4 flex items-center justify-between">
+                    <span className="flex items-center">
+                      <FileText className="h-5 w-5 mr-2 text-blue-500" />
+                      Original Content
+                    </span>
+                    {inputWordCount > 0 && (
+                      <span className="text-xs text-muted-foreground font-normal">{inputWordCount} words</span>
+                    )}
                   </h3>
                   <Textarea
                     placeholder="Paste your blog post, article, or any content you want to repurpose..."
                     value={inputContent}
                     onChange={(e) => setInputContent(e.target.value)}
-                    className="min-h-[300px] resize-none"
+                    className="min-h-[250px] resize-none"
                   />
 
-                  <div className="mt-6">
+                  {/* Tone Selector */}
+                  <div className="mt-4 space-y-2">
+                    <Label>Output Tone</Label>
+                    <Select value={tone} onValueChange={setTone}>
+                      <SelectTrigger><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="original">Keep Original Tone</SelectItem>
+                        <SelectItem value="professional">Professional</SelectItem>
+                        <SelectItem value="casual">Casual & Friendly</SelectItem>
+                        <SelectItem value="humorous">Humorous</SelectItem>
+                        <SelectItem value="authoritative">Authoritative</SelectItem>
+                        <SelectItem value="inspirational">Inspirational</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="mt-4">
                     <h4 className="font-medium mb-3">Select Output Formats:</h4>
                     <div className="grid grid-cols-2 gap-3">
                       {contentFormats.map((format) => (
@@ -370,27 +396,18 @@ export default function ContentRepurposing() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
             <Button size="lg" className="text-lg px-8">
               <FileText className="mr-2 h-5 w-5" />
-              Try Content Repurposing Free
+              Try Content Repurposing
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
             <Button size="lg" variant="outline" className="text-lg px-8">
-              View Examples
+              View Pricing
             </Button>
           </div>
 
           <div className="flex items-center justify-center space-x-6 text-sm text-muted-foreground">
-            <div className="flex items-center">
-              <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-              Free trial included
-            </div>
-            <div className="flex items-center">
-              <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-              10+ output formats
-            </div>
-            <div className="flex items-center">
-              <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-              Instant results
-            </div>
+            <div className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />Free trial included</div>
+            <div className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />No setup required</div>
+            <div className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-2" />Instant results</div>
           </div>
         </div>
       </section>
