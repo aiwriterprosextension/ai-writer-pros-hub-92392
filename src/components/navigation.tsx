@@ -58,14 +58,20 @@ export function Navigation() {
                     📝 Content Repurposing
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem disabled>
-                  📧 Email Generator (Coming Soon)
+                <DropdownMenuItem asChild>
+                  <Link to="/email-generator" className="flex items-center">
+                    📧 Email Generator
+                  </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem disabled>
-                  📱 Social Media Suite (Coming Soon)
+                <DropdownMenuItem asChild>
+                  <Link to="/social-media-suite" className="flex items-center">
+                    📱 Social Media Suite
+                  </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem disabled>
-                  📚 Blog Content Creator (Coming Soon)
+                <DropdownMenuItem asChild>
+                  <Link to="/blog-content-creator" className="flex items-center">
+                    📚 Blog Content Creator
+                  </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
