@@ -1,1 +1,4 @@
 project_id = "xnngzfkxntlhztyluuki"
+
+[functions.repurpose-content]
+verify_jwt = false
