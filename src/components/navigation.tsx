@@ -1,9 +1,10 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, LogOut } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,6 +14,13 @@ import {
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
+  };
 
   return (
     <nav className="fixed top-0 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border z-50">
@@ -77,12 +85,26 @@ export function Navigation() {
             
             <div className="flex items-center space-x-4">
               <ThemeToggle />
-              <Button variant="ghost" size="sm">
-                Sign In
-              </Button>
-              <Button size="sm">
-                Start Free Trial
-              </Button>
+              {user ? (
+                <>
+                  <Button variant="ghost" size="sm" asChild>
+                    <Link to="/dashboard">Dashboard</Link>
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={handleSignOut}>
+                    <LogOut className="h-4 w-4 mr-1" />
+                    Sign Out
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button variant="ghost" size="sm" asChild>
+                    <Link to="/auth">Sign In</Link>
+                  </Button>
+                  <Button size="sm" asChild>
+                    <Link to="/auth">Start Free Trial</Link>
+                  </Button>
+                </>
+              )}
             </div>
           </div>
 
@@ -103,62 +125,47 @@ export function Navigation() {
         {isOpen && (
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t border-border">
-              <Link
-                to="/amazon-affiliate-extension"
-                className="block px-3 py-2 text-base font-medium hover:text-primary transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
+              <Link to="/amazon-affiliate-extension" className="block px-3 py-2 text-base font-medium hover:text-primary transition-colors" onClick={() => setIsOpen(false)}>
                 🏆 Amazon Affiliate Assistant
               </Link>
-              <Link
-                to="/ai-humanizer"
-                className="block px-3 py-2 text-base font-medium hover:text-primary transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
+              <Link to="/ai-humanizer" className="block px-3 py-2 text-base font-medium hover:text-primary transition-colors" onClick={() => setIsOpen(false)}>
                 🤖 AI Humanizer
               </Link>
-              <Link
-                to="/content-repurposing"
-                className="block px-3 py-2 text-base font-medium hover:text-primary transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
+              <Link to="/content-repurposing" className="block px-3 py-2 text-base font-medium hover:text-primary transition-colors" onClick={() => setIsOpen(false)}>
                 📝 Content Repurposing
               </Link>
-              <Link
-                to="/features"
-                className="block px-3 py-2 text-base font-medium hover:text-primary transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
+              <Link to="/features" className="block px-3 py-2 text-base font-medium hover:text-primary transition-colors" onClick={() => setIsOpen(false)}>
                 Features
               </Link>
-              <Link
-                to="/pricing"
-                className="block px-3 py-2 text-base font-medium hover:text-primary transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
+              <Link to="/pricing" className="block px-3 py-2 text-base font-medium hover:text-primary transition-colors" onClick={() => setIsOpen(false)}>
                 Pricing
               </Link>
-              <Link
-                to="/blog"
-                className="block px-3 py-2 text-base font-medium hover:text-primary transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
+              <Link to="/blog" className="block px-3 py-2 text-base font-medium hover:text-primary transition-colors" onClick={() => setIsOpen(false)}>
                 Blog
               </Link>
-              <Link
-                to="/support"
-                className="block px-3 py-2 text-base font-medium hover:text-primary transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
+              <Link to="/support" className="block px-3 py-2 text-base font-medium hover:text-primary transition-colors" onClick={() => setIsOpen(false)}>
                 Support
               </Link>
               <div className="flex flex-col space-y-2 px-3 py-2">
-                <Button variant="ghost" size="sm" className="justify-start">
-                  Sign In
-                </Button>
-                <Button size="sm" className="justify-start">
-                  Start Free Trial
-                </Button>
+                {user ? (
+                  <>
+                    <Button variant="ghost" size="sm" className="justify-start" asChild>
+                      <Link to="/dashboard" onClick={() => setIsOpen(false)}>Dashboard</Link>
+                    </Button>
+                    <Button variant="outline" size="sm" className="justify-start" onClick={() => { handleSignOut(); setIsOpen(false); }}>
+                      <LogOut className="h-4 w-4 mr-1" /> Sign Out
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button variant="ghost" size="sm" className="justify-start" asChild>
+                      <Link to="/auth" onClick={() => setIsOpen(false)}>Sign In</Link>
+                    </Button>
+                    <Button size="sm" className="justify-start" asChild>
+                      <Link to="/auth" onClick={() => setIsOpen(false)}>Start Free Trial</Link>
+                    </Button>
+                  </>
+                )}
               </div>
             </div>
           </div>
