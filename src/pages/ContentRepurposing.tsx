@@ -6,11 +6,9 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { FileText, ArrowRight, CheckCircle, Zap, Star, Users, Instagram, Twitter, Linkedin, Facebook, Copy, Layers, Target, TrendingUp, Briefcase, ShoppingCart, PenTool, RefreshCw } from "lucide-react";
-import { useState, useRef } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { FileText, ArrowRight, Zap, Star, Users, Instagram, Twitter, Linkedin, Facebook, Layers, Target, TrendingUp, Briefcase, ShoppingCart, PenTool, RefreshCw, Copy } from "lucide-react";
+import { useRef } from "react";
 import { SEOHead } from "@/components/landing/SEOHead";
 import { TrustBar } from "@/components/landing/TrustBar";
 import { ProblemSolution } from "@/components/landing/ProblemSolution";
@@ -21,55 +19,11 @@ import { ComparisonTable } from "@/components/landing/ComparisonTable";
 import { FAQSection } from "@/components/landing/FAQSection";
 import { FinalCTA } from "@/components/landing/FinalCTA";
 import { FeaturesGrid } from "@/components/landing/FeaturesGrid";
-
-const contentFormats = [
-  { id: 'twitter', name: 'Twitter Thread', icon: Twitter, description: '5-10 tweet thread' },
-  { id: 'linkedin', name: 'LinkedIn Post', icon: Linkedin, description: 'Professional format' },
-  { id: 'instagram', name: 'Instagram Captions', icon: Instagram, description: 'Multiple captions' },
-  { id: 'facebook', name: 'Facebook Post', icon: Facebook, description: 'Engaging format' },
-  { id: 'email', name: 'Email Newsletter', icon: FileText, description: 'Newsletter section' },
-  { id: 'bullets', name: 'Bullet Points', icon: FileText, description: 'Key takeaways' },
-];
+import { MockToolPreview } from "@/components/landing/MockToolPreview";
 
 export default function ContentRepurposing() {
-  const [inputContent, setInputContent] = useState("");
-  const [selectedFormats, setSelectedFormats] = useState<string[]>([]);
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [results, setResults] = useState<Record<string, string>>({});
-  const [tone, setTone] = useState("original");
-  const { toast } = useToast();
   const toolRef = useRef<HTMLDivElement>(null);
-
   const scrollToTool = () => toolRef.current?.scrollIntoView({ behavior: "smooth" });
-
-  const handleFormatToggle = (formatId: string) => {
-    setSelectedFormats(prev => prev.includes(formatId) ? prev.filter(f => f !== formatId) : [...prev, formatId]);
-  };
-
-  const handleGenerate = async () => {
-    setIsGenerating(true);
-    setResults({});
-    try {
-      const { data, error } = await supabase.functions.invoke('repurpose-content', {
-        body: { content: inputContent, formats: selectedFormats, tone: tone === "original" ? undefined : tone },
-      });
-      if (error) throw error;
-      if (data?.error) throw new Error(data.error);
-      setResults(data.results || {});
-      toast({ title: "Content repurposed!", description: `Generated ${selectedFormats.length} formats.` });
-    } catch (e: any) {
-      toast({ title: "Error", description: e.message || "Failed to generate content", variant: "destructive" });
-    } finally {
-      setIsGenerating(false);
-    }
-  };
-
-  const handleCopy = (text: string, formatName: string) => {
-    navigator.clipboard.writeText(text);
-    toast({ title: "Copied!", description: `${formatName} copied to clipboard.` });
-  };
-
-  const inputWordCount = inputContent.trim() ? inputContent.trim().split(/\s+/).length : 0;
 
   return (
     <div className="min-h-screen bg-background">
@@ -107,82 +61,27 @@ export default function ContentRepurposing() {
             </div>
           </div>
 
-          {/* Tool */}
+          {/* Mock Tool */}
           <div className="max-w-6xl mx-auto" ref={toolRef}>
-            <Card className="p-6">
+            <MockToolPreview toolName="Content Repurposing" dashboardPath="/dashboard/content-repurposing" gradient="from-green-500 to-teal-500">
               <div className="grid lg:grid-cols-2 gap-8">
                 <div>
-                  <h3 className="text-lg font-semibold mb-4 flex items-center justify-between">
-                    <span className="flex items-center"><FileText className="h-5 w-5 mr-2 text-blue-500" />Original Content</span>
-                    {inputWordCount > 0 && <span className="text-xs text-muted-foreground font-normal">{inputWordCount} words</span>}
-                  </h3>
-                  <Textarea placeholder="Paste your blog post, article, or any content..." value={inputContent} onChange={(e) => setInputContent(e.target.value)} className="min-h-[250px] resize-none" />
+                  <h3 className="text-lg font-semibold mb-4 flex items-center"><FileText className="h-5 w-5 mr-2 text-blue-500" />Original Content</h3>
+                  <Textarea placeholder="Paste your blog post, article, or any content..." className="min-h-[200px] resize-none" disabled />
                   <div className="mt-4 space-y-2">
                     <Label>Output Tone</Label>
-                    <Select value={tone} onValueChange={setTone}>
-                      <SelectTrigger><SelectValue /></SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="original">Keep Original Tone</SelectItem>
-                        <SelectItem value="professional">Professional</SelectItem>
-                        <SelectItem value="casual">Casual & Friendly</SelectItem>
-                        <SelectItem value="humorous">Humorous</SelectItem>
-                        <SelectItem value="authoritative">Authoritative</SelectItem>
-                        <SelectItem value="inspirational">Inspirational</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <Select disabled><SelectTrigger><SelectValue placeholder="Keep Original Tone" /></SelectTrigger></Select>
                   </div>
-                  <div className="mt-4">
-                    <h4 className="font-medium mb-3">Select Output Formats:</h4>
-                    <div className="grid grid-cols-2 gap-3">
-                      {contentFormats.map((format) => (
-                        <div key={format.id} onClick={() => handleFormatToggle(format.id)}
-                          className={`p-3 border rounded-lg cursor-pointer transition-all ${
-                            selectedFormats.includes(format.id) ? 'border-green-500 bg-green-50 dark:bg-green-950/20' : 'border-border hover:border-green-300'
-                          }`}>
-                          <div className="flex items-center mb-1">
-                            <format.icon className="h-4 w-4 mr-2" />
-                            <span className="text-sm font-medium">{format.name}</span>
-                          </div>
-                          <p className="text-xs text-muted-foreground">{format.description}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  <Button onClick={handleGenerate} disabled={!inputContent || selectedFormats.length === 0 || isGenerating} className="w-full mt-6" size="lg">
-                    {isGenerating ? <><Zap className="mr-2 h-4 w-4 animate-spin" />Generating...</> : <><FileText className="mr-2 h-4 w-4" />Repurpose Content ({selectedFormats.length} formats)</>}
-                  </Button>
+                  <Button disabled className="w-full mt-6" size="lg"><FileText className="mr-2 h-4 w-4" />Repurpose Content</Button>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold mb-4 flex items-center"><Zap className="h-5 w-5 mr-2 text-green-500" />Repurposed Content</h3>
-                  <div className="space-y-4 max-h-[600px] overflow-y-auto">
-                    {selectedFormats.length === 0 ? (
-                      <div className="text-center py-12 text-muted-foreground">
-                        <FileText className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                        <p>Select formats to see your repurposed content here</p>
-                      </div>
-                    ) : (
-                      selectedFormats.map((formatId) => {
-                        const format = contentFormats.find(f => f.id === formatId);
-                        if (!format) return null;
-                        const FormatIcon = format.icon;
-                        const content = results[formatId];
-                        return (
-                          <Card key={formatId} className="p-4">
-                            <div className="flex items-center justify-between mb-2">
-                              <div className="flex items-center"><FormatIcon className="h-4 w-4 mr-2" /><span className="font-medium">{format.name}</span></div>
-                              {content && <Button variant="outline" size="sm" onClick={() => handleCopy(content, format.name)}><Copy className="h-3 w-3 mr-1" /> Copy</Button>}
-                            </div>
-                            <div className="text-sm text-muted-foreground bg-muted/50 p-3 rounded whitespace-pre-wrap">
-                              {isGenerating ? <div className="animate-pulse">Generating {format.name.toLowerCase()}...</div> : content ? content : (inputContent ? 'Click "Repurpose Content" to generate' : 'Add content to generate')}
-                            </div>
-                          </Card>
-                        );
-                      })
-                    )}
+                  <h3 className="text-lg font-semibold mb-4">Repurposed Content</h3>
+                  <div className="bg-muted/50 rounded-lg p-4 min-h-[250px] flex items-center justify-center text-muted-foreground">
+                    <FileText className="h-12 w-12 opacity-50" />
                   </div>
                 </div>
               </div>
-            </Card>
+            </MockToolPreview>
           </div>
         </div>
       </section>
@@ -281,51 +180,44 @@ export default function ContentRepurposing() {
           { name: "Kate Williams", title: "Content Marketing Lead", rating: 5, quote: "We went from publishing on 2 platforms to 5, with less effort than before. Incredible ROI.", metric: "5 platforms, less effort" },
           { name: "Ryan Brooks", title: "Podcaster", rating: 5, quote: "I paste my episode transcript and get a full week of social content. Life-changing.", metric: "1 episode = 1 week of content" },
           { name: "Diana Cruz", title: "Agency Content Director", rating: 5, quote: "Managing 8 client accounts with content repurposing saves us 30+ hours weekly.", metric: "30+ hours saved weekly" },
-          { name: "Sam Peterson", title: "Solopreneur", rating: 5, quote: "The tone selector is everything. Professional for LinkedIn, casual for Instagram — perfect.", metric: "Consistent brand across platforms" },
-          { name: "Amy Liu", title: "Newsletter Creator", rating: 4, quote: "Each newsletter edition now becomes 10+ social posts. My audience reach tripled.", metric: "3x audience reach" },
-          { name: "Mark Johnson", title: "Startup CMO", rating: 5, quote: "We replaced 2 content contractors with this tool. Better quality, faster delivery.", metric: "$4,000/month saved" },
+          { name: "James Foster", title: "Startup CMO", rating: 5, quote: "We maintain presence on 5 platforms with a 2-person marketing team. This tool is the secret.", metric: "5 platforms, 2 people" },
+          { name: "Priya Sharma", title: "Newsletter Writer", rating: 4, quote: "Each newsletter now generates 10+ social posts automatically. My reach has tripled.", metric: "3x reach increase" },
+          { name: "Mike O'Brien", title: "YouTuber", rating: 5, quote: "Video transcripts turn into perfect blog posts and social content. Saves me 10 hours weekly.", metric: "10 hours saved weekly" },
         ]}
       />
 
       <ComparisonTable
-        title="Why Choose AI Writer Pros for Repurposing?"
+        title="Why Choose AI Writer Pros for Content Repurposing?"
         ourName="AI Writer Pros"
         competitor1Name="Repurpose.io"
-        competitor2Name="Manual"
+        competitor2Name="ChatGPT"
         rows={[
-          { feature: "6 output formats", us: true, competitor1: true, competitor2: true },
-          { feature: "Tone customization", us: true, competitor1: false, competitor2: true },
-          { feature: "Text-based repurposing", us: true, competitor1: false, competitor2: true },
-          { feature: "Per-format copy buttons", us: true, competitor1: false, competitor2: true },
-          { feature: "Word count tracking", us: true, competitor1: false, competitor2: false },
+          { feature: "6 output formats", us: true, competitor1: true, competitor2: false },
+          { feature: "Tone customization", us: true, competitor1: false, competitor2: false },
+          { feature: "Platform-specific optimization", us: true, competitor1: true, competitor2: false },
+          { feature: "Word count display", us: true, competitor1: false, competitor2: false },
+          { feature: "Instant generation", us: true, competitor1: true, competitor2: true },
           { feature: "Free tier", us: true, competitor1: false, competitor2: true },
-          { feature: "Speed per piece", us: "< 30 sec", competitor1: "1-5 min", competitor2: "2-4 hours" },
         ]}
       />
 
       <FAQSection
         toolName="the Content Repurposing Tool"
         faqs={[
-          { question: "How does content repurposing work?", answer: "Paste any content (blog post, article, transcript) and select the output formats you want. Our AI transforms your content into platform-optimized versions — Twitter threads, LinkedIn posts, Instagram captions, newsletters, and more." },
-          { question: "What output formats are available?", answer: "We currently support 6 formats: Twitter Threads, LinkedIn Posts, Instagram Captions, Facebook Posts, Email Newsletters, and Bullet Point Summaries." },
-          { question: "Can I control the output tone?", answer: "Yes! Choose from Keep Original, Professional, Casual & Friendly, Humorous, Authoritative, or Inspirational to match your brand voice across all platforms." },
-          { question: "How long should my input content be?", answer: "Any length works! Longer content (500+ words) produces richer output. Blog posts, articles, and transcripts all work great." },
-          { question: "Is the output unique for each format?", answer: "Yes! Each format is specifically adapted for the target platform — Twitter threads are concise with hooks, LinkedIn posts are professional with stories, and Instagram captions include hashtags." },
-          { question: "Can I repurpose the same content multiple times?", answer: "Absolutely! Each generation creates unique output, so you can repurpose the same content multiple times for different angles." },
-          { question: "Does it work with video transcripts?", answer: "Yes! Paste any text including video or podcast transcripts. The AI extracts key ideas and adapts them for each platform." },
-          { question: "How many formats can I select at once?", answer: "You can select all 6 formats simultaneously. The AI generates content for each selected format in a single click." },
-          { question: "Is there a word limit on input?", answer: "No strict limit. For optimal results, we recommend input between 300-5,000 words." },
-          { question: "Is it free?", answer: "Yes, our free tier includes daily repurposing sessions. Paid plans offer unlimited access." },
+          { question: "What content can I repurpose?", answer: "Any text content — blog posts, articles, video transcripts, podcast notes, newsletters, guides, or any written content." },
+          { question: "What output formats are available?", answer: "Twitter threads, LinkedIn posts, Instagram captions, Facebook posts, email newsletters, and bullet point summaries." },
+          { question: "Can I control the output tone?", answer: "Yes! Choose from Original, Professional, Casual, Humorous, Authoritative, or Inspirational tones." },
+          { question: "How long should my input content be?", answer: "Any length works, but 300+ words provide enough material for the AI to generate high-quality repurposed content." },
+          { question: "Is there a free tier?", answer: "Yes, you can repurpose content for free. Premium plans unlock advanced tone options and additional features." },
         ]}
       />
 
       <FinalCTA
-        headline="Get 10x More Value From Every Piece of Content"
-        subheadline="Join 5,000+ content creators who repurpose once and publish everywhere."
-        ctaText="Repurpose My Content Free"
-        onCtaClick={scrollToTool}
-        secondaryCtaText="View Pricing"
-        benefits={["6 output formats", "Tone customization", "Free to try", "Instant results"]}
+        headline="Turn Every Piece of Content Into 10+"
+        subheadline="Join 5,000+ content creators maximizing their output with AI-powered repurposing."
+        ctaText="Start Repurposing Free"
+        ctaLink="/auth"
+        benefits={["6 output formats", "Tone control", "No credit card required", "Instant results"]}
       />
 
       <Footer />

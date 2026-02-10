@@ -2,15 +2,12 @@
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { PenTool, CheckCircle, Users, Star, Zap, Copy, Search, TrendingUp, Download, FileText, BarChart3, Target, Briefcase, BookOpen, GraduationCap, Settings } from "lucide-react";
-import { useState, useMemo, useRef } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { PenTool, Users, Star, Zap, Search, TrendingUp, Download, FileText, BarChart3, Target, Briefcase, BookOpen, GraduationCap } from "lucide-react";
+import { useRef } from "react";
 import { SEOHead } from "@/components/landing/SEOHead";
 import { TrustBar } from "@/components/landing/TrustBar";
 import { ProblemSolution } from "@/components/landing/ProblemSolution";
@@ -21,92 +18,11 @@ import { ComparisonTable } from "@/components/landing/ComparisonTable";
 import { FAQSection } from "@/components/landing/FAQSection";
 import { FinalCTA } from "@/components/landing/FinalCTA";
 import { FeaturesGrid } from "@/components/landing/FeaturesGrid";
+import { MockToolPreview } from "@/components/landing/MockToolPreview";
 
 export default function BlogContentCreator() {
-  const [topic, setTopic] = useState("");
-  const [keywords, setKeywords] = useState("");
-  const [wordCount, setWordCount] = useState("1500");
-  const [tone, setTone] = useState("informative");
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [result, setResult] = useState("");
-  const { toast } = useToast();
   const toolRef = useRef<HTMLDivElement>(null);
-
   const scrollToTool = () => toolRef.current?.scrollIntoView({ behavior: "smooth" });
-
-  const handleGenerate = async () => {
-    setIsGenerating(true);
-    setResult("");
-    try {
-      const { data, error } = await supabase.functions.invoke('ai-tools', {
-        body: { tool: 'blog', topic, keywords, wordCount: parseInt(wordCount), tone },
-      });
-      if (error) throw error;
-      if (data?.error) throw new Error(data.error);
-      setResult(data.result || "");
-      toast({ title: "Blog post generated!", description: "Your SEO-optimized article is ready." });
-    } catch (e: any) {
-      toast({ title: "Error", description: e.message || "Failed to generate blog post", variant: "destructive" });
-    } finally {
-      setIsGenerating(false);
-    }
-  };
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(result);
-    toast({ title: "Copied!" });
-  };
-
-  const readabilityStats = useMemo(() => {
-    if (!result) return null;
-    const readMatch = result.match(/###\s*READABILITY\s*\n([\s\S]*?)(?=###|$)/i);
-    if (!readMatch) return null;
-    const text = readMatch[1];
-    return {
-      flesch: text.match(/Flesch.*?:\s*(\d+)/i)?.[1],
-      grade: text.match(/Grade.*?:\s*(.+)/i)?.[1]?.trim(),
-      avgSentence: text.match(/Average.*?:\s*(.+)/i)?.[1]?.trim(),
-      density: text.match(/Keyword.*?:\s*(.+)/i)?.[1]?.trim(),
-    };
-  }, [result]);
-
-  const articleSection = useMemo(() => {
-    if (!result) return "";
-    const match = result.match(/###\s*ARTICLE\s*\n([\s\S]*?)$/i);
-    return match ? match[1].trim() : result;
-  }, [result]);
-
-  const handleExportMarkdown = () => {
-    const blob = new Blob([articleSection], { type: "text/markdown" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${topic.replace(/\s+/g, '-').toLowerCase() || 'blog-post'}.md`;
-    a.click();
-    URL.revokeObjectURL(url);
-    toast({ title: "Exported!", description: "Markdown file downloaded." });
-  };
-
-  const handleExportHTML = () => {
-    let html = articleSection
-      .replace(/### (.*)/g, '<h3>$1</h3>')
-      .replace(/## (.*)/g, '<h2>$1</h2>')
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*(.*?)\*/g, '<em>$1</em>')
-      .replace(/\n\n/g, '</p><p>')
-      .replace(/\n/g, '<br>');
-    html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${topic}</title></head><body><p>${html}</p></body></html>`;
-    const blob = new Blob([html], { type: "text/html" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${topic.replace(/\s+/g, '-').toLowerCase() || 'blog-post'}.html`;
-    a.click();
-    URL.revokeObjectURL(url);
-    toast({ title: "Exported!", description: "HTML file downloaded." });
-  };
-
-  const resultWordCount = result.trim() ? result.trim().split(/\s+/).length : 0;
 
   return (
     <div className="min-h-screen bg-background">
@@ -144,95 +60,40 @@ export default function BlogContentCreator() {
             </div>
           </div>
 
-          {/* Tool */}
+          {/* Mock Tool */}
           <div className="max-w-6xl mx-auto" ref={toolRef}>
-            <Card className="p-6">
+            <MockToolPreview toolName="Blog Content Creator" dashboardPath="/dashboard/blog-creator" gradient="from-indigo-500 to-purple-500">
               <div className="grid lg:grid-cols-2 gap-8">
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold flex items-center"><PenTool className="h-5 w-5 mr-2 text-indigo-500" />Article Settings</h3>
                   <div className="space-y-2">
                     <Label>Blog Post Topic</Label>
-                    <Input placeholder="e.g. Best practices for remote team management..." value={topic} onChange={(e) => setTopic(e.target.value)} />
+                    <Input placeholder="e.g. Best practices for remote team management..." disabled />
                   </div>
                   <div className="space-y-2">
-                    <Label>Target Keywords (comma-separated)</Label>
-                    <Input placeholder="e.g. remote work, team management, productivity..." value={keywords} onChange={(e) => setKeywords(e.target.value)} />
+                    <Label>Target Keywords</Label>
+                    <Input placeholder="e.g. remote work, productivity..." disabled />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label>Word Count</Label>
-                      <Select value={wordCount} onValueChange={setWordCount}>
-                        <SelectTrigger><SelectValue /></SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="800">~800 words</SelectItem>
-                          <SelectItem value="1500">~1,500 words</SelectItem>
-                          <SelectItem value="2500">~2,500 words</SelectItem>
-                          <SelectItem value="4000">~4,000 words</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <Select disabled><SelectTrigger><SelectValue placeholder="~1,500 words" /></SelectTrigger></Select>
                     </div>
                     <div className="space-y-2">
                       <Label>Tone</Label>
-                      <Select value={tone} onValueChange={setTone}>
-                        <SelectTrigger><SelectValue /></SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="informative">Informative</SelectItem>
-                          <SelectItem value="conversational">Conversational</SelectItem>
-                          <SelectItem value="authoritative">Authoritative</SelectItem>
-                          <SelectItem value="beginner-friendly">Beginner-Friendly</SelectItem>
-                          <SelectItem value="technical">Technical</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <Select disabled><SelectTrigger><SelectValue placeholder="Informative" /></SelectTrigger></Select>
                     </div>
                   </div>
-                  <Button onClick={handleGenerate} disabled={!topic || isGenerating} className="w-full" size="lg">
-                    {isGenerating ? <><Zap className="mr-2 h-4 w-4 animate-spin" />Generating Article...</> : <><PenTool className="mr-2 h-4 w-4" />Generate Blog Post</>}
-                  </Button>
+                  <Button disabled className="w-full" size="lg"><PenTool className="mr-2 h-4 w-4" />Generate Blog Post</Button>
                 </div>
                 <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold flex items-center">
-                      <Zap className="h-5 w-5 mr-2 text-indigo-500" />Generated Article
-                      {resultWordCount > 0 && <span className="text-xs text-muted-foreground font-normal ml-2">({resultWordCount} words)</span>}
-                    </h3>
-                    <div className="flex gap-2">
-                      {result && (
-                        <>
-                          <Button variant="outline" size="sm" onClick={handleExportMarkdown} title="Export Markdown"><Download className="h-3 w-3 mr-1" /> .md</Button>
-                          <Button variant="outline" size="sm" onClick={handleExportHTML} title="Export HTML"><FileText className="h-3 w-3 mr-1" /> .html</Button>
-                          <Button variant="outline" size="sm" onClick={handleCopy}><Copy className="h-3 w-3 mr-1" /> Copy</Button>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                  {readabilityStats && (
-                    <div className="grid grid-cols-4 gap-2 mb-4">
-                      {[
-                        { val: readabilityStats.flesch || '—', label: "Flesch Score" },
-                        { val: readabilityStats.grade || '—', label: "Grade Level" },
-                        { val: readabilityStats.avgSentence || '—', label: "Avg Sentence" },
-                        { val: readabilityStats.density || '—', label: "Keyword Density" },
-                      ].map((s, i) => (
-                        <div key={i} className="bg-muted/50 rounded-lg p-2 text-center">
-                          <div className="text-sm font-bold text-primary">{s.val}</div>
-                          <div className="text-[10px] text-muted-foreground">{s.label}</div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                  <div className="bg-muted/50 rounded-lg p-4 min-h-[400px] max-h-[600px] overflow-y-auto whitespace-pre-wrap text-sm">
-                    {isGenerating ? (
-                      <div className="animate-pulse text-muted-foreground">Writing your SEO-optimized blog post...</div>
-                    ) : result ? result : (
-                      <div className="text-muted-foreground text-center py-12">
-                        <PenTool className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                        <p>Enter a topic and click generate to create your blog post</p>
-                      </div>
-                    )}
+                  <h3 className="text-lg font-semibold mb-4">Generated Article</h3>
+                  <div className="bg-muted/50 rounded-lg p-4 min-h-[250px] flex items-center justify-center text-muted-foreground">
+                    <PenTool className="h-12 w-12 opacity-50" />
                   </div>
                 </div>
               </div>
-            </Card>
+            </MockToolPreview>
           </div>
         </div>
       </section>
@@ -302,51 +163,45 @@ export default function BlogContentCreator() {
           { name: "Amanda Reeves", title: "Content Marketing Manager", rating: 5, quote: "The readability scores help us maintain consistent quality across our 30-article monthly output.", metric: "30 articles/month" },
           { name: "Chris Patel", title: "Freelance Blogger", rating: 5, quote: "I went from 5 articles a week to 15. The Markdown export saves me another hour per article.", metric: "3x article output" },
           { name: "Laura Nguyen", title: "Startup CEO", rating: 5, quote: "We built our entire content strategy with this tool. Organic traffic is now our #1 lead source.", metric: "#1 lead source" },
-          { name: "James Brown", title: "Agency Owner", rating: 4, quote: "Great for first drafts. Our editors polish them quickly. ROI is incredible.", metric: "5x content ROI" },
-          { name: "Sophie Martin", title: "Health & Wellness Blogger", rating: 5, quote: "The beginner-friendly tone is perfect for my audience. Articles feel genuinely helpful.", metric: "2x reader engagement" },
+          { name: "David Kim", title: "Agency Content Director", rating: 5, quote: "Managing 10 client blogs is now feasible with a 3-person team. Quality stays consistently high.", metric: "10 client blogs managed" },
+          { name: "Emily Watson", title: "Technical Writer", rating: 4, quote: "The technical tone option produces surprisingly accurate content. Minimal editing needed.", metric: "80% less editing time" },
         ]}
       />
 
       <ComparisonTable
         title="Why Choose AI Writer Pros for Blog Content?"
         ourName="AI Writer Pros"
-        competitor1Name="Surfer SEO"
+        competitor1Name="Jasper"
         competitor2Name="ChatGPT"
         rows={[
-          { feature: "Built-in readability scoring", us: true, competitor1: true, competitor2: false },
+          { feature: "Built-in readability scoring", us: true, competitor1: false, competitor2: false },
           { feature: "Keyword density tracking", us: true, competitor1: true, competitor2: false },
           { feature: "Markdown & HTML export", us: true, competitor1: false, competitor2: false },
-          { feature: "SEO meta generation", us: true, competitor1: true, competitor2: false },
-          { feature: "5 tone presets", us: true, competitor1: false, competitor2: false },
-          { feature: "Up to 4,000 word articles", us: true, competitor1: true, competitor2: true },
+          { feature: "5 tone presets", us: true, competitor1: true, competitor2: false },
+          { feature: "Up to 4,000 words", us: true, competitor1: true, competitor2: true },
           { feature: "Free tier", us: true, competitor1: false, competitor2: true },
-          { feature: "Speed", us: "< 30 sec", competitor1: "2-5 min", competitor2: "1-3 min" },
+          { feature: "Generation speed", us: "< 30 sec", competitor1: "30-60 sec", competitor2: "1-3 min" },
         ]}
       />
 
       <FAQSection
-        toolName="the AI Blog Content Creator"
+        toolName="the Blog Content Creator"
         faqs={[
-          { question: "How does the Blog Content Creator work?", answer: "Enter your topic and target keywords, select word count and tone, and our AI generates a complete SEO-optimized article with headings, meta descriptions, and readability analysis." },
-          { question: "How long are the generated articles?", answer: "You can choose from 4 length options: ~800 words (short posts), ~1,500 words (standard), ~2,500 words (long-form), and ~4,000 words (pillar content)." },
-          { question: "Is the content optimized for SEO?", answer: "Yes! Every article includes keyword-optimized headings, meta descriptions, natural keyword placement, and proper H1-H3 hierarchy. The AI targets your specified keywords throughout." },
-          { question: "What does the readability score mean?", answer: "We display a Flesch Reading Ease score (higher = easier to read), grade level, average sentence length, and keyword density — all metrics that help ensure your content is accessible." },
-          { question: "Can I export the article?", answer: "Yes! Export to Markdown (.md) for static site generators, HTML for direct web publishing, or simply copy to clipboard for any CMS." },
-          { question: "What tones are available?", answer: "Choose from Informative (balanced), Conversational (casual), Authoritative (expert), Beginner-Friendly (accessible), or Technical (detailed) to match your audience." },
-          { question: "Is the content unique?", answer: "Yes, every article is generated fresh. We recommend reviewing and adding your unique insights before publishing." },
-          { question: "Can I target multiple keywords?", answer: "Yes! Enter comma-separated keywords and the AI will integrate them naturally throughout the article." },
-          { question: "Will it work for any industry?", answer: "Absolutely. The AI can write about technology, health, finance, marketing, education, lifestyle, and any other topic." },
-          { question: "Is it free?", answer: "Our free tier includes daily article generations. Paid plans unlock higher limits and priority processing." },
+          { question: "How long are the generated articles?", answer: "Choose from ~800, ~1,500, ~2,500, or ~4,000-word articles. Our AI generates comprehensive, well-structured content at any length." },
+          { question: "Is the content SEO-optimized?", answer: "Yes! Every article includes keyword integration, proper heading hierarchy (H1-H3), meta descriptions, and readability scoring for maximum search engine performance." },
+          { question: "Can I export the content?", answer: "Absolutely! Export to Markdown (.md), HTML (.html), or copy directly to clipboard. Perfect for any CMS or publishing platform." },
+          { question: "What readability metrics are provided?", answer: "We provide Flesch reading score, grade level, average sentence length, and keyword density — all calculated in real-time." },
+          { question: "What tones are available?", answer: "Choose from Informative, Conversational, Authoritative, Beginner-Friendly, or Technical to match your content strategy." },
+          { question: "Is there a free tier?", answer: "Yes, you can generate blog posts for free. Premium plans unlock longer articles and advanced features." },
         ]}
       />
 
       <FinalCTA
-        headline="Start Publishing Blog Content That Ranks"
-        subheadline="Join 15,000+ content creators generating SEO-optimized articles in seconds."
-        ctaText="Generate My Blog Post Free"
-        onCtaClick={scrollToTool}
-        secondaryCtaText="View Pricing"
-        benefits={["Free to try", "Up to 4,000 words", "SEO optimized", "Export to MD/HTML"]}
+        headline="Start Publishing SEO-Optimized Blog Content Today"
+        subheadline="Join 15,000+ content creators producing articles that rank and convert."
+        ctaText="Generate My First Blog Post Free"
+        ctaLink="/auth"
+        benefits={["SEO optimized", "Readability scoring", "Export to MD/HTML", "No credit card required"]}
       />
 
       <Footer />

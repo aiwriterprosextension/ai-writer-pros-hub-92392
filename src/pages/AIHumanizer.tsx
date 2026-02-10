@@ -1,3 +1,4 @@
+
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
@@ -5,10 +6,8 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Bot, Shield, CheckCircle, Zap, Star, Users, Copy, RefreshCw, FileText, Eye, Lock, GraduationCap, Briefcase, PenTool, Settings } from "lucide-react";
-import { useState, useRef } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { Bot, Shield, CheckCircle, Zap, Star, Users, FileText, Eye, Lock, GraduationCap, Briefcase, PenTool, Settings } from "lucide-react";
+import { useRef } from "react";
 import { Slider } from "@/components/ui/slider";
 import { SEOHead } from "@/components/landing/SEOHead";
 import { TrustBar } from "@/components/landing/TrustBar";
@@ -20,59 +19,11 @@ import { ComparisonTable } from "@/components/landing/ComparisonTable";
 import { FAQSection } from "@/components/landing/FAQSection";
 import { FinalCTA } from "@/components/landing/FinalCTA";
 import { FeaturesGrid } from "@/components/landing/FeaturesGrid";
-
-const intensityLabels: Record<string, { label: string; description: string }> = {
-  light: { label: "Light", description: "Minimal changes, subtle rewording" },
-  medium: { label: "Medium", description: "Balanced rewrite, natural flow" },
-  heavy: { label: "Heavy", description: "Complete rewrite from scratch" },
-};
+import { MockToolPreview } from "@/components/landing/MockToolPreview";
 
 export default function AIHumanizer() {
-  const [inputText, setInputText] = useState("");
-  const [outputText, setOutputText] = useState("");
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [intensity, setIntensity] = useState<string>("medium");
-  const { toast } = useToast();
   const toolRef = useRef<HTMLDivElement>(null);
-
   const scrollToTool = () => toolRef.current?.scrollIntoView({ behavior: "smooth" });
-
-  const intensityFromSlider = (val: number) => {
-    if (val <= 33) return "light";
-    if (val <= 66) return "medium";
-    return "heavy";
-  };
-  const sliderFromIntensity = (i: string) => {
-    if (i === "light") return 16;
-    if (i === "heavy") return 83;
-    return 50;
-  };
-
-  const handleHumanize = async () => {
-    setIsProcessing(true);
-    setOutputText("");
-    try {
-      const { data, error } = await supabase.functions.invoke('ai-tools', {
-        body: { tool: 'humanize', content: inputText, intensity },
-      });
-      if (error) throw error;
-      if (data?.error) throw new Error(data.error);
-      setOutputText(data.result || "");
-      toast({ title: "Content humanized!", description: `Intensity: ${intensityLabels[intensity].label}` });
-    } catch (e: any) {
-      toast({ title: "Error", description: e.message || "Failed to humanize content", variant: "destructive" });
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(outputText);
-    toast({ title: "Copied!", description: "Humanized content copied to clipboard." });
-  };
-
-  const inputWordCount = inputText.trim() ? inputText.trim().split(/\s+/).length : 0;
-  const outputWordCount = outputText.trim() ? outputText.trim().split(/\s+/).length : 0;
 
   return (
     <div className="min-h-screen bg-background">
@@ -121,54 +72,27 @@ export default function AIHumanizer() {
             </div>
           </div>
 
-          {/* Interactive Demo */}
+          {/* Mock Tool Preview */}
           <div className="max-w-5xl mx-auto" ref={toolRef}>
-            <Card className="p-6">
+            <MockToolPreview toolName="AI Humanizer" dashboardPath="/dashboard/ai-humanizer" gradient="from-blue-500 to-purple-500">
               <div className="mb-6">
-                <Label className="text-sm font-medium mb-3 block">
-                  Humanization Intensity: <span className="text-primary font-semibold">{intensityLabels[intensity].label}</span>
-                </Label>
-                <Slider
-                  value={[sliderFromIntensity(intensity)]}
-                  onValueChange={(val) => setIntensity(intensityFromSlider(val[0]))}
-                  max={100}
-                  step={1}
-                  className="mb-2"
-                />
+                <Label className="text-sm font-medium mb-3 block">Humanization Intensity: <span className="font-semibold">Medium</span></Label>
+                <Slider value={[50]} max={100} step={1} className="mb-2" disabled />
                 <div className="flex justify-between text-xs text-muted-foreground">
                   <span>🔵 Light</span><span>🟡 Medium</span><span>🔴 Heavy</span>
                 </div>
-                <p className="text-xs text-muted-foreground mt-1">{intensityLabels[intensity].description}</p>
               </div>
-
               <div className="grid lg:grid-cols-2 gap-6">
                 <div>
-                  <h3 className="text-lg font-semibold mb-2 flex items-center justify-between">
-                    <span className="flex items-center"><Bot className="h-5 w-5 mr-2 text-destructive" />AI-Generated Content</span>
-                    {inputWordCount > 0 && <span className="text-xs text-muted-foreground font-normal">{inputWordCount} words</span>}
-                  </h3>
-                  <Textarea placeholder="Paste your AI-generated content here..." value={inputText} onChange={(e) => setInputText(e.target.value)} className="min-h-[250px] resize-none" />
-                  <Button onClick={handleHumanize} disabled={!inputText || isProcessing} className="w-full mt-4">
-                    {isProcessing ? <><Zap className="mr-2 h-4 w-4 animate-spin" />Humanizing...</> : <><Shield className="mr-2 h-4 w-4" />Humanize Content</>}
-                  </Button>
+                  <h3 className="text-lg font-semibold mb-2 flex items-center"><Bot className="h-5 w-5 mr-2 text-destructive" />AI-Generated Content</h3>
+                  <Textarea placeholder="Paste your AI-generated content here..." className="min-h-[200px] resize-none" disabled />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold mb-2 flex items-center justify-between">
-                    <span className="flex items-center"><Shield className="h-5 w-5 mr-2 text-green-600" />Humanized Content</span>
-                    {outputWordCount > 0 && <span className="text-xs text-muted-foreground font-normal">{outputWordCount} words</span>}
-                  </h3>
-                  <Textarea placeholder="Your humanized content will appear here..." value={outputText} readOnly className="min-h-[250px] resize-none bg-muted/30" />
-                  <div className="mt-4 flex items-center justify-between">
-                    <Button variant="outline" disabled={!outputText || isProcessing} onClick={handleHumanize} size="sm">
-                      <RefreshCw className="h-4 w-4 mr-1" /> Re-humanize
-                    </Button>
-                    <Button variant="outline" disabled={!outputText} onClick={handleCopy} size="sm">
-                      <Copy className="h-4 w-4 mr-1" /> Copy Result
-                    </Button>
-                  </div>
+                  <h3 className="text-lg font-semibold mb-2 flex items-center"><Shield className="h-5 w-5 mr-2 text-green-600" />Humanized Content</h3>
+                  <Textarea placeholder="Your humanized content will appear here..." className="min-h-[200px] resize-none bg-muted/30" disabled />
                 </div>
               </div>
-            </Card>
+            </MockToolPreview>
           </div>
         </div>
       </section>
@@ -297,9 +221,8 @@ export default function AIHumanizer() {
           { feature: "Side-by-side comparison", us: true, competitor1: true, competitor2: false },
           { feature: "Word count preservation", us: true, competitor1: true, competitor2: false },
           { feature: "Re-humanize option", us: true, competitor1: false, competitor2: false },
-          { feature: "Free tier available", us: true, competitor1: true, competitor2: false },
-          { feature: "No word limits", us: true, competitor1: false, competitor2: false },
-          { feature: "Processing speed", us: "< 10 sec", competitor1: "5-15 sec", competitor2: "30-60 sec" },
+          { feature: "Free tier available", us: true, competitor1: true, competitor2: true },
+          { feature: "Processing speed", us: "< 10 sec", competitor1: "5-15 sec", competitor2: "10-30 sec" },
         ]}
       />
 
@@ -307,27 +230,24 @@ export default function AIHumanizer() {
       <FAQSection
         toolName="the AI Humanizer"
         faqs={[
-          { question: "How does the AI Humanizer work?", answer: "Our AI analyzes the patterns that AI detectors look for — repetitive sentence structures, predictable word choices, and uniform paragraph lengths — then rewrites your content with natural variations, idiomatic expressions, and human-like imperfections." },
-          { question: "Which AI detectors does it bypass?", answer: "Our humanizer is tested against GPTZero, Turnitin, Originality.ai, Content at Scale, Copyleaks, and Writer.com's AI detector. We maintain a 99% success rate across all major platforms." },
-          { question: "Does it preserve the original meaning?", answer: "Yes! Our AI is designed to maintain the core meaning, facts, and arguments of your original text. The 'Light' intensity mode makes minimal changes while still bypassing detection." },
-          { question: "What's the difference between Light, Medium, and Heavy?", answer: "Light makes subtle word substitutions and sentence restructuring. Medium provides a balanced rewrite that significantly changes the text while preserving meaning. Heavy completely rewrites the content from scratch using the same ideas." },
-          { question: "Is there a word limit?", answer: "There's no hard word limit per submission. However, for best results, we recommend processing content in chunks of 2,000-3,000 words at a time." },
-          { question: "Is my content stored or shared?", answer: "No. We process your content in real-time and don't store it after generation. Your privacy is our priority, and we never share content with third parties." },
-          { question: "Can it humanize content from any AI tool?", answer: "Yes! It works with content from ChatGPT, Claude, Gemini, Copilot, Jasper, and any other AI writing tool." },
-          { question: "Will humanized content rank well on Google?", answer: "Yes. Google's guidelines focus on content quality and helpfulness, not whether AI was involved. Our humanizer improves readability and natural flow, which can actually help with SEO." },
-          { question: "Can I re-humanize content?", answer: "Absolutely! Use the re-humanize button to generate a different version without re-pasting your original text. Each run produces unique output." },
-          { question: "Is it suitable for academic use?", answer: "Our tool is designed for content that you've created with AI assistance. We encourage ethical use — the humanizer helps ensure your AI-assisted work reads naturally, not to misrepresent fully AI-generated work as your own." },
+          { question: "How does the AI Humanizer work?", answer: "Our AI analyzes the patterns that AI detectors look for and rewrites your content to eliminate those patterns while preserving the original meaning and quality." },
+          { question: "Which AI detectors can it bypass?", answer: "We consistently bypass GPTZero, Turnitin, Originality.ai, Content at Scale, Copyleaks, and other major detection tools with a 99% success rate." },
+          { question: "Will the meaning of my content change?", answer: "No. Our AI preserves the core meaning while rewriting the text structure and word choices. The message stays the same, only the delivery changes." },
+          { question: "What's the difference between intensity levels?", answer: "Light makes subtle word-level changes, Medium rewrites sentences while keeping structure, and Heavy completely restructures and rewrites the entire content." },
+          { question: "Is there a word limit?", answer: "Free accounts can process up to 1,000 words per generation. Premium accounts have no word limits." },
+          { question: "Is my content stored?", answer: "No. We process your content in real-time and do not store any input or output text. Your content remains completely private." },
+          { question: "Can I use this for academic papers?", answer: "Yes, many students use our tool for AI-assisted academic writing. However, always follow your institution's policies on AI tool usage." },
+          { question: "How fast is the processing?", answer: "Most content is humanized in under 10 seconds, regardless of length. Complex or heavy-mode processing may take slightly longer." },
         ]}
       />
 
       {/* Final CTA */}
       <FinalCTA
-        headline="Make Your AI Content Undetectable in Seconds"
-        subheadline="Join 10,000+ creators who trust AI Writer Pros to humanize their content with a 99% success rate."
-        ctaText="Humanize My Content Free"
-        onCtaClick={scrollToTool}
-        secondaryCtaText="View Pricing"
-        benefits={["99% bypass rate", "Free to try", "No word limits", "Instant results"]}
+        headline="Ready to Make Your AI Content Undetectable?"
+        subheadline="Join 10,000+ users who trust AI Writer Pros Humanizer to bypass all AI detection tools."
+        ctaText="Start Humanizing Free"
+        ctaLink="/auth"
+        benefits={["99% bypass rate", "No credit card required", "Adjustable intensity", "Instant results"]}
       />
 
       <Footer />
