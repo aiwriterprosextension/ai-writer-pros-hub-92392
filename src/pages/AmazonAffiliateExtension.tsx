@@ -2,14 +2,12 @@
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Chrome, Star, CheckCircle, ArrowRight, Users, TrendingUp, Zap, Copy, ShoppingCart, DollarSign, BarChart3, Target, Briefcase, PenTool, Search, FileText, Award } from "lucide-react";
-import { useRef } from "react";
 import { SEOHead } from "@/components/landing/SEOHead";
 import { TrustBar } from "@/components/landing/TrustBar";
 import { ProblemSolution } from "@/components/landing/ProblemSolution";
@@ -21,11 +19,9 @@ import { FAQSection } from "@/components/landing/FAQSection";
 import { FinalCTA } from "@/components/landing/FinalCTA";
 import { FeaturesGrid } from "@/components/landing/FeaturesGrid";
 import { MockToolPreview } from "@/components/landing/MockToolPreview";
+import { Link } from "react-router-dom";
 
 export default function AmazonAffiliateExtension() {
-  const toolRef = useRef<HTMLDivElement>(null);
-  const scrollToTool = () => toolRef.current?.scrollIntoView({ behavior: "smooth" });
-
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
@@ -47,59 +43,57 @@ export default function AmazonAffiliateExtension() {
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <Badge className="mb-4 bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-800">
-                🏆 #1 Amazon Affiliate Tool — 25,000+ Active Users
-              </Badge>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-                <span className="bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
-                  Amazon Affiliate Review Generator
-                </span>
-                <br />
-                That Actually Converts
-              </h1>
-              <p className="text-xl text-muted-foreground mb-8">
-                Stop spending hours writing product reviews. Generate SEO-optimized, conversion-focused Amazon affiliate reviews and comparison tables in seconds — complete with pros/cons, ratings, and buyer recommendations.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <Button size="lg" className="text-lg px-8" onClick={scrollToTool}>
-                  Generate My Review Now <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </div>
-              <div className="flex items-center flex-wrap gap-6 text-sm text-muted-foreground">
-                <div className="flex items-center"><Star className="h-4 w-4 text-yellow-500 mr-1 fill-yellow-500" />4.9/5 (2,847 reviews)</div>
-                <div className="flex items-center"><Users className="h-4 w-4 mr-1" />25,000+ Users</div>
-                <div className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-1" />Free to start</div>
-              </div>
+          <div className="text-center mb-16">
+            <Badge className="mb-4 bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-800">
+              🏆 #1 Amazon Affiliate Tool — 25,000+ Active Users
+            </Badge>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
+              <span className="bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
+                Amazon Affiliate Review Generator
+              </span>
+              <br />
+              That Actually Converts
+            </h1>
+            <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
+              Stop spending hours writing product reviews. Generate SEO-optimized, conversion-focused Amazon affiliate reviews and comparison tables in seconds — complete with pros/cons, ratings, and buyer recommendations.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+              <Button size="lg" className="text-lg px-8" asChild>
+                <Link to="/auth">Generate My Review Now <ArrowRight className="ml-2 h-5 w-5" /></Link>
+              </Button>
             </div>
+            <div className="flex items-center justify-center flex-wrap gap-6 text-sm text-muted-foreground">
+              <div className="flex items-center"><Star className="h-4 w-4 text-yellow-500 mr-1 fill-yellow-500" />4.9/5 (2,847 reviews)</div>
+              <div className="flex items-center"><Users className="h-4 w-4 mr-1" />25,000+ Users</div>
+              <div className="flex items-center"><CheckCircle className="h-4 w-4 text-green-600 mr-1" />Free to start</div>
+            </div>
+          </div>
 
-            {/* Mock Tool */}
-            <div ref={toolRef}>
-              <MockToolPreview toolName="Amazon Review Generator" dashboardPath="/dashboard/amazon-reviews" gradient="from-amber-500 to-orange-500">
-                <div className="space-y-4">
-                  <Tabs defaultValue="single">
-                    <TabsList className="w-full mb-4">
-                      <TabsTrigger value="single" className="flex-1" disabled>Single Review</TabsTrigger>
-                      <TabsTrigger value="compare" className="flex-1" disabled>Compare Products</TabsTrigger>
-                    </TabsList>
-                  </Tabs>
-                  <div className="space-y-2">
-                    <Label>Product Name</Label>
-                    <Input placeholder="e.g. Sony WH-1000XM5 Wireless Headphones" disabled />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Category</Label>
-                    <Select disabled><SelectTrigger><SelectValue placeholder="Electronics" /></SelectTrigger></Select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Key Features (optional)</Label>
-                    <Input placeholder="e.g. Noise cancelling, 30h battery..." disabled />
-                  </div>
-                  <Button disabled className="w-full" size="lg"><Chrome className="mr-2 h-4 w-4" />Generate Product Review</Button>
+          {/* Mock Tool */}
+          <div className="max-w-5xl mx-auto">
+            <MockToolPreview toolName="Amazon Review Generator" dashboardPath="/dashboard/amazon-reviews" gradient="from-amber-500 to-orange-500">
+              <div className="space-y-4">
+                <Tabs defaultValue="single">
+                  <TabsList className="w-full mb-4">
+                    <TabsTrigger value="single" className="flex-1" disabled>Single Review</TabsTrigger>
+                    <TabsTrigger value="compare" className="flex-1" disabled>Compare Products</TabsTrigger>
+                  </TabsList>
+                </Tabs>
+                <div className="space-y-2">
+                  <Label>Product Name</Label>
+                  <Input placeholder="e.g. Sony WH-1000XM5 Wireless Headphones" disabled />
                 </div>
-              </MockToolPreview>
-            </div>
+                <div className="space-y-2">
+                  <Label>Category</Label>
+                  <Select disabled><SelectTrigger><SelectValue placeholder="Electronics" /></SelectTrigger></Select>
+                </div>
+                <div className="space-y-2">
+                  <Label>Key Features (optional)</Label>
+                  <Input placeholder="e.g. Noise cancelling, 30h battery..." disabled />
+                </div>
+                <Button disabled className="w-full" size="lg"><Chrome className="mr-2 h-4 w-4" />Generate Product Review</Button>
+              </div>
+            </MockToolPreview>
           </div>
         </div>
       </section>
@@ -149,7 +143,7 @@ export default function AmazonAffiliateExtension() {
           { icon: Copy, title: "Copy & Publish", description: "Copy the review to your blog, add your affiliate links, and start earning commissions." },
         ]}
         ctaText="Generate My First Review"
-        onCtaClick={scrollToTool}
+        ctaLink="/auth"
       />
 
       <UseCases

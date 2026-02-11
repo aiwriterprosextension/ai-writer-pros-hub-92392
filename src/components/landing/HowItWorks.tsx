@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { LucideIcon } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface Step {
   title: string;
@@ -12,9 +13,10 @@ interface HowItWorksProps {
   steps: Step[];
   ctaText?: string;
   onCtaClick?: () => void;
+  ctaLink?: string;
 }
 
-export function HowItWorks({ steps, ctaText, onCtaClick }: HowItWorksProps) {
+export function HowItWorks({ steps, ctaText, onCtaClick, ctaLink }: HowItWorksProps) {
   return (
     <section className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/30">
       <div className="max-w-5xl mx-auto">
@@ -45,9 +47,15 @@ export function HowItWorks({ steps, ctaText, onCtaClick }: HowItWorksProps) {
         </div>
         {ctaText && (
           <div className="text-center mt-12">
-            <Button size="lg" onClick={onCtaClick}>
-              {ctaText} <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
+            {ctaLink ? (
+              <Button size="lg" asChild>
+                <Link to={ctaLink}>{ctaText} <ArrowRight className="ml-2 h-4 w-4" /></Link>
+              </Button>
+            ) : (
+              <Button size="lg" onClick={onCtaClick}>
+                {ctaText} <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            )}
           </div>
         )}
       </div>

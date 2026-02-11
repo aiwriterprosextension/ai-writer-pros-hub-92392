@@ -6,9 +6,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Link } from "react-router-dom";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { MessageSquare, CheckCircle, Users, Star, Zap, Copy, Instagram, Twitter, Linkedin, Facebook, Calendar, Hash, TrendingUp, Target, Clock, BarChart3, Briefcase, ShoppingCart } from "lucide-react";
-import { useRef } from "react";
 import { SEOHead } from "@/components/landing/SEOHead";
 import { TrustBar } from "@/components/landing/TrustBar";
 import { ProblemSolution } from "@/components/landing/ProblemSolution";
@@ -22,9 +22,6 @@ import { FeaturesGrid } from "@/components/landing/FeaturesGrid";
 import { MockToolPreview } from "@/components/landing/MockToolPreview";
 
 export default function SocialMediaSuite() {
-  const toolRef = useRef<HTMLDivElement>(null);
-  const scrollToTool = () => toolRef.current?.scrollIntoView({ behavior: "smooth" });
-
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
@@ -50,8 +47,8 @@ export default function SocialMediaSuite() {
               Stop writing posts from scratch. Generate platform-optimized social media content for Twitter, LinkedIn, Instagram, and Facebook — all from one topic. With character count tracking, hashtag suggestions, and 5 tone options.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-              <Button size="lg" className="text-lg px-8" onClick={scrollToTool}>
-                Generate My Posts Now <MessageSquare className="ml-2 h-5 w-5" />
+              <Button size="lg" className="text-lg px-8" asChild>
+                <Link to="/auth">Generate My Posts Now <MessageSquare className="ml-2 h-5 w-5" /></Link>
               </Button>
             </div>
             <div className="flex items-center justify-center flex-wrap gap-6 text-sm text-muted-foreground">
@@ -62,7 +59,7 @@ export default function SocialMediaSuite() {
           </div>
 
           {/* Mock Tool */}
-          <div className="max-w-6xl mx-auto" ref={toolRef}>
+          <div className="max-w-6xl mx-auto">
             <MockToolPreview toolName="Social Media Suite" dashboardPath="/dashboard/social-media" gradient="from-pink-500 to-rose-500">
               <div className="grid lg:grid-cols-2 gap-8">
                 <div className="space-y-4">
@@ -160,7 +157,7 @@ export default function SocialMediaSuite() {
           { icon: Copy, title: "Copy & Schedule", description: "Copy each platform-optimized post and paste into your scheduler or publish directly." },
         ]}
         ctaText="Create My Social Posts"
-        onCtaClick={scrollToTool}
+        ctaLink="/auth"
       />
 
       <UseCases
