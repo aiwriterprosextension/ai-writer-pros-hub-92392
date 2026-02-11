@@ -86,6 +86,126 @@ export type Database = {
         }
         Relationships: []
       }
+      audience_personas: {
+        Row: {
+          created_at: string
+          demographics: string | null
+          description: string | null
+          desired_action: string | null
+          id: string
+          pain_point: string | null
+          persona_name: string | null
+          target_level: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          demographics?: string | null
+          description?: string | null
+          desired_action?: string | null
+          id?: string
+          pain_point?: string | null
+          persona_name?: string | null
+          target_level?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          demographics?: string | null
+          description?: string | null
+          desired_action?: string | null
+          id?: string
+          pain_point?: string | null
+          persona_name?: string | null
+          target_level?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      blog_outlines: {
+        Row: {
+          approved: boolean | null
+          created_at: string
+          id: string
+          outline_structure: Json
+          topic: string
+          user_id: string
+        }
+        Insert: {
+          approved?: boolean | null
+          created_at?: string
+          id?: string
+          outline_structure?: Json
+          topic: string
+          user_id: string
+        }
+        Update: {
+          approved?: boolean | null
+          created_at?: string
+          id?: string
+          outline_structure?: Json
+          topic?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      blog_posts: {
+        Row: {
+          audience_persona_id: string | null
+          content: string | null
+          content_purpose: string | null
+          created_at: string
+          deleted_at: string | null
+          id: string
+          is_draft: boolean | null
+          keywords: string | null
+          outline: Json | null
+          readability_score: number | null
+          seo_score: number | null
+          tone: string | null
+          topic: string
+          updated_at: string
+          user_id: string
+          word_count: number | null
+        }
+        Insert: {
+          audience_persona_id?: string | null
+          content?: string | null
+          content_purpose?: string | null
+          created_at?: string
+          deleted_at?: string | null
+          id?: string
+          is_draft?: boolean | null
+          keywords?: string | null
+          outline?: Json | null
+          readability_score?: number | null
+          seo_score?: number | null
+          tone?: string | null
+          topic: string
+          updated_at?: string
+          user_id: string
+          word_count?: number | null
+        }
+        Update: {
+          audience_persona_id?: string | null
+          content?: string | null
+          content_purpose?: string | null
+          created_at?: string
+          deleted_at?: string | null
+          id?: string
+          is_draft?: boolean | null
+          keywords?: string | null
+          outline?: Json | null
+          readability_score?: number | null
+          seo_score?: number | null
+          tone?: string | null
+          topic?: string
+          updated_at?: string
+          user_id?: string
+          word_count?: number | null
+        }
+        Relationships: []
+      }
       buyer_personas: {
         Row: {
           created_at: string
@@ -118,6 +238,47 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      fact_check_flags: {
+        Row: {
+          blog_post_id: string | null
+          claim: string | null
+          concern_level: string | null
+          created_at: string
+          id: string
+          suggested_sources: Json | null
+          user_id: string
+          verified: boolean | null
+        }
+        Insert: {
+          blog_post_id?: string | null
+          claim?: string | null
+          concern_level?: string | null
+          created_at?: string
+          id?: string
+          suggested_sources?: Json | null
+          user_id: string
+          verified?: boolean | null
+        }
+        Update: {
+          blog_post_id?: string | null
+          claim?: string | null
+          concern_level?: string | null
+          created_at?: string
+          id?: string
+          suggested_sources?: Json | null
+          user_id?: string
+          verified?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fact_check_flags_blog_post_id_fkey"
+            columns: ["blog_post_id"]
+            isOneToOne: false
+            referencedRelation: "blog_posts"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       generations: {
         Row: {
@@ -193,6 +354,50 @@ export type Database = {
           },
         ]
       }
+      seo_metadata: {
+        Row: {
+          blog_post_id: string | null
+          created_at: string
+          focus_keyword: string | null
+          id: string
+          meta_description: string | null
+          meta_title: string | null
+          seo_analysis: Json | null
+          title_variations: Json | null
+          user_id: string
+        }
+        Insert: {
+          blog_post_id?: string | null
+          created_at?: string
+          focus_keyword?: string | null
+          id?: string
+          meta_description?: string | null
+          meta_title?: string | null
+          seo_analysis?: Json | null
+          title_variations?: Json | null
+          user_id: string
+        }
+        Update: {
+          blog_post_id?: string | null
+          created_at?: string
+          focus_keyword?: string | null
+          id?: string
+          meta_description?: string | null
+          meta_title?: string | null
+          seo_analysis?: Json | null
+          title_variations?: Json | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "seo_metadata_blog_post_id_fkey"
+            columns: ["blog_post_id"]
+            isOneToOne: false
+            referencedRelation: "blog_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tool_configurations: {
         Row: {
           config: Json
@@ -228,6 +433,50 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      visual_content_suggestions: {
+        Row: {
+          alt_text: string | null
+          blog_post_id: string | null
+          created_at: string
+          id: string
+          image_number: number | null
+          image_prompt: string | null
+          placement: string | null
+          type: string | null
+          user_id: string
+        }
+        Insert: {
+          alt_text?: string | null
+          blog_post_id?: string | null
+          created_at?: string
+          id?: string
+          image_number?: number | null
+          image_prompt?: string | null
+          placement?: string | null
+          type?: string | null
+          user_id: string
+        }
+        Update: {
+          alt_text?: string | null
+          blog_post_id?: string | null
+          created_at?: string
+          id?: string
+          image_number?: number | null
+          image_prompt?: string | null
+          placement?: string | null
+          type?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "visual_content_suggestions_blog_post_id_fkey"
+            columns: ["blog_post_id"]
+            isOneToOne: false
+            referencedRelation: "blog_posts"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
