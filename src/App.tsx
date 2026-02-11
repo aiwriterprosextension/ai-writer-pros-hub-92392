@@ -38,6 +38,31 @@ import KBCreatingAccount from "./pages/kb/KBCreatingAccount";
 import KBNavigatingDashboard from "./pages/kb/KBNavigatingDashboard";
 import KBFirstAIGeneration from "./pages/kb/KBFirstAIGeneration";
 import KBAICreditsUsage from "./pages/kb/KBAICreditsUsage";
+import KBPatternAnalyzer from "./pages/kb/KBPatternAnalyzer";
+import KBHumanizationIntensity from "./pages/kb/KBHumanizationIntensity";
+import KBIndustryCustomization from "./pages/kb/KBIndustryCustomization";
+import KBBulkHumanization from "./pages/kb/KBBulkHumanization";
+import KBBeforeAfterScores from "./pages/kb/KBBeforeAfterScores";
+import KBContentAnalyzer from "./pages/kb/KBContentAnalyzer";
+import KBPlatformCustomization from "./pages/kb/KBPlatformCustomization";
+import KBMultiLengthVersions from "./pages/kb/KBMultiLengthVersions";
+import KBHashtagScheduling from "./pages/kb/KBHashtagScheduling";
+import KBBatchExport from "./pages/kb/KBBatchExport";
+import KBEmailSequences from "./pages/kb/KBEmailSequences";
+import KBABTestingEmails from "./pages/kb/KBABTestingEmails";
+import KBAudienceTargetingEmails from "./pages/kb/KBAudienceTargetingEmails";
+import KBTwitterThreads from "./pages/kb/KBTwitterThreads";
+import KBContentCalendar from "./pages/kb/KBContentCalendar";
+import KBHashtagResearch from "./pages/kb/KBHashtagResearch";
+import KBTopicKeywords from "./pages/kb/KBTopicKeywords";
+import KBOutlineBuilder from "./pages/kb/KBOutlineBuilder";
+import KBSEOReadability from "./pages/kb/KBSEOReadability";
+import KBProductExtraction from "./pages/kb/KBProductExtraction";
+import KBSEOReviews from "./pages/kb/KBSEOReviews";
+import KBFTCDisclosure from "./pages/kb/KBFTCDisclosure";
+import KBManagingSubscription from "./pages/kb/KBManagingSubscription";
+import KBProfileSettings from "./pages/kb/KBProfileSettings";
+import KBTeamManagement from "./pages/kb/KBTeamManagement";
 
 const queryClient = new QueryClient();
 
@@ -80,6 +105,31 @@ const App = () => (
               <Route path="/knowledge-base/navigating-dashboard" element={<KBNavigatingDashboard />} />
               <Route path="/knowledge-base/first-ai-generation" element={<KBFirstAIGeneration />} />
               <Route path="/knowledge-base/ai-credits-usage" element={<KBAICreditsUsage />} />
+              <Route path="/knowledge-base/pattern-analyzer" element={<KBPatternAnalyzer />} />
+              <Route path="/knowledge-base/humanization-intensity" element={<KBHumanizationIntensity />} />
+              <Route path="/knowledge-base/industry-customization" element={<KBIndustryCustomization />} />
+              <Route path="/knowledge-base/bulk-humanization" element={<KBBulkHumanization />} />
+              <Route path="/knowledge-base/before-after-scores" element={<KBBeforeAfterScores />} />
+              <Route path="/knowledge-base/content-analyzer" element={<KBContentAnalyzer />} />
+              <Route path="/knowledge-base/platform-customization" element={<KBPlatformCustomization />} />
+              <Route path="/knowledge-base/multi-length-versions" element={<KBMultiLengthVersions />} />
+              <Route path="/knowledge-base/hashtag-scheduling" element={<KBHashtagScheduling />} />
+              <Route path="/knowledge-base/batch-export" element={<KBBatchExport />} />
+              <Route path="/knowledge-base/email-sequences" element={<KBEmailSequences />} />
+              <Route path="/knowledge-base/ab-testing-emails" element={<KBABTestingEmails />} />
+              <Route path="/knowledge-base/audience-targeting-emails" element={<KBAudienceTargetingEmails />} />
+              <Route path="/knowledge-base/twitter-threads" element={<KBTwitterThreads />} />
+              <Route path="/knowledge-base/content-calendar" element={<KBContentCalendar />} />
+              <Route path="/knowledge-base/hashtag-research" element={<KBHashtagResearch />} />
+              <Route path="/knowledge-base/topic-keywords" element={<KBTopicKeywords />} />
+              <Route path="/knowledge-base/outline-builder" element={<KBOutlineBuilder />} />
+              <Route path="/knowledge-base/seo-readability" element={<KBSEOReadability />} />
+              <Route path="/knowledge-base/product-extraction" element={<KBProductExtraction />} />
+              <Route path="/knowledge-base/seo-reviews" element={<KBSEOReviews />} />
+              <Route path="/knowledge-base/ftc-disclosure" element={<KBFTCDisclosure />} />
+              <Route path="/knowledge-base/managing-subscription" element={<KBManagingSubscription />} />
+              <Route path="/knowledge-base/profile-settings" element={<KBProfileSettings />} />
+              <Route path="/knowledge-base/team-management" element={<KBTeamManagement />} />
               <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
             </Routes>

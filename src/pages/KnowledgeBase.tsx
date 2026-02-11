@@ -52,43 +52,43 @@ const articles: Article[] = [
   { title: "Understanding AI Credits & Usage", description: "How AI generation credits work, tracking usage, and optimizing your quota.", category: "getting-started", tags: ["credits", "usage", "billing"], link: "/knowledge-base/ai-credits-usage" },
 
   // AI Humanizer
-  { title: "How the AI Pattern Analyzer Works", description: "Understand how our AI detects and flags AI-generated patterns in your content.", category: "ai-humanizer", tags: ["analyzer", "detection", "patterns"] },
-  { title: "Choosing the Right Humanization Intensity", description: "Light vs Medium vs Aggressive — when to use each intensity level.", category: "ai-humanizer", tags: ["intensity", "settings", "quality"] },
-  { title: "Industry & Niche Customization", description: "Tailor humanized output for healthcare, finance, tech, and 12+ other industries.", category: "ai-humanizer", tags: ["industry", "customization", "tone"] },
-  { title: "Bulk Humanization Mode", description: "Process multiple paragraphs separately while maintaining consistent tone.", category: "ai-humanizer", tags: ["bulk", "batch", "paragraphs"] },
-  { title: "Understanding Before/After Scores", description: "What the AI detection scores mean and how to interpret improvement metrics.", category: "ai-humanizer", tags: ["scores", "metrics", "detection"] },
+  { title: "How the AI Pattern Analyzer Works", description: "Understand how our AI detects and flags AI-generated patterns in your content.", category: "ai-humanizer", tags: ["analyzer", "detection", "patterns"], link: "/knowledge-base/pattern-analyzer" },
+  { title: "Choosing the Right Humanization Intensity", description: "Light vs Medium vs Aggressive — when to use each intensity level.", category: "ai-humanizer", tags: ["intensity", "settings", "quality"], link: "/knowledge-base/humanization-intensity" },
+  { title: "Industry & Niche Customization", description: "Tailor humanized output for healthcare, finance, tech, and 12+ other industries.", category: "ai-humanizer", tags: ["industry", "customization", "tone"], link: "/knowledge-base/industry-customization" },
+  { title: "Bulk Humanization Mode", description: "Process multiple paragraphs separately while maintaining consistent tone.", category: "ai-humanizer", tags: ["bulk", "batch", "paragraphs"], link: "/knowledge-base/bulk-humanization" },
+  { title: "Understanding Before/After Scores", description: "What the AI detection scores mean and how to interpret improvement metrics.", category: "ai-humanizer", tags: ["scores", "metrics", "detection"], link: "/knowledge-base/before-after-scores" },
 
   // Content Repurposing
-  { title: "Content Analyzer & Smart Format Matching", description: "How AI analyzes your content and recommends the best output formats.", category: "content-repurposing", tags: ["analyzer", "formats", "recommendations"] },
-  { title: "Platform-Specific Customization Guide", description: "Customize output for Twitter threads, LinkedIn posts, Instagram captions, and more.", category: "content-repurposing", tags: ["platforms", "customization", "social"] },
-  { title: "Using Multi-Length Versions", description: "Generate Short, Standard, and Long versions of each repurposed format.", category: "content-repurposing", tags: ["length", "versions", "variations"] },
-  { title: "Hashtag & Scheduling Recommendations", description: "Leverage AI-generated hashtags, mentions, and optimal posting schedules.", category: "content-repurposing", tags: ["hashtags", "scheduling", "social media"] },
-  { title: "Batch Export & Content Series", description: "Export all formats at once and create multi-part content series from long-form content.", category: "content-repurposing", tags: ["export", "series", "batch"] },
+  { title: "Content Analyzer & Smart Format Matching", description: "How AI analyzes your content and recommends the best output formats.", category: "content-repurposing", tags: ["analyzer", "formats", "recommendations"], link: "/knowledge-base/content-analyzer" },
+  { title: "Platform-Specific Customization Guide", description: "Customize output for Twitter threads, LinkedIn posts, Instagram captions, and more.", category: "content-repurposing", tags: ["platforms", "customization", "social"], link: "/knowledge-base/platform-customization" },
+  { title: "Using Multi-Length Versions", description: "Generate Short, Standard, and Long versions of each repurposed format.", category: "content-repurposing", tags: ["length", "versions", "variations"], link: "/knowledge-base/multi-length-versions" },
+  { title: "Hashtag & Scheduling Recommendations", description: "Leverage AI-generated hashtags, mentions, and optimal posting schedules.", category: "content-repurposing", tags: ["hashtags", "scheduling", "social media"], link: "/knowledge-base/hashtag-scheduling" },
+  { title: "Batch Export & Content Series", description: "Export all formats at once and create multi-part content series from long-form content.", category: "content-repurposing", tags: ["export", "series", "batch"], link: "/knowledge-base/batch-export" },
 
   // Email Generator
-  { title: "Building Email Sequences", description: "Create multi-step email campaigns with AI-generated subject lines and A/B variations.", category: "email-generator", tags: ["sequences", "campaigns", "subject lines"] },
-  { title: "A/B Testing Email Variations", description: "Generate and compare multiple versions of your email to maximize open rates.", category: "email-generator", tags: ["ab-testing", "variations", "optimization"] },
-  { title: "Audience Targeting for Emails", description: "Define your audience persona to generate more relevant, high-converting emails.", category: "email-generator", tags: ["audience", "targeting", "persona"] },
+  { title: "Building Email Sequences", description: "Create multi-step email campaigns with AI-generated subject lines and A/B variations.", category: "email-generator", tags: ["sequences", "campaigns", "subject lines"], link: "/knowledge-base/email-sequences" },
+  { title: "A/B Testing Email Variations", description: "Generate and compare multiple versions of your email to maximize open rates.", category: "email-generator", tags: ["ab-testing", "variations", "optimization"], link: "/knowledge-base/ab-testing-emails" },
+  { title: "Audience Targeting for Emails", description: "Define your audience persona to generate more relevant, high-converting emails.", category: "email-generator", tags: ["audience", "targeting", "persona"], link: "/knowledge-base/audience-targeting-emails" },
 
   // Social Media
-  { title: "Creating Twitter/X Threads", description: "Turn ideas into engaging multi-tweet threads with hooks and engagement prompts.", category: "social-media", tags: ["twitter", "threads", "engagement"] },
-  { title: "Content Calendar & Idea Generator", description: "Plan your social content strategy with AI-powered topic ideas and scheduling.", category: "social-media", tags: ["calendar", "ideas", "planning"] },
-  { title: "Hashtag Research & Strategy", description: "Find trending and niche hashtags to maximize reach on each platform.", category: "social-media", tags: ["hashtags", "research", "reach"] },
+  { title: "Creating Twitter/X Threads", description: "Turn ideas into engaging multi-tweet threads with hooks and engagement prompts.", category: "social-media", tags: ["twitter", "threads", "engagement"], link: "/knowledge-base/twitter-threads" },
+  { title: "Content Calendar & Idea Generator", description: "Plan your social content strategy with AI-powered topic ideas and scheduling.", category: "social-media", tags: ["calendar", "ideas", "planning"], link: "/knowledge-base/content-calendar" },
+  { title: "Hashtag Research & Strategy", description: "Find trending and niche hashtags to maximize reach on each platform.", category: "social-media", tags: ["hashtags", "research", "reach"], link: "/knowledge-base/hashtag-research" },
 
   // Blog Creator
-  { title: "Topic Research & Keyword Targeting", description: "Use AI to discover high-potential topics and target the right keywords for SEO.", category: "blog-creator", tags: ["topics", "keywords", "seo"] },
-  { title: "Outline Builder & Section Writing", description: "Generate structured outlines and write section-by-section for better long-form content.", category: "blog-creator", tags: ["outline", "sections", "writing"] },
-  { title: "SEO Analysis & Readability Scoring", description: "Optimize your blog posts with built-in SEO analysis and readability metrics.", category: "blog-creator", tags: ["seo", "readability", "analysis"] },
+  { title: "Topic Research & Keyword Targeting", description: "Use AI to discover high-potential topics and target the right keywords for SEO.", category: "blog-creator", tags: ["topics", "keywords", "seo"], link: "/knowledge-base/topic-keywords" },
+  { title: "Outline Builder & Section Writing", description: "Generate structured outlines and write section-by-section for better long-form content.", category: "blog-creator", tags: ["outline", "sections", "writing"], link: "/knowledge-base/outline-builder" },
+  { title: "SEO Analysis & Readability Scoring", description: "Optimize your blog posts with built-in SEO analysis and readability metrics.", category: "blog-creator", tags: ["seo", "readability", "analysis"], link: "/knowledge-base/seo-readability" },
 
   // Amazon Assistant
-  { title: "Product Data Extraction", description: "How AI extracts product details, features, and specifications for review generation.", category: "amazon-assistant", tags: ["products", "extraction", "data"] },
-  { title: "Generating SEO-Optimized Reviews", description: "Create detailed product reviews with pros, cons, ratings, and comparison tables.", category: "amazon-assistant", tags: ["reviews", "seo", "comparison"] },
-  { title: "FTC Disclosure & Compliance", description: "Automatically generate FTC-compliant affiliate disclosures for your content.", category: "amazon-assistant", tags: ["ftc", "disclosure", "compliance"] },
+  { title: "Product Data Extraction", description: "How AI extracts product details, features, and specifications for review generation.", category: "amazon-assistant", tags: ["products", "extraction", "data"], link: "/knowledge-base/product-extraction" },
+  { title: "Generating SEO-Optimized Reviews", description: "Create detailed product reviews with pros, cons, ratings, and comparison tables.", category: "amazon-assistant", tags: ["reviews", "seo", "comparison"], link: "/knowledge-base/seo-reviews" },
+  { title: "FTC Disclosure & Compliance", description: "Automatically generate FTC-compliant affiliate disclosures for your content.", category: "amazon-assistant", tags: ["ftc", "disclosure", "compliance"], link: "/knowledge-base/ftc-disclosure" },
 
   // Account
-  { title: "Managing Your Subscription", description: "Upgrade, downgrade, or cancel your plan. View billing history and invoices.", category: "account", tags: ["subscription", "billing", "plans"] },
-  { title: "Profile Settings & Preferences", description: "Update your profile, change email, and configure default tool settings.", category: "account", tags: ["profile", "settings", "preferences"] },
-  { title: "Team Management & Collaboration", description: "Invite team members, manage roles, and share content across your organization.", category: "account", tags: ["team", "collaboration", "roles"] },
+  { title: "Managing Your Subscription", description: "Upgrade, downgrade, or cancel your plan. View billing history and invoices.", category: "account", tags: ["subscription", "billing", "plans"], link: "/knowledge-base/managing-subscription" },
+  { title: "Profile Settings & Preferences", description: "Update your profile, change email, and configure default tool settings.", category: "account", tags: ["profile", "settings", "preferences"], link: "/knowledge-base/profile-settings" },
+  { title: "Team Management & Collaboration", description: "Invite team members, manage roles, and share content across your organization.", category: "account", tags: ["team", "collaboration", "roles"], link: "/knowledge-base/team-management" },
 ];
 
 export default function KnowledgeBase() {
