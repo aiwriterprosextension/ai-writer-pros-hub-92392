@@ -8,6 +8,8 @@ import { ScrollToTop } from "@/components/ScrollToTop";
 import { ThemeProvider } from "@/components/theme-provider";
 import { AuthProvider } from "@/hooks/useAuth";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { ExitIntentPopup } from "@/components/landing/ExitIntentPopup";
+import { SocialProofPopup } from "@/components/landing/SocialProofPopup";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import AmazonAffiliateExtension from "./pages/AmazonAffiliateExtension";
@@ -45,6 +47,8 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             <ScrollToTop />
+            <ExitIntentPopup />
+            <SocialProofPopup />
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/auth" element={<Auth />} />
