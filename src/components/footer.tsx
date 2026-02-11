@@ -97,6 +97,21 @@ export function Footer() {
                     About Us
                   </Link>
                 </li>
+                <li>
+                  <Link to="/contact" className="text-muted-foreground hover:text-foreground transition-colors">
+                    Contact Us
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/privacy-policy" className="text-muted-foreground hover:text-foreground transition-colors">
+                    Privacy Policy
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/terms-of-service" className="text-muted-foreground hover:text-foreground transition-colors">
+                    Terms of Service
+                  </Link>
+                </li>
               </ul>
             </div>
 
@@ -122,16 +137,6 @@ export function Footer() {
                 <li>
                   <Link to="/best-practices" className="text-muted-foreground hover:text-foreground transition-colors">
                     Best Practices Guide
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/privacy-policy" className="text-muted-foreground hover:text-foreground transition-colors">
-                    Privacy Policy
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/terms-of-service" className="text-muted-foreground hover:text-foreground transition-colors">
-                    Terms of Service
                   </Link>
                 </li>
               </ul>

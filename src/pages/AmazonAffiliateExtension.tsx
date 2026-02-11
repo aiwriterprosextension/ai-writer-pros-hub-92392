@@ -125,14 +125,14 @@ export default function AmazonAffiliateExtension() {
 
       <FeaturesGrid
         title="Everything You Need for Affiliate Success"
-        subtitle="Professional-grade tools to create content that ranks on Google and converts visitors into buyers."
+        subtitle="AI-powered tools that extract product data, generate buyer personas, build comparisons, and create FTC-compliant reviews."
         features={[
-          { icon: TrendingUp, title: "SEO-Optimized Reviews", description: "Content that ranks and converts", bullets: ["Keyword-rich headings", "Meta description generation", "Schema markup ready", "Internal linking suggestions"], gradient: "from-blue-500 to-purple-500" },
-          { icon: Star, title: "Smart Comparison Tables", description: "Multi-product side-by-side analysis", bullets: ["Up to 4 products compared", "Feature-by-feature breakdown", "Winner recommendations", "Budget & premium picks"], gradient: "from-green-500 to-teal-500" },
-          { icon: ShoppingCart, title: "Conversion Optimization", description: "Content designed to drive sales", bullets: ["Compelling CTAs", "Buyer psychology triggers", "Trust-building language", "Urgency indicators"], gradient: "from-amber-500 to-orange-500" },
-          { icon: Search, title: "Keyword Integration", description: "Target the right search terms", bullets: ["Primary keyword focus", "LSI keyword variations", "Natural keyword density", "Question-based headings"], gradient: "from-red-500 to-pink-500" },
-          { icon: BarChart3, title: "Structured Formatting", description: "Scannable, reader-friendly layout", bullets: ["Pros & cons format", "Star rating system", "Feature highlight boxes", "Quick verdict section"], gradient: "from-indigo-500 to-blue-500" },
-          { icon: Zap, title: "Instant Generation", description: "Reviews in seconds, not hours", bullets: ["8 product categories", "Custom feature inputs", "One-click copy", "Unlimited generations"], gradient: "from-purple-500 to-pink-500" },
+          { icon: Search, title: "Product Data Extractor", description: "Auto-fill from Amazon URL/ASIN", bullets: ["Product info extraction", "Key feature detection", "Category auto-detect", "Price range estimation"], gradient: "from-blue-500 to-purple-500" },
+          { icon: Target, title: "Buyer Persona Generator", description: "AI audience profiling", bullets: ["Problem-based targeting", "Price sensitivity matching", "Experience level tuning", "Persona-driven tone"], gradient: "from-green-500 to-teal-500" },
+          { icon: Star, title: "Smart Comparison Mode", description: "Up to 4 products compared", bullets: ["Alternative product finder", "Feature comparison tables", "Winner badges system", "Overall recommendations"], gradient: "from-amber-500 to-orange-500" },
+          { icon: BarChart3, title: "Review Depth & Balance", description: "Control length and sentiment", bullets: ["3 depth levels (300-1500w)", "Pros/cons balance slider", "SEO keyword optimizer", "Density tracking (1-2%)"], gradient: "from-red-500 to-pink-500" },
+          { icon: Award, title: "FAQ & Disclosure Builder", description: "SEO & compliance ready", bullets: ["6-8 buyer FAQs generated", "Featured snippet optimized", "FTC disclosure generator", "3 disclosure tones"], gradient: "from-indigo-500 to-blue-500" },
+          { icon: Zap, title: "Authenticity & Scoring", description: "Genuine, trustworthy reviews", bullets: ["Personal touch enhancer", "Testing details weaving", "Review quality scorecard", "SEO & readability metrics"], gradient: "from-purple-500 to-pink-500" },
         ]}
       />
 

@@ -36,6 +36,7 @@ import Admin from "./pages/Admin";
 import AboutUs from "./pages/AboutUs";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
+import ContactUs from "./pages/ContactUs";
 import NotFound from "./pages/NotFound";
 import KBCreatingAccount from "./pages/kb/KBCreatingAccount";
 import KBNavigatingDashboard from "./pages/kb/KBNavigatingDashboard";
@@ -136,6 +137,7 @@ const App = () => (
               <Route path="/about" element={<AboutUs />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/terms-of-service" element={<TermsOfService />} />
+              <Route path="/contact" element={<ContactUs />} />
               <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
             </Routes>

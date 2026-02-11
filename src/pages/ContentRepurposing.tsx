@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { FileText, ArrowRight, Zap, Star, Users, Instagram, Twitter, Linkedin, Facebook, Layers, Target, TrendingUp, Briefcase, ShoppingCart, PenTool, RefreshCw, Copy } from "lucide-react";
+import { FileText, ArrowRight, Zap, Star, Users, Instagram, Twitter, Linkedin, Facebook, Layers, Target, TrendingUp, Briefcase, ShoppingCart, PenTool, RefreshCw, Copy, Search, Settings, Calendar } from "lucide-react";
 import { SEOHead } from "@/components/landing/SEOHead";
 import { TrustBar } from "@/components/landing/TrustBar";
 import { ProblemSolution } from "@/components/landing/ProblemSolution";
@@ -108,15 +108,15 @@ export default function ContentRepurposing() {
       />
 
       <FeaturesGrid
-        title="Platform-Optimized Content Repurposing"
-        subtitle="Our AI understands each platform's unique requirements and creates content accordingly."
+        title="AI-Powered Content Repurposing Suite"
+        subtitle="Smart content analysis, 10 output formats, platform customization, and visual recommendations — all powered by AI."
         features={[
-          { icon: Twitter, title: "Twitter Threads", description: "Engaging multi-tweet threads", bullets: ["5-10 tweet threads", "Hook-driven openers", "Engagement prompts", "Hashtag optimization"], gradient: "from-blue-500 to-blue-600" },
-          { icon: Linkedin, title: "LinkedIn Posts", description: "Professional thought leadership", bullets: ["Hook-first format", "Story-driven structure", "Industry hashtags", "CTA for engagement"], gradient: "from-blue-600 to-blue-700" },
-          { icon: Instagram, title: "Instagram Captions", description: "Scroll-stopping captions", bullets: ["Multiple caption variants", "Relevant hashtags", "Emoji integration", "Story prompts"], gradient: "from-pink-500 to-rose-500" },
-          { icon: Facebook, title: "Facebook Posts", description: "Shareable social content", bullets: ["Discussion starters", "Community engagement", "Share-worthy hooks", "Group-ready format"], gradient: "from-blue-700 to-blue-800" },
-          { icon: FileText, title: "Email Newsletters", description: "Ready-to-send email sections", bullets: ["Subject line included", "CTA optimization", "Scannable format", "Preview text"], gradient: "from-green-500 to-teal-500" },
-          { icon: Layers, title: "Bullet Point Summaries", description: "Key takeaways for any use", bullets: ["Core insights extracted", "Presentation-ready", "Meeting summaries", "Quick reference"], gradient: "from-amber-500 to-orange-500" },
+          { icon: Search, title: "Content Analyzer", description: "AI content intelligence", bullets: ["Content type detection", "Key theme extraction", "Format match scoring", "Missing element alerts"], gradient: "from-blue-500 to-blue-600" },
+          { icon: Layers, title: "10 Output Formats", description: "Every platform covered", bullets: ["Twitter, LinkedIn, Instagram", "Email, Blog, Video Script", "Podcast, Pinterest, TikTok", "AI match % per format"], gradient: "from-blue-600 to-blue-700" },
+          { icon: Settings, title: "Platform Customization", description: "Fine-tuned per format", bullets: ["Thread length controls", "Subject line generators", "Audience targeting", "Hashtag count sliders"], gradient: "from-pink-500 to-rose-500" },
+          { icon: RefreshCw, title: "Multi-Length Versions", description: "3 lengths per format", bullets: ["Short (50% length)", "Standard (100%)", "Long (150% deep dive)", "Reading time estimates"], gradient: "from-blue-700 to-blue-800" },
+          { icon: Target, title: "CTA & Visual Suggestions", description: "Complete creative direction", bullets: ["6 CTA goal options", "Color palette swatches", "Image generation prompts", "Visual type recommendations"], gradient: "from-green-500 to-teal-500" },
+          { icon: Calendar, title: "Scheduling & Export", description: "Plan and distribute", bullets: ["Optimal posting calendar", "Hashtag recommendations", "Batch ZIP download", "Content series creator"], gradient: "from-amber-500 to-orange-500" },
         ]}
       />
 
