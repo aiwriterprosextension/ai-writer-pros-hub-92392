@@ -4,8 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Twitter, Linkedin, Youtube, Github } from "lucide-react";
 import logo from "@/assets/logo.webp";
+import logoWhite from "@/assets/logo-white.png";
+import { useTheme } from "@/components/theme-provider";
 
 export function Footer() {
+  const { theme } = useTheme();
+  const isDark = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  const currentLogo = isDark ? logoWhite : logo;
+
   return (
     <footer className="bg-muted/30 border-t border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -16,7 +22,7 @@ export function Footer() {
             <div className="lg:col-span-2">
               <div className="flex items-center mb-4">
                 <Link to="/">
-                  <img src={logo} alt="AI Writer Pros" className="h-8 w-auto" />
+                  <img src={currentLogo} alt="AI Writer Pros" className="h-8 w-auto" />
                 </Link>
               </div>
               <p className="text-muted-foreground mb-6 max-w-md">

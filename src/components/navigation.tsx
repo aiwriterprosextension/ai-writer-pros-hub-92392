@@ -6,6 +6,8 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { Menu, X, ChevronDown, LogOut, BookOpen, Newspaper, LifeBuoy, Lightbulb } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import logo from "@/assets/logo.webp";
+import logoWhite from "@/assets/logo-white.png";
+import { useTheme } from "@/components/theme-provider";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,6 +19,9 @@ export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const { theme } = useTheme();
+  const isDark = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  const currentLogo = isDark ? logoWhite : logo;
 
   const handleSignOut = async () => {
     await signOut();
@@ -29,7 +34,7 @@ export function Navigation() {
         <div className="flex justify-between items-center py-4">
           <div className="flex items-center">
             <Link to="/" className="flex items-center">
-              <img src={logo} alt="AI Writer Pros" className="h-10 w-auto" />
+              <img src={currentLogo} alt="AI Writer Pros" className="h-10 w-auto" />
             </Link>
           </div>
 
