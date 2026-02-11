@@ -1,98 +1,75 @@
 
-# Landing Page SEO Enhancement Plan
+
+# AI Writer Pros Review Page
 
 ## Overview
-Rebuild the Index.tsx landing page with new sections and SEO improvements to increase organic search visibility, dwell time, and conversions. The page will go from ~5 sections to ~12 sections, use proper structured data (JSON-LD), semantic HTML, and reuse existing reusable components.
+Create a comprehensive, SEO-optimized product review page for AI Writer Pros at `/ai-writer-pros-review` following the detailed review prompt structure. This will be a long-form, high-quality self-review page that doubles as a powerful SEO landing page.
 
----
+## Product Details Gathered
+- **Product Name:** AI Writer Pros
+- **Tagline:** Professional AI Writing Tools That Actually Work
+- **Creator:** Solo founder with 20+ years IT experience
+- **URL:** aiwriterpros.com
+- **Pricing:** Free ($0), Pro ($29/mo), Enterprise ($99/mo)
+- **Tools:** 6 specialized AI tools with 80+ features
+- **Stats:** 50,000+ users, 4.8/5 rating, 2.5M+ words/month, 99.9% uptime
 
-## New Sections to Add (in order)
+## Page Structure
 
-### 1. SEO Head with Structured Data
-- Add the existing `SEOHead` component to set page title, meta description, keywords, canonical URL, and Organization + SoftwareApplication JSON-LD schema markup
-- Target keywords: "AI writing tools", "AI content creation platform", "AI humanizer", "Amazon affiliate review generator"
+### SEO Elements
+- **Title (H1):** "AI Writer Pros Review: Honest Test Results & Full Verdict (2025)"
+- **Meta Description:** "Is AI Writer Pros worth it? We tested all 6 AI writing tools — Humanizer, Email Generator, Blog Creator & more. See real results, pricing, and honest pros & cons."
+- **URL:** `/ai-writer-pros-review`
+- **Schema Markup:** Review schema with rating, author, product details
 
-### 2. Problem/Solution Section (NEW)
-- "Still Writing Content the Hard Way?" heading
-- Two-column layout: Left shows 4-5 pain points (time-consuming, inconsistent quality, AI detection, etc.), Right shows how AI Writer Pros solves each
-- Uses semantic `<h2>` and descriptive paragraph text for keyword density
+### Content Sections (following the prompt's architecture)
 
-### 3. "How It Works" Section (NEW on homepage)
-- Reuse the existing `HowItWorks` component with 3 steps: Sign Up -> Choose a Tool -> Generate & Publish
-- CTA links to /auth
+1. **Quick Overview Box** - Featured snippet target with rating, pricing, verdict at a glance
+2. **Table of Contents** - Jump links to all sections
+3. **What Is AI Writer Pros?** - Product overview with value proposition
+4. **Who Created AI Writer Pros?** - Founder story, 20+ years IT background
+5. **AI Writer Pros Features Breakdown** - All 6 tools with 80+ features detailed:
+   - Amazon Affiliate Assistant (12 features)
+   - AI Humanizer (14 features)
+   - Content Repurposing (12 features)
+   - Email Campaign Generator (10 features)
+   - Social Media Suite (10 features)
+   - Blog Content Creator (14 features)
+   - Universal platform features (6 features)
+6. **How AI Writer Pros Works (Step-by-Step)** - Sign up, choose tool, generate
+7. **AI Writer Pros Pricing & Packages** - Free/Pro/Enterprise comparison table
+8. **AI Writer Pros vs Alternatives** - Comparison table from landing page data
+9. **Real User Results & Use Cases** - 6 use cases (affiliate marketers, bloggers, social media managers, email marketers, agencies, educators)
+10. **Pros & Cons Analysis** - Balanced assessment
+11. **Is AI Writer Pros Worth It?** - Verdict by user type
+12. **FAQ Section** - 15-20 questions from existing FAQs plus new ones
+13. **Final Verdict** - Overall rating and recommendation
 
-### 4. Comparison Table (NEW)
-- Reuse existing `ComparisonTable` component
-- Compare "AI Writer Pros" vs "ChatGPT" vs "Jasper" across 8-10 features:
-  - Amazon Affiliate Reviews, AI Humanizer, Content Repurposing, SEO Optimization, Multi-platform output, Built-in templates, Bulk generation, Free trial, etc.
-- Great for "AI Writer Pros vs ChatGPT" long-tail search queries
+### Technical Implementation
 
-### 5. Use Cases / Who It's For Section (NEW)
-- Grid of 4-5 audience segments: Affiliate Marketers, Bloggers, Social Media Managers, Email Marketers, Agencies
-- Each with icon, title, 2-sentence description, and relevant tool links
-- Targets long-tail queries like "AI writing tools for affiliate marketers"
+**New file:** `src/pages/AIWriterProsReview.tsx`
+- Full static content page (no AI generation needed)
+- SEO Head with Review schema markup (JSON-LD)
+- Responsive design using existing UI components (Card, Badge, Table, Accordion)
+- Jump links via anchor IDs for table of contents
+- Star rating visuals
+- Comparison tables
+- Pros/cons with check/x icons
+- FAQ accordion section
 
-### 6. FAQ Section (NEW)
-- Reuse existing `FAQSection` component with FAQ JSON-LD schema (already built in)
-- 8-10 SEO-targeted questions:
-  - "What is AI Writer Pros?"
-  - "How does the AI Humanizer work?"
-  - "Is AI-generated content good for SEO?"
-  - "How much does AI Writer Pros cost?"
-  - "Can AI Writer Pros generate Amazon product reviews?"
-  - "Does AI Writer Pros bypass AI detection?"
-  - "What content formats does the Content Repurposing tool support?"
-  - "Is there a free trial?"
-- Each answer includes natural keyword usage
+**Route:** Add `/ai-writer-pros-review` to `src/App.tsx`
 
-### 7. Trust Bar / Social Proof Badges (NEW)
-- Horizontal strip with trust signals: "50,000+ Users", "4.8/5 Rating", "SOC 2 Compliant", "99.9% Uptime"
-- Lightweight, adds credibility above the fold area or after hero
+**Sitemap:** Add new URL to `public/sitemap.xml`
 
-### 8. Final CTA Section (Enhanced)
-- Update existing CTA with stronger copy and link buttons to /auth
-- Add structured breadcrumb-style trust indicators
+**Footer/Navigation:** Optionally link from footer under Resources
 
----
+### Keyword Strategy
+- Primary: "AI Writer Pros Review", "AI Writer Pros Honest Review", "Is AI Writer Pros Worth It"
+- Secondary: "AI Writer Pros features", "AI Writer Pros pricing", "AI Writer Pros vs alternatives"
+- Long-tail: "best AI writing tools for affiliate marketers", "AI humanizer review", "AI content creation platform review"
+- Natural keyword density of 1-2% throughout
 
-## SEO Technical Improvements
+### Content Length Target
+- 4,000-5,000+ words to exceed typical competitor reviews by 30%+
+- Rich with tables, lists, callouts, and visual breaks for readability
 
-### On-Page SEO
-- Add `SEOHead` component with optimized title: "AI Writer Pros - Professional AI Writing Tools for Content Creators"
-- Meta description targeting primary keywords
-- Organization JSON-LD schema
-- Proper heading hierarchy: single `<h1>`, multiple `<h2>` for sections, `<h3>` for sub-items
-
-### Content Improvements
-- Increase page word count from ~400 to 2,000+ words (matching tool landing page architecture)
-- Add keyword-rich descriptive paragraphs in each new section
-- Internal linking to all 6 tool pages from multiple sections
-
-### Existing Section Updates
-- Hero: Update CTA buttons to link to /auth
-- Tool Showcase: Keep as-is (already links to tool pages)
-- Testimonials: Keep existing 3
-- Features: Keep existing 6-feature grid
-- Footer copyright year: Update from 2024 to 2025
-
----
-
-## Technical Details
-
-### Files to Create
-- None -- all reusable components already exist
-
-### Files to Modify
-1. **`src/pages/Index.tsx`** -- Major rewrite to add all new sections, import reusable components (`SEOHead`, `ComparisonTable`, `FAQSection`, `HowItWorks`), update CTA links to /auth, add proper heading hierarchy
-2. **`src/components/footer.tsx`** -- Update copyright year
-3. **`index.html`** -- Ensure meta tags align with SEOHead defaults
-4. **`public/robots.txt`** -- Add sitemap reference (Sitemap: https://aiwriterpros.com/sitemap.xml)
-
-### Component Reuse
-- `SEOHead` for meta tags + JSON-LD
-- `FAQSection` for FAQ with automatic schema markup
-- `ComparisonTable` for competitor comparison
-- `HowItWorks` for 3-step process
-- All existing UI components (Card, Badge, Button, etc.)
-
-### No database changes needed
