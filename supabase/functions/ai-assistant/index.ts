@@ -695,6 +695,83 @@ Provide 3 internal linking opportunities.`;
         break;
       }
 
+      // === AI HUMANIZER SPECIFIC ACTIONS ===
+
+      case "humanizer-analyze": {
+        const { content } = body;
+        systemPrompt = `You are an AI content detection expert. Analyze content for AI-generated patterns. Respond with ONLY valid JSON, no markdown:
+{
+  "aiScore": <0-100>,
+  "contentType": "<Blog|Academic|Marketing|Technical|Other>",
+  "writingStyle": "<Professional|Casual|Technical|Academic|Creative>",
+  "readingLevel": "<e.g. Grade 10>",
+  "recommendedIntensity": "<Light|Medium|Aggressive>",
+  "aiPatterns": [
+    { "phrase": "<exact phrase from content>", "reason": "<why it sounds AI-generated>" }
+  ],
+  "sentenceVariety": "<Low|Medium|High>",
+  "avgSentenceLength": <number>
+}
+Identify up to 8 AI patterns.`;
+        userPrompt = `Analyze this content for AI-generated patterns:\n\n${(content || '').substring(0, 4000)}`;
+        break;
+      }
+
+      case "humanizer-generate-content": {
+        const { topic, contentType, length } = body;
+        systemPrompt = `You are a content writer. Generate ${contentType || 'blog post'} content using standard AI writing patterns. Output ONLY the content, no commentary.`;
+        userPrompt = `Generate ${contentType || 'blog post'} content about "${topic}" in approximately ${length || '300-600'} words. Use standard AI writing patterns.`;
+        break;
+      }
+
+      case "humanizer-score-after": {
+        const { originalContent, humanizedContent } = body;
+        systemPrompt = `You are an AI detection expert. Compare original and humanized content. Respond with ONLY valid JSON, no markdown:
+{
+  "before": { "aiScore": <0-100>, "readability": "<e.g. Grade 10>", "sentenceVariety": "<Low|Medium|High>" },
+  "after": { "aiScore": <0-100>, "readability": "<e.g. Grade 9>", "sentenceVariety": "<Low|Medium|High>" },
+  "improvement": <percentage points improved>,
+  "humanLikelihood": <0-100>
+}`;
+        userPrompt = `Compare these two versions:\n\nORIGINAL:\n${(originalContent || '').substring(0, 2000)}\n\nHUMANIZED:\n${(humanizedContent || '').substring(0, 2000)}`;
+        break;
+      }
+
+      case "humanizer-versions": {
+        const { content, style, industry, readingLevel } = body;
+        systemPrompt = `You are an expert content rewriter. Create 3 different humanized versions using different approaches. Respond with ONLY valid JSON, no markdown:
+{
+  "versionA": { "approach": "Conversational", "content": "<full humanized text>" },
+  "versionB": { "approach": "Professional", "content": "<full humanized text>" },
+  "versionC": { "approach": "Creative", "content": "<full humanized text>" }
+}
+Each version should sound naturally human while preserving the original meaning.`;
+        userPrompt = `Create 3 humanized versions of this content.${style ? ` Target style: ${style}.` : ''}${industry ? ` Industry: ${industry}.` : ''}${readingLevel ? ` Reading level: ${readingLevel}.` : ''}\n\n${(content || '').substring(0, 3000)}`;
+        break;
+      }
+
+      case "humanizer-originality": {
+        const { content } = body;
+        systemPrompt = `You are a content originality analyst. Check for clichés and overused patterns. Respond with ONLY valid JSON, no markdown:
+{
+  "uniquenessScore": <0-100>,
+  "flaggedPhrases": [{ "phrase": "<phrase>", "issue": "<why it's not unique>" }],
+  "suggestions": ["<improvement suggestion>"]
+}
+Flag up to 8 phrases, provide 3 suggestions.`;
+        userPrompt = `Analyze this content for originality:\n\n${(content || '').substring(0, 3000)}`;
+        break;
+      }
+
+      case "humanizer-bulk": {
+        const { paragraphs, style, industry, intensity } = body;
+        systemPrompt = `You are an expert humanizer. Humanize each paragraph separately while maintaining consistent tone. Respond with ONLY valid JSON array, no markdown:
+[{ "original": "<original paragraph>", "humanized": "<humanized version>" }]
+Intensity: ${intensity || 'medium'}.${style ? ` Style: ${style}.` : ''}${industry ? ` Industry: ${industry}.` : ''}`;
+        userPrompt = `Humanize each paragraph:\n\n${(paragraphs || []).map((p: string, i: number) => `[${i + 1}] ${p}`).join('\n\n')}`;
+        break;
+      }
+
       default:
         return new Response(JSON.stringify({ error: `Unknown action: ${action}` }), {
           status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },

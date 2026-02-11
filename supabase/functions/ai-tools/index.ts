@@ -23,8 +23,9 @@ const toolPrompts: Record<string, { system: string; buildUserPrompt: (body: any)
 - Do NOT add any commentary, just output the rewritten text directly.`,
     buildUserPrompt: (body: any) => {
       const intensity = body.intensity || 'medium';
+      const extra = body.extraInstructions ? `\nAdditional instructions: ${body.extraInstructions}` : '';
       return `Humanization intensity: ${intensity.toUpperCase()}
-${intensityInstructions[intensity] || intensityInstructions.medium}
+${intensityInstructions[intensity] || intensityInstructions.medium}${extra}
 
 Rewrite the following AI-generated content:\n\n${body.content}`;
     },
