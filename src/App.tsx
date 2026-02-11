@@ -37,6 +37,7 @@ import AboutUs from "./pages/AboutUs";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import ContactUs from "./pages/ContactUs";
+import AIWriterProsReview from "./pages/AIWriterProsReview";
 import NotFound from "./pages/NotFound";
 import KBCreatingAccount from "./pages/kb/KBCreatingAccount";
 import KBNavigatingDashboard from "./pages/kb/KBNavigatingDashboard";
@@ -134,6 +135,7 @@ const App = () => (
               <Route path="/knowledge-base/managing-subscription" element={<KBManagingSubscription />} />
               <Route path="/knowledge-base/profile-settings" element={<KBProfileSettings />} />
               <Route path="/knowledge-base/team-management" element={<KBTeamManagement />} />
+              <Route path="/ai-writer-pros-review" element={<AIWriterProsReview />} />
               <Route path="/about" element={<AboutUs />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/terms-of-service" element={<TermsOfService />} />

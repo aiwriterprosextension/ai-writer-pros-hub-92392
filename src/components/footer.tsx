@@ -145,6 +145,11 @@ export function Footer() {
                     Best Practices Guide
                   </Link>
                 </li>
+                <li>
+                  <Link to="/ai-writer-pros-review" className="text-muted-foreground hover:text-foreground transition-colors">
+                    AI Writer Pros Review
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>
