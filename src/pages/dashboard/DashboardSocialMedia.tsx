@@ -6,9 +6,16 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { MessageSquare, Zap, Copy, Instagram, Twitter, Linkedin, Facebook } from "lucide-react";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { AIChatWidget } from "@/components/dashboard/AIChatWidget";
+import { ImproveInputButton } from "@/components/dashboard/ImproveInputButton";
+import { HistoryFavorites } from "@/components/dashboard/HistoryFavorites";
+import { QualityScorePreview } from "@/components/dashboard/QualityScorePreview";
+import { WorkflowSuggestions } from "@/components/dashboard/WorkflowSuggestions";
+import { ExportHub } from "@/components/dashboard/ExportHub";
+import { AskAIButton } from "@/components/dashboard/AskAIButton";
 
 const platforms = [
   { id: 'twitter', name: 'Twitter/X', icon: Twitter, charLimit: 280 },
@@ -23,6 +30,7 @@ export default function DashboardSocialMedia() {
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>(["twitter", "linkedin"]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [result, setResult] = useState("");
+  const [chatPrefill, setChatPrefill] = useState("");
   const { toast } = useToast();
 
   const togglePlatform = (id: string) => {
@@ -65,6 +73,13 @@ export default function DashboardSocialMedia() {
     return sections;
   }, [result]);
 
+  const currentConfig = { topic, tone, selectedPlatforms };
+  const loadConfig = useCallback((config: Record<string, any>) => {
+    if (config.topic) setTopic(config.topic);
+    if (config.tone) setTone(config.tone);
+    if (config.selectedPlatforms) setSelectedPlatforms(config.selectedPlatforms);
+  }, []);
+
   return (
     <div>
       <div className="mb-6">
@@ -72,12 +87,20 @@ export default function DashboardSocialMedia() {
         <p className="text-muted-foreground">Generate optimized posts for Twitter, LinkedIn, Instagram & Facebook.</p>
       </div>
 
+      <HistoryFavorites tool="social" currentConfig={currentConfig} onLoadConfig={loadConfig} />
+
       <Card className="p-6">
         <div className="grid lg:grid-cols-2 gap-8">
           <div className="space-y-4">
             <h3 className="text-lg font-semibold flex items-center"><MessageSquare className="h-5 w-5 mr-2 text-pink-500" />Post Settings</h3>
             <div className="space-y-2">
-              <Label>Topic / Content Idea</Label>
+              <div className="flex items-center justify-between">
+                <Label>Topic / Content Idea</Label>
+                <div className="flex gap-1">
+                  <ImproveInputButton fieldType="social media topic" currentValue={topic} toolName="Social Media Suite" onAccept={setTopic} />
+                  <AskAIButton question="What tone works best for LinkedIn vs Twitter?" onAsk={setChatPrefill} />
+                </div>
+              </div>
               <Input placeholder="e.g. New product launch, behind the scenes..." value={topic} onChange={(e) => setTopic(e.target.value)} />
             </div>
             <div className="space-y-2">
@@ -111,14 +134,20 @@ export default function DashboardSocialMedia() {
                 ))}
               </div>
             </div>
-            <Button onClick={handleGenerate} disabled={!topic || selectedPlatforms.length === 0 || isGenerating} className="w-full" size="lg">
-              {isGenerating ? <><Zap className="mr-2 h-4 w-4 animate-spin" />Generating...</> : <><MessageSquare className="mr-2 h-4 w-4" />Generate Posts ({selectedPlatforms.length})</>}
-            </Button>
+            <div className="flex items-center gap-2">
+              <QualityScorePreview toolName="Social Media Suite" formData={currentConfig} disabled={!topic} />
+              <Button onClick={handleGenerate} disabled={!topic || selectedPlatforms.length === 0 || isGenerating} className="flex-1" size="lg">
+                {isGenerating ? <><Zap className="mr-2 h-4 w-4 animate-spin" />Generating...</> : <><MessageSquare className="mr-2 h-4 w-4" />Generate Posts ({selectedPlatforms.length})</>}
+              </Button>
+            </div>
           </div>
           <div>
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold flex items-center"><Zap className="h-5 w-5 mr-2 text-pink-500" />Generated Posts</h3>
-              {result && <Button variant="outline" size="sm" onClick={() => handleCopy()}><Copy className="h-3 w-3 mr-1" /> Copy All</Button>}
+              <div className="flex gap-2">
+                {result && <ExportHub content={result} filename="social-media-posts" />}
+                {result && <Button variant="outline" size="sm" onClick={() => handleCopy()}><Copy className="h-3 w-3 mr-1" /> Copy All</Button>}
+              </div>
             </div>
             {Object.keys(platformSections).length > 0 ? (
               <div className="space-y-4 max-h-[600px] overflow-y-auto">
@@ -155,9 +184,17 @@ export default function DashboardSocialMedia() {
                 )}
               </div>
             )}
+            <WorkflowSuggestions
+              contentType="social media posts"
+              summary={result.substring(0, 200)}
+              currentTool="Social Media Suite"
+              visible={!!result}
+            />
           </div>
         </div>
       </Card>
+
+      <AIChatWidget currentTool="social-media" prefillQuestion={chatPrefill} onPrefillConsumed={() => setChatPrefill("")} />
     </div>
   );
 }

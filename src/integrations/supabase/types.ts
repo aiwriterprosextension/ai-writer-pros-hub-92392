@@ -16,27 +16,72 @@ export type Database = {
     Tables: {
       generations: {
         Row: {
+          config: Json | null
           created_at: string
           id: string
           input_preview: string | null
+          is_draft: boolean
+          output_full: string | null
           output_preview: string | null
           tool: string
           user_id: string
         }
         Insert: {
+          config?: Json | null
           created_at?: string
           id?: string
           input_preview?: string | null
+          is_draft?: boolean
+          output_full?: string | null
           output_preview?: string | null
           tool: string
           user_id: string
         }
         Update: {
+          config?: Json | null
           created_at?: string
           id?: string
           input_preview?: string | null
+          is_draft?: boolean
+          output_full?: string | null
           output_preview?: string | null
           tool?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      tool_configurations: {
+        Row: {
+          config: Json
+          created_at: string
+          favorite_name: string | null
+          id: string
+          is_draft: boolean
+          is_favorite: boolean
+          tool: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          config?: Json
+          created_at?: string
+          favorite_name?: string | null
+          id?: string
+          is_draft?: boolean
+          is_favorite?: boolean
+          tool: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          config?: Json
+          created_at?: string
+          favorite_name?: string | null
+          id?: string
+          is_draft?: boolean
+          is_favorite?: boolean
+          tool?: string
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
