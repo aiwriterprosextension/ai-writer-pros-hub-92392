@@ -158,7 +158,7 @@ export function Footer() {
         <div className="py-6 border-t border-border">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-sm text-muted-foreground">
-              © 2024 AI Writer Pros. All rights reserved.
+              © 2025 AI Writer Pros. All rights reserved.
             </div>
             
             {/* Social Links */}
