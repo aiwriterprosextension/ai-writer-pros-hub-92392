@@ -14,6 +14,111 @@ export type Database = {
   }
   public: {
     Tables: {
+      affiliate_reviews: {
+        Row: {
+          ai_model_version: string | null
+          asin: string | null
+          category: string | null
+          config: Json | null
+          cons: string | null
+          created_at: string
+          deleted_at: string | null
+          disclosure: string | null
+          faq_content: Json | null
+          id: string
+          persona: Json | null
+          product_name: string
+          pros: string | null
+          rating: number | null
+          review_content: string | null
+          review_depth: string | null
+          seo_keyword: string | null
+          tone_balance: number | null
+          updated_at: string
+          user_id: string
+          word_count: number | null
+        }
+        Insert: {
+          ai_model_version?: string | null
+          asin?: string | null
+          category?: string | null
+          config?: Json | null
+          cons?: string | null
+          created_at?: string
+          deleted_at?: string | null
+          disclosure?: string | null
+          faq_content?: Json | null
+          id?: string
+          persona?: Json | null
+          product_name: string
+          pros?: string | null
+          rating?: number | null
+          review_content?: string | null
+          review_depth?: string | null
+          seo_keyword?: string | null
+          tone_balance?: number | null
+          updated_at?: string
+          user_id: string
+          word_count?: number | null
+        }
+        Update: {
+          ai_model_version?: string | null
+          asin?: string | null
+          category?: string | null
+          config?: Json | null
+          cons?: string | null
+          created_at?: string
+          deleted_at?: string | null
+          disclosure?: string | null
+          faq_content?: Json | null
+          id?: string
+          persona?: Json | null
+          product_name?: string
+          pros?: string | null
+          rating?: number | null
+          review_content?: string | null
+          review_depth?: string | null
+          seo_keyword?: string | null
+          tone_balance?: number | null
+          updated_at?: string
+          user_id?: string
+          word_count?: number | null
+        }
+        Relationships: []
+      }
+      buyer_personas: {
+        Row: {
+          created_at: string
+          experience_level: string | null
+          id: string
+          persona_description: string | null
+          price_sensitivity: string | null
+          problem: string | null
+          product_name: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          experience_level?: string | null
+          id?: string
+          persona_description?: string | null
+          price_sensitivity?: string | null
+          problem?: string | null
+          product_name: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          experience_level?: string | null
+          id?: string
+          persona_description?: string | null
+          price_sensitivity?: string | null
+          problem?: string | null
+          product_name?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       generations: {
         Row: {
           config: Json | null
@@ -49,6 +154,44 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      product_comparisons: {
+        Row: {
+          compared_products: Json
+          comparison_table: Json | null
+          created_at: string
+          id: string
+          review_id: string | null
+          user_id: string
+          winner_badges: Json | null
+        }
+        Insert: {
+          compared_products?: Json
+          comparison_table?: Json | null
+          created_at?: string
+          id?: string
+          review_id?: string | null
+          user_id: string
+          winner_badges?: Json | null
+        }
+        Update: {
+          compared_products?: Json
+          comparison_table?: Json | null
+          created_at?: string
+          id?: string
+          review_id?: string | null
+          user_id?: string
+          winner_badges?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_comparisons_review_id_fkey"
+            columns: ["review_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_reviews"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       tool_configurations: {
         Row: {
