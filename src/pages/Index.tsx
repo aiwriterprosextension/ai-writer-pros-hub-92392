@@ -5,6 +5,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
+import { SEOHead } from "@/components/landing/SEOHead";
+import { TrustBar } from "@/components/landing/TrustBar";
+import { ProblemSolution } from "@/components/landing/ProblemSolution";
+import { HowItWorks } from "@/components/landing/HowItWorks";
+import { ComparisonTable } from "@/components/landing/ComparisonTable";
+import { UseCases } from "@/components/landing/UseCases";
+import { FAQSection } from "@/components/landing/FAQSection";
+import { FinalCTA } from "@/components/landing/FinalCTA";
 import { 
   Play, 
   Star, 
@@ -20,43 +28,137 @@ import {
   FileText,
   Mail,
   MessageSquare,
-  PenTool
+  PenTool,
+  ShoppingCart,
+  Briefcase,
+  Share2,
+  UserPlus
 } from "lucide-react";
+
+const seoSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "AI Writer Pros",
+  url: "https://aiwriterpros.com",
+  description: "Professional AI writing tools for content creators. Amazon Affiliate Assistant, AI Humanizer, Content Repurposing and more.",
+  sameAs: [],
+  offers: {
+    "@type": "SoftwareApplication",
+    name: "AI Writer Pros",
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "Web",
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD", description: "Free trial available" },
+  },
+};
+
+const trustStats = [
+  { label: "Active Users", value: "50,000+", icon: "users" as const },
+  { label: "Average Rating", value: "4.8/5", icon: "star" as const },
+  { label: "SOC 2 Compliant", value: "✓", icon: "shield" as const },
+  { label: "Uptime", value: "99.9%", icon: "award" as const },
+];
+
+const problems = [
+  "Writing quality content takes 4-6 hours per article with no guarantee of SEO ranking",
+  "AI-generated text gets flagged by detection tools like GPTZero and Originality.ai",
+  "Repurposing a single blog post for social media, email, and other channels is tedious and time-consuming",
+  "Hiring freelance writers costs $200-$500 per article and quality is inconsistent",
+  "Keeping up with content demands across Amazon reviews, blogs, email, and social media is overwhelming",
+];
+
+const solutions = [
+  "Generate SEO-optimized articles, Amazon reviews, and blog posts in under 5 minutes with AI Writer Pros",
+  "Our AI Humanizer makes content 99% undetectable while preserving readability and brand voice",
+  "Turn 1 piece of content into 10+ formats instantly — social posts, emails, threads, and more",
+  "Professional-quality output at a fraction of the cost with built-in templates and tone control",
+  "One platform with 6 specialized AI tools handles every content need from a single dashboard",
+];
+
+const howItWorksSteps = [
+  { title: "Sign Up Free", description: "Create your account in 30 seconds. No credit card required — start with a generous free trial.", icon: UserPlus },
+  { title: "Choose Your Tool", description: "Pick from 6 AI writing tools: Amazon reviews, AI Humanizer, Content Repurposing, Email, Social Media, or Blog Creator.", icon: Zap },
+  { title: "Generate & Publish", description: "Get polished, SEO-optimized content in seconds. Edit, export, and publish across all your channels.", icon: ArrowRight },
+];
+
+const comparisonRows = [
+  { feature: "Amazon Affiliate Reviews", us: true, competitor1: false, competitor2: false },
+  { feature: "AI Humanizer (Bypass Detection)", us: true, competitor1: false, competitor2: false },
+  { feature: "Content Repurposing (10+ Formats)", us: true, competitor1: false, competitor2: true },
+  { feature: "SEO Optimization Built-In", us: true, competitor1: false, competitor2: true },
+  { feature: "Multi-Platform Output", us: true, competitor1: false, competitor2: true },
+  { feature: "Built-In Templates", us: true, competitor1: false, competitor2: true },
+  { feature: "Bulk Generation", us: true, competitor1: false, competitor2: false },
+  { feature: "Free Trial (No Credit Card)", us: true, competitor1: true, competitor2: false },
+  { feature: "Chrome Extension", us: true, competitor1: false, competitor2: false },
+  { feature: "Dedicated Email Generator", us: true, competitor1: false, competitor2: true },
+];
+
+const useCases = [
+  { title: "Affiliate Marketers", description: "Generate high-converting Amazon product reviews with SEO-optimized pros, cons, and comparison tables. Scale your affiliate content from 2 reviews/week to 20+.", icon: ShoppingCart, example: "Use the Amazon Affiliate Assistant to auto-extract product data and generate reviews in minutes." },
+  { title: "Bloggers & Content Writers", description: "Create long-form blog posts, listicles, and how-to guides that rank on Google. AI Writer Pros handles research, outlines, and full drafts.", icon: PenTool, example: "Generate a 2,000-word blog post with keyword targeting using the Blog Content Creator." },
+  { title: "Social Media Managers", description: "Repurpose blog content into platform-optimized posts for Twitter/X, LinkedIn, Instagram, and Facebook. Save hours of manual rewriting every week.", icon: Share2, example: "Turn one blog post into 10+ social media posts using Content Repurposing." },
+  { title: "Email Marketers", description: "Craft compelling email sequences, newsletters, and promotional campaigns with AI. Improve open rates with subject line optimization and A/B copy variants.", icon: Mail, example: "Use the Email Generator to build a 5-email welcome sequence in under 10 minutes." },
+  { title: "Agencies & Teams", description: "Scale content production across multiple clients without sacrificing quality. Maintain brand voice consistency with configurable tone and style settings.", icon: Briefcase, example: "Manage 10+ client accounts from a single AI Writer Pros dashboard." },
+];
+
+const faqs = [
+  { question: "What is AI Writer Pros?", answer: "AI Writer Pros is a professional AI content creation platform with 6 specialized writing tools: Amazon Affiliate Assistant, AI Humanizer, Content Repurposing, Email Generator, Social Media Suite, and Blog Content Creator. It helps content creators, marketers, and agencies produce high-quality content at scale." },
+  { question: "How does the AI Humanizer work?", answer: "The AI Humanizer uses advanced natural language processing to rewrite AI-generated text so it reads naturally and passes AI detection tools like GPTZero, Originality.ai, and Turnitin. It maintains your original meaning and quality while achieving a 99% undetectable rate." },
+  { question: "Is AI-generated content good for SEO?", answer: "Yes — when done correctly. AI Writer Pros generates content with built-in SEO optimization including keyword targeting, proper heading hierarchy, meta descriptions, and internal linking suggestions. Google's guidelines allow AI-assisted content as long as it provides genuine value to readers, which is exactly what our tools produce." },
+  { question: "How much does AI Writer Pros cost?", answer: "AI Writer Pros offers a generous free trial with no credit card required. Paid plans start at affordable monthly rates with options for individuals, teams, and agencies. Visit our Pricing page for detailed plan comparisons." },
+  { question: "Can AI Writer Pros generate Amazon product reviews?", answer: "Absolutely. The Amazon Affiliate Assistant is our most popular tool with 25,000+ active users. It auto-extracts product data from Amazon, generates detailed pros and cons, creates comparison tables, builds FAQ sections, and produces FTC-compliant affiliate disclosures — all in minutes." },
+  { question: "Does AI Writer Pros bypass AI detection?", answer: "Yes. Our AI Humanizer is specifically designed to transform AI-generated text into natural, human-sounding content. It achieves a 99% success rate against leading AI detection tools while preserving the quality, accuracy, and readability of your original content." },
+  { question: "What content formats does the Content Repurposing tool support?", answer: "The Content Repurposing tool transforms one piece of content into 10+ formats including Twitter/X threads, LinkedIn posts, Instagram captions, Facebook posts, email newsletters, YouTube descriptions, Pinterest pins, Reddit posts, TikTok scripts, and blog summaries." },
+  { question: "Is there a free trial?", answer: "Yes! AI Writer Pros offers a free trial with no credit card required. You can test all 6 AI writing tools and experience the full platform before committing to a paid plan. Sign up takes less than 30 seconds." },
+];
 
 export default function Index() {
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead
+        title="AI Writer Pros – Professional AI Writing Tools for Content Creators"
+        description="Save 10+ hours per week with AI Writer Pros. Amazon Affiliate Assistant, AI Humanizer, Content Repurposing, Email Generator & more. Free trial, no credit card."
+        keywords="AI writing tools, AI content creation platform, AI humanizer, Amazon affiliate review generator, content repurposing, AI email generator, blog content creator"
+        canonical="https://aiwriterpros.com"
+        ogTitle="AI Writer Pros – Professional AI Writing Tools"
+        ogDescription="Join 50,000+ content creators scaling their writing with AI. Generate, humanize, and repurpose content across all platforms."
+        schema={seoSchema}
+      />
       <Navigation />
       
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+      <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8" style={{ background: "linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 17% 97%) 100%)" }}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center">
-            <Badge className="mb-4 bg-gradient-to-r from-blue-100 to-purple-100 text-blue-800 border-blue-200">
+            <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">
               Join 50,000+ Content Creators
             </Badge>
             
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                Professional AI Writing Tools
-              </span>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6 text-secondary">
+              Professional AI Writing Tools
               <br />
-              That Actually Work
+              <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+                That Actually Work
+              </span>
             </h1>
             
             <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-              Save 10+ hours per week on content creation. Generate high-quality content that converts, 
-              humanize AI text, and repurpose content across all platforms.
+              Save 10+ hours per week on content creation. Generate high-quality, SEO-optimized content that converts, 
+              humanize AI text to bypass detection, and repurpose content across all platforms — from one powerful dashboard.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-              <Button size="lg" className="text-lg px-8">
-                Start Free Trial
-                <ArrowRight className="ml-2 h-5 w-5" />
+              <Button size="lg" className="text-lg px-8" asChild>
+                <Link to="/auth">
+                  Start Free Trial
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
               </Button>
-              <Button size="lg" variant="outline" className="text-lg px-8">
-                <Play className="mr-2 h-5 w-5" />
-                Watch Demo
+              <Button size="lg" variant="outline" className="text-lg px-8" asChild>
+                <Link to="/features">
+                  <Play className="mr-2 h-5 w-5" />
+                  See All Features
+                </Link>
               </Button>
             </div>
             
@@ -67,15 +169,18 @@ export default function Index() {
         </div>
       </section>
 
+      {/* Trust Bar */}
+      <TrustBar stats={trustStats} />
+
       {/* Tool Showcase Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/30">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-secondary">
               AI Writing Tools for Every Need
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              From affiliate marketing to social media, we've got the AI tools to scale your content creation.
+              From Amazon affiliate marketing to social media management, AI Writer Pros has the specialized AI tools to scale your content creation workflow and drive real results.
             </p>
           </div>
 
@@ -100,7 +205,7 @@ export default function Index() {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground mb-4">
-                  Generate Amazon product reviews in minutes. Our most popular tool with 25,000+ active users.
+                  Generate Amazon product reviews in minutes. Our most popular tool with 25,000+ active users. Auto-extract product data, create SEO-optimized reviews with pros, cons, and comparison tables.
                 </p>
                 <div className="space-y-2 mb-6">
                   <div className="flex items-center text-sm">
@@ -133,7 +238,7 @@ export default function Index() {
               </div>
               <CardHeader>
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg">
+                  <div className="p-2 bg-gradient-to-r from-primary to-primary/70 rounded-lg">
                     <Bot className="h-6 w-6 text-white" />
                   </div>
                   <div>
@@ -144,7 +249,7 @@ export default function Index() {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground mb-4">
-                  Make AI content undetectable. Bypass AI detection tools like GPTZero with advanced humanization.
+                  Make AI content undetectable. Bypass AI detection tools like GPTZero and Originality.ai with advanced humanization that preserves quality and readability.
                 </p>
                 <div className="space-y-2 mb-6">
                   <div className="flex items-center text-sm">
@@ -188,7 +293,7 @@ export default function Index() {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground mb-4">
-                  Turn 1 piece into 10+ formats. Blog posts to social media in seconds with AI-powered repurposing.
+                  Turn 1 piece of content into 10+ formats. Blog posts to social media, email newsletters, and video scripts in seconds with AI-powered repurposing.
                 </p>
                 <div className="space-y-2 mb-6">
                   <div className="flex items-center text-sm">
@@ -233,7 +338,7 @@ export default function Index() {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground mb-6">
-                  AI-powered email campaigns that convert. Join waitlist for early access to advanced email automation.
+                  AI-powered email campaigns that convert. Join waitlist for early access to advanced email automation with subject line optimization.
                 </p>
                 <Link to="/email-generator">
                   <Button variant="outline" className="w-full">
@@ -263,7 +368,7 @@ export default function Index() {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground mb-6">
-                  Create engaging posts across all platforms. Get notified when our comprehensive social suite launches.
+                  Create engaging, platform-optimized posts across Twitter/X, LinkedIn, Instagram, and Facebook. Get notified when our comprehensive social suite launches.
                 </p>
                 <Link to="/social-media-suite">
                   <Button variant="outline" className="w-full">
@@ -293,7 +398,7 @@ export default function Index() {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground mb-6">
-                  SEO-optimized blog posts that rank. Be first to try our advanced blog creation tool with keyword research.
+                  SEO-optimized blog posts that rank on Google. Be first to try our advanced blog creation tool with built-in keyword research and content scoring.
                 </p>
                 <Link to="/blog-content-creator">
                   <Button variant="outline" className="w-full">
@@ -307,15 +412,39 @@ export default function Index() {
         </div>
       </section>
 
+      {/* Problem / Solution */}
+      <ProblemSolution
+        problemTitle="Still Writing Content the Hard Way?"
+        solutionTitle="AI Writer Pros Makes It Easy"
+        problems={problems}
+        solutions={solutions}
+      />
+
+      {/* How It Works */}
+      <HowItWorks
+        steps={howItWorksSteps}
+        ctaText="Get Started Free"
+        ctaLink="/auth"
+      />
+
+      {/* Comparison Table */}
+      <ComparisonTable
+        title="AI Writer Pros vs. The Competition"
+        ourName="AI Writer Pros"
+        competitor1Name="ChatGPT"
+        competitor2Name="Jasper"
+        rows={comparisonRows}
+      />
+
       {/* Social Proof Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-secondary">
               Trusted by Content Creators Worldwide
             </h2>
             <p className="text-xl text-muted-foreground">
-              Join thousands of professionals scaling their content with AI
+              Join thousands of professionals who have scaled their content production with AI Writer Pros
             </p>
           </div>
 
@@ -350,10 +479,10 @@ export default function Index() {
                 </div>
                 <p className="text-muted-foreground mb-4">
                   "The Amazon Affiliate Assistant has completely transformed my review process. 
-                  I'm generating 10x more content in half the time."
+                  I'm generating 10x more content in half the time. My affiliate income has doubled since switching to AI Writer Pros."
                 </p>
                 <div className="flex items-center">
-                  <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold mr-3">
+                  <div className="w-10 h-10 bg-gradient-to-r from-primary to-primary/70 rounded-full flex items-center justify-center text-white font-bold mr-3">
                     S
                   </div>
                   <div>
@@ -373,7 +502,7 @@ export default function Index() {
                 </div>
                 <p className="text-muted-foreground mb-4">
                   "The AI Humanizer is a game-changer. My content passes all detection tools 
-                  while maintaining perfect quality and readability."
+                  while maintaining perfect quality and readability. It's the only humanizer that actually works consistently."
                 </p>
                 <div className="flex items-center">
                   <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-teal-500 rounded-full flex items-center justify-center text-white font-bold mr-3">
@@ -396,7 +525,7 @@ export default function Index() {
                 </div>
                 <p className="text-muted-foreground mb-4">
                   "Content repurposing used to take hours. Now I turn one blog post into 
-                  social media content for the entire week in minutes."
+                  social media content for the entire week in minutes. AI Writer Pros is the best investment I've made for my business."
                 </p>
                 <div className="flex items-center">
                   <div className="w-10 h-10 bg-gradient-to-r from-pink-500 to-rose-500 rounded-full flex items-center justify-center text-white font-bold mr-3">
@@ -425,22 +554,29 @@ export default function Index() {
         </div>
       </section>
 
+      {/* Use Cases */}
+      <UseCases
+        title="Who Uses AI Writer Pros?"
+        subtitle="Specialized AI writing tools for every content professional — from solo bloggers to enterprise agencies"
+        cases={useCases}
+      />
+
       {/* Features Preview */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/30">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-secondary">
               Why Choose AI Writer Pros?
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Professional-grade AI tools designed for serious content creators who demand quality and efficiency.
+              Professional-grade AI tools designed for serious content creators who demand quality, speed, and efficiency.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Zap className="h-8 w-8 text-white" />
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Zap className="h-8 w-8 text-primary" />
               </div>
               <h3 className="text-xl font-semibold mb-2">Lightning Fast</h3>
               <p className="text-muted-foreground">
@@ -449,8 +585,8 @@ export default function Index() {
             </div>
 
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-teal-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Shield className="h-8 w-8 text-white" />
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Shield className="h-8 w-8 text-primary" />
               </div>
               <h3 className="text-xl font-semibold mb-2">Undetectable AI</h3>
               <p className="text-muted-foreground">
@@ -459,18 +595,18 @@ export default function Index() {
             </div>
 
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                <TrendingUp className="h-8 w-8 text-white" />
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <TrendingUp className="h-8 w-8 text-primary" />
               </div>
               <h3 className="text-xl font-semibold mb-2">SEO Optimized</h3>
               <p className="text-muted-foreground">
-                Every piece of content is optimized for search engines, helping you rank higher and drive more traffic.
+                Every piece of content is optimized for search engines, helping you rank higher and drive more organic traffic.
               </p>
             </div>
 
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-pink-500 to-rose-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="h-8 w-8 text-white" />
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Users className="h-8 w-8 text-primary" />
               </div>
               <h3 className="text-xl font-semibold mb-2">Team Collaboration</h3>
               <p className="text-muted-foreground">
@@ -479,8 +615,8 @@ export default function Index() {
             </div>
 
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Clock className="h-8 w-8 text-white" />
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Clock className="h-8 w-8 text-primary" />
               </div>
               <h3 className="text-xl font-semibold mb-2">Save 10+ Hours Weekly</h3>
               <p className="text-muted-foreground">
@@ -489,8 +625,8 @@ export default function Index() {
             </div>
 
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-red-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Star className="h-8 w-8 text-white" />
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Star className="h-8 w-8 text-primary" />
               </div>
               <h3 className="text-xl font-semibold mb-2">Premium Quality</h3>
               <p className="text-muted-foreground">
@@ -501,43 +637,19 @@ export default function Index() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-            Ready to Transform Your Content Creation?
-          </h2>
-          <p className="text-xl text-muted-foreground mb-8">
-            Join 50,000+ content creators who've already scaled their writing with AI Writer Pros.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <Button size="lg" className="text-lg px-8">
-              Start Free Trial - No Credit Card Required
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-            <Button size="lg" variant="outline" className="text-lg px-8">
-              <Play className="mr-2 h-5 w-5" />
-              Watch Demo
-            </Button>
-          </div>
-          
-          <div className="flex items-center justify-center space-x-6 text-sm text-muted-foreground">
-            <div className="flex items-center">
-              <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-              14-day free trial
-            </div>
-            <div className="flex items-center">
-              <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-              Cancel anytime
-            </div>
-            <div className="flex items-center">
-              <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-              24/7 support
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* FAQ Section */}
+      <FAQSection faqs={faqs} toolName="AI Writer Pros" />
+
+      {/* Final CTA */}
+      <FinalCTA
+        headline="Ready to Transform Your Content Creation?"
+        subheadline="Join 50,000+ content creators who've already scaled their writing with AI Writer Pros. Start your free trial today — no credit card required."
+        ctaText="Start Free Trial"
+        ctaLink="/auth"
+        secondaryCtaText="View Pricing"
+        secondaryCtaLink="/pricing"
+        benefits={["14-day free trial", "No credit card required", "Cancel anytime", "24/7 support"]}
+      />
 
       <Footer />
     </div>
