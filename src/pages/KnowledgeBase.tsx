@@ -46,10 +46,10 @@ const categories = [
 
 const articles: Article[] = [
   // Getting Started
-  { title: "Creating Your AI Writer Pros Account", description: "Step-by-step guide to signing up and setting up your workspace.", category: "getting-started", tags: ["signup", "account", "onboarding"] },
-  { title: "Navigating the Dashboard", description: "Learn how to use the main dashboard, access tools, and manage your content.", category: "getting-started", tags: ["dashboard", "navigation", "overview"] },
-  { title: "Your First AI Generation", description: "A quick walkthrough of generating your first piece of content with any tool.", category: "getting-started", tags: ["tutorial", "beginner", "generation"] },
-  { title: "Understanding AI Credits & Usage", description: "How AI generation credits work, tracking usage, and optimizing your quota.", category: "getting-started", tags: ["credits", "usage", "billing"] },
+  { title: "Creating Your AI Writer Pros Account", description: "Step-by-step guide to signing up and setting up your workspace.", category: "getting-started", tags: ["signup", "account", "onboarding"], link: "/knowledge-base/creating-account" },
+  { title: "Navigating the Dashboard", description: "Learn how to use the main dashboard, access tools, and manage your content.", category: "getting-started", tags: ["dashboard", "navigation", "overview"], link: "/knowledge-base/navigating-dashboard" },
+  { title: "Your First AI Generation", description: "A quick walkthrough of generating your first piece of content with any tool.", category: "getting-started", tags: ["tutorial", "beginner", "generation"], link: "/knowledge-base/first-ai-generation" },
+  { title: "Understanding AI Credits & Usage", description: "How AI generation credits work, tracking usage, and optimizing your quota.", category: "getting-started", tags: ["credits", "usage", "billing"], link: "/knowledge-base/ai-credits-usage" },
 
   // AI Humanizer
   { title: "How the AI Pattern Analyzer Works", description: "Understand how our AI detects and flags AI-generated patterns in your content.", category: "ai-humanizer", tags: ["analyzer", "detection", "patterns"] },
@@ -197,33 +197,37 @@ export default function KnowledgeBase() {
               {filteredArticles.map((article, i) => {
                 const cat = categories.find((c) => c.id === article.category);
                 const CatIcon = cat?.icon || HelpCircle;
+                const CardWrapper = article.link ? Link : "div";
+                const wrapperProps = article.link ? { to: article.link } : {};
                 return (
-                  <Card key={i} className="hover:shadow-md transition-shadow group cursor-pointer">
-                    <CardHeader className="pb-3">
-                      <div className="flex items-start gap-3">
-                        <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${cat?.color || "bg-muted text-muted-foreground"}`}>
-                          <CatIcon className="h-4 w-4" />
+                  <CardWrapper key={i} {...(wrapperProps as any)} className="block">
+                    <Card className="hover:shadow-md transition-shadow group cursor-pointer h-full">
+                      <CardHeader className="pb-3">
+                        <div className="flex items-start gap-3">
+                          <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${cat?.color || "bg-muted text-muted-foreground"}`}>
+                            <CatIcon className="h-4 w-4" />
+                          </div>
+                          <div>
+                            <CardTitle className="text-base group-hover:text-primary transition-colors">
+                              {article.title}
+                            </CardTitle>
+                            <CardDescription className="mt-1 text-sm">
+                              {article.description}
+                            </CardDescription>
+                          </div>
                         </div>
-                        <div>
-                          <CardTitle className="text-base group-hover:text-primary transition-colors">
-                            {article.title}
-                          </CardTitle>
-                          <CardDescription className="mt-1 text-sm">
-                            {article.description}
-                          </CardDescription>
+                      </CardHeader>
+                      <CardContent className="pt-0">
+                        <div className="flex flex-wrap gap-1.5">
+                          {article.tags.slice(0, 3).map((tag) => (
+                            <Badge key={tag} variant="secondary" className="text-xs font-normal">
+                              {tag}
+                            </Badge>
+                          ))}
                         </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="pt-0">
-                      <div className="flex flex-wrap gap-1.5">
-                        {article.tags.slice(0, 3).map((tag) => (
-                          <Badge key={tag} variant="secondary" className="text-xs font-normal">
-                            {tag}
-                          </Badge>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
+                      </CardContent>
+                    </Card>
+                  </CardWrapper>
                 );
               })}
             </div>
