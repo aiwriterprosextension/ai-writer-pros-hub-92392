@@ -590,6 +590,111 @@ Only include the requested types.`;
         break;
       }
 
+      // === CONTENT REPURPOSING SPECIFIC ACTIONS ===
+
+      case "repurpose-analyze": {
+        const { content } = body;
+        systemPrompt = `You are a content analysis expert. Analyze the given content thoroughly. Respond with ONLY valid JSON, no markdown:
+{
+  "contentType": "<blog post|article|video script|social post|press release|whitepaper|other>",
+  "confidence": <50-99>,
+  "themes": ["<theme 1>", "<theme 2>", "<theme 3>"],
+  "takeaways": ["<takeaway 1>", "<takeaway 2>", "<takeaway 3>"],
+  "readingLevel": "<e.g. Grade 8>",
+  "tone": "<professional|casual|technical|conversational|academic>",
+  "formatRecommendations": [
+    { "format": "<twitter|linkedin|instagram|facebook|email|blog|video-script|podcast-script|pinterest|tiktok>", "matchScore": <30-99>, "reason": "<brief reason>" }
+  ],
+  "warnings": ["<any concern about repurposing this content>"]
+}
+Rank all 10 formats by match score. Include warnings if content is too short, too niche, or has issues.`;
+        userPrompt = `Analyze this content for repurposing:\n\n${(content || '').substring(0, 4000)}`;
+        break;
+      }
+
+      case "repurpose-preview": {
+        const { content, formats } = body;
+        systemPrompt = `You are a content repurposing expert. Create short previews for each format. Respond with ONLY valid JSON, no markdown:
+[
+  { "format": "<format id>", "preview": "<100 char preview text>", "status": "<good|warning>", "statusReason": "<brief reason>" }
+]`;
+        userPrompt = `Create 100-character preview for content in each format: ${(formats || []).join(', ')}. Source content: ${(content || '').substring(0, 2000)}`;
+        break;
+      }
+
+      case "repurpose-visual-suggestions": {
+        const { formats, contentSummary } = body;
+        systemPrompt = `You are a visual content strategist. Suggest visual content for repurposed formats. Respond with ONLY valid JSON, no markdown:
+[
+  {
+    "format": "<format id>",
+    "visualType": "<quote graphic|infographic|photo|video thumbnail|carousel>",
+    "quote": "<extracted quote if applicable, or null>",
+    "colorPalette": ["<#hex1>", "<#hex2>", "<#hex3>", "<#hex4>", "<#hex5>"],
+    "imagePrompt": "<detailed image generation prompt>"
+  }
+]`;
+        userPrompt = `Suggest visual content for these repurposed formats: ${(formats || []).join(', ')}. Source content summary: ${(contentSummary || '').substring(0, 2000)}`;
+        break;
+      }
+
+      case "repurpose-hashtags": {
+        const { platform, contentSummary } = body;
+        systemPrompt = `You are a social media hashtag expert. Respond with ONLY valid JSON, no markdown:
+{
+  "hashtags": [{ "tag": "<#hashtag>", "category": "<Trending|Niche|Branded>" }],
+  "mentions": [{ "handle": "<@handle>", "reason": "<why mention>" }]
+}
+Provide 15-25 hashtags and 3-5 mentions.`;
+        userPrompt = `Generate relevant hashtags and accounts to mention for this content on ${platform}: ${(contentSummary || '').substring(0, 1500)}`;
+        break;
+      }
+
+      case "repurpose-schedule": {
+        const { formats } = body;
+        systemPrompt = `You are a content scheduling expert. Respond with ONLY valid JSON, no markdown:
+[
+  { "format": "<format id>", "bestDay": "<e.g. Tuesday>", "bestTime": "<e.g. 10:00 AM EST>", "reasoning": "<one sentence>" }
+]`;
+        userPrompt = `Recommend optimal posting times for these content formats: ${(formats || []).join(', ')}. Consider platform best practices and content strategy. Provide day of week and time (EST) for each.`;
+        break;
+      }
+
+      case "repurpose-series": {
+        const { content } = body;
+        systemPrompt = `You are a content strategist. Break long-form content into a series. Respond with ONLY valid JSON, no markdown:
+{
+  "seriesName": "<series title>",
+  "parts": [
+    { "partNumber": <1-5>, "title": "<part title>", "summary": "<2-3 sentence summary>", "wordCount": <300-500> }
+  ]
+}
+Create 3-5 parts.`;
+        userPrompt = `Break this long-form content into a 3-5 part content series. Each part should be 300-500 words, self-contained but building on previous parts:\n\n${(content || '').substring(0, 4000)}`;
+        break;
+      }
+
+      case "repurpose-seo": {
+        const { content } = body;
+        systemPrompt = `You are an SEO expert. Generate SEO metadata. Respond with ONLY valid JSON, no markdown:
+{
+  "metaTitle": "<max 60 chars>",
+  "metaDescription": "<max 160 chars>",
+  "focusKeyword": "<keyword phrase>",
+  "internalLinks": [{ "anchorText": "<text>", "opportunity": "<description>" }]
+}
+Provide 3 internal linking opportunities.`;
+        userPrompt = `Generate SEO metadata for this repurposed content:\n\n${(content || '').substring(0, 3000)}`;
+        break;
+      }
+
+      case "repurpose-cta": {
+        const { format, goal, contentSummary } = body;
+        systemPrompt = `You are a conversion copywriting expert. Generate a platform-appropriate call-to-action. Return ONLY the CTA text (1-2 sentences), no JSON, no headers.`;
+        userPrompt = `Generate platform-appropriate call-to-action for ${format} with goal: ${goal}. Content context: ${(contentSummary || '').substring(0, 500)}`;
+        break;
+      }
+
       default:
         return new Response(JSON.stringify({ error: `Unknown action: ${action}` }), {
           status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
