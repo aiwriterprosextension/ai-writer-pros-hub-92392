@@ -120,7 +120,7 @@ export function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/support" className="text-muted-foreground hover:text-foreground transition-colors">
+                  <Link to="/knowledge-base#support" className="text-muted-foreground hover:text-foreground transition-colors">
                     Support Center
                   </Link>
                 </li>
