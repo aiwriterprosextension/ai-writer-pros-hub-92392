@@ -16,11 +16,6 @@ export function MockToolPreview({
   children
 }: MockToolPreviewProps) {
   return <div className="relative">
-      <Card className="p-6 overflow-hidden">
-        <div className="pointer-events-none opacity-60 blur-[1px]">
-          {children}
-        </div>
-        
-      </Card>
+      
     </div>;
 }
