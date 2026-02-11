@@ -33,6 +33,9 @@ import Blog from "./pages/Blog";
 import KnowledgeBase from "./pages/KnowledgeBase";
 import BestPractices from "./pages/BestPractices";
 import Admin from "./pages/Admin";
+import AboutUs from "./pages/AboutUs";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
 import NotFound from "./pages/NotFound";
 import KBCreatingAccount from "./pages/kb/KBCreatingAccount";
 import KBNavigatingDashboard from "./pages/kb/KBNavigatingDashboard";
@@ -130,6 +133,9 @@ const App = () => (
               <Route path="/knowledge-base/managing-subscription" element={<KBManagingSubscription />} />
               <Route path="/knowledge-base/profile-settings" element={<KBProfileSettings />} />
               <Route path="/knowledge-base/team-management" element={<KBTeamManagement />} />
+              <Route path="/about" element={<AboutUs />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms-of-service" element={<TermsOfService />} />
               <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
