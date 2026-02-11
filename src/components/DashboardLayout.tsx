@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import logo from "@/assets/logo.webp";
 
 const sidebarItems = [
   { label: "Overview", path: "/dashboard", icon: BarChart3 },
@@ -43,11 +44,8 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
       )}>
         {/* Logo */}
         <div className="h-16 flex items-center justify-between px-4 border-b border-sidebar-border">
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">AI</span>
-            </div>
-            <span className="font-bold text-lg text-sidebar-foreground">Writer Pros</span>
+          <Link to="/" className="flex items-center">
+            <img src={logo} alt="AI Writer Pros" className="h-7 w-auto" />
           </Link>
           <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setSidebarOpen(false)}>
             <X className="h-5 w-5" />
