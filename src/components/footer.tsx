@@ -93,14 +93,9 @@ export function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+                  <Link to="/about" className="text-muted-foreground hover:text-foreground transition-colors">
                     About Us
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-                    Careers
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -130,14 +125,14 @@ export function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+                  <Link to="/privacy-policy" className="text-muted-foreground hover:text-foreground transition-colors">
                     Privacy Policy
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+                  <Link to="/terms-of-service" className="text-muted-foreground hover:text-foreground transition-colors">
                     Terms of Service
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
