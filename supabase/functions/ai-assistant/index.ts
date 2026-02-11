@@ -477,6 +477,119 @@ Provide 6-8 Q&A pairs.`;
         break;
       }
 
+      // === SOCIAL MEDIA SUITE SPECIFIC ACTIONS ===
+
+      case "social-content-ideas": {
+        const { businessType, industry, wins, challenges } = body;
+        systemPrompt = `You are a social media content strategist. Generate specific, actionable content ideas. Respond with ONLY valid JSON, no markdown:
+[
+  {
+    "title": "<idea title>",
+    "angle": "<content angle, 50-80 words>",
+    "platforms": ["<twitter|linkedin|instagram|facebook>"],
+    "engagementPotential": "<High|Medium|Low>"
+  }
+]
+Provide exactly 10 ideas.`;
+        userPrompt = `Generate 10 specific social media content ideas for ${businessType || 'a business'} in ${industry || 'general'} industry. Context - Recent wins: ${wins || 'none'}, Challenges: ${challenges || 'none'}. Make each idea actionable with a specific angle.`;
+        break;
+      }
+
+      case "social-hashtag-research": {
+        const { topic, platform } = body;
+        systemPrompt = `You are a social media hashtag expert. Research hashtags for the given topic and platform. Respond with ONLY valid JSON, no markdown:
+{
+  "highVolume": [{ "tag": "<#hashtag>", "estimatedReach": "<e.g. 500K+>" }],
+  "niche": [{ "tag": "<#hashtag>", "estimatedReach": "<e.g. 25K>" }],
+  "trending": [{ "tag": "<#hashtag>", "estimatedReach": "<e.g. 100K+>" }],
+  "optimalCount": <number>
+}
+Provide 5 high-volume, 5 niche, and 3 trending hashtags.`;
+        userPrompt = `Analyze this social media topic for ${platform}: "${topic}". Suggest hashtags: 5 high-volume (100K+ uses), 5 niche-specific (10K-50K uses), 3 trending. Also provide optimal hashtag count for ${platform}.`;
+        break;
+      }
+
+      case "social-platform-tips": {
+        const { platform } = body;
+        systemPrompt = `You are a social media best practices expert. Respond with ONLY valid JSON, no markdown:
+{
+  "charMin": <number>,
+  "charMax": <number>,
+  "hashtagCount": "<e.g. 3-5>",
+  "bestTimes": ["<e.g. 9:00 AM EST>", "<e.g. 12:00 PM EST>"],
+  "engagementTip": "<one actionable engagement tactic>"
+}`;
+        userPrompt = `Provide current best practices for ${platform} content creation: ideal character count range, recommended hashtag count, best posting times (EST), and one engagement tactic.`;
+        break;
+      }
+
+      case "social-calendar": {
+        const { topic, platforms: calPlatforms } = body;
+        systemPrompt = `You are a social media scheduling expert. Respond with ONLY valid JSON, no markdown:
+{
+  "schedule": [
+    {
+      "platform": "<platform>",
+      "bestDay": "<e.g. Tuesday>",
+      "bestTime": "<e.g. 10:00 AM EST>",
+      "reasoning": "<one sentence>"
+    }
+  ],
+  "contentMixStrategy": "<2-3 sentence strategy>"
+}`;
+        userPrompt = `Suggest posting schedule for content about "${topic}" across these platforms: ${(calPlatforms || []).join(', ')}. Provide best day and time for each platform (EST timezone), with reasoning. Also suggest content mix strategy.`;
+        break;
+      }
+
+      case "social-thread-creator": {
+        const { content, platform } = body;
+        if (platform === 'twitter') {
+          systemPrompt = `You are a Twitter thread expert. Convert content into an engaging thread. Respond with ONLY valid JSON, no markdown:
+{ "tweets": [{ "number": <1-10>, "text": "<tweet text under 280 chars>", "charCount": <number> }] }
+Create 5-10 tweets. Start with a hook, number tweets, use emojis strategically.`;
+          userPrompt = `Convert this content into an engaging Twitter thread with 5-10 tweets:\n${(content || '').substring(0, 3000)}`;
+        } else {
+          systemPrompt = `You are a LinkedIn carousel expert. Structure content into carousel slides. Respond with ONLY valid JSON, no markdown:
+{ "slides": [{ "number": <1-8>, "title": "<catchy slide title>", "content": "<slide content, 2-3 sentences>" }] }
+Create 6-8 slides with catchy titles per slide.`;
+          userPrompt = `Structure this content into 6-8 LinkedIn carousel slides with catchy titles per slide:\n${(content || '').substring(0, 3000)}`;
+        }
+        break;
+      }
+
+      case "social-engagement-hooks": {
+        const { content, options, platforms: engPlatforms } = body;
+        systemPrompt = `You are a social media engagement expert. Generate engagement hooks. Respond with ONLY valid JSON, no markdown:
+{
+  "question": "<engagement question to boost comments>",
+  "pollIdea": "<poll suggestion with 2-4 options>",
+  "callToAction": "<compelling CTA>"
+}
+Only include the requested types.`;
+        userPrompt = `Based on this content "${(content || '').substring(0, 1000)}", generate: ${(options || []).join(', ')}. Make them natural and platform-appropriate for ${(engPlatforms || []).join(', ')}.`;
+        break;
+      }
+
+      case "social-optimize-formatting": {
+        const { content, platform } = body;
+        systemPrompt = `You are a social media formatting expert. Optimize the post with strategic emojis, line breaks, and formatting. Return ONLY the optimized post text, no JSON, no commentary.`;
+        userPrompt = `Optimize this social post for ${platform} by adding strategic emojis, line breaks, and formatting for maximum engagement:\n\n${(content || '').substring(0, 3000)}`;
+        break;
+      }
+
+      case "social-visual-suggestions": {
+        const { content } = body;
+        systemPrompt = `You are a visual content strategist for social media. Respond with ONLY valid JSON, no markdown:
+{
+  "visualType": "<infographic|photo|quote-card|video|carousel>",
+  "colorPalette": ["<#hex1>", "<#hex2>", "<#hex3>", "<#hex4>", "<#hex5>"],
+  "imagePrompt": "<detailed image generation prompt for AI>",
+  "thumbnailPlacement": "<suggestion for thumbnail placement>"
+}`;
+        userPrompt = `Suggest visual content for this social post:\n${(content || '').substring(0, 2000)}\n\nProvide: recommended visual type, color palette (5 hex colors), detailed image generation prompt, and thumbnail placement suggestion.`;
+        break;
+      }
+
       default:
         return new Response(JSON.stringify({ error: `Unknown action: ${action}` }), {
           status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },

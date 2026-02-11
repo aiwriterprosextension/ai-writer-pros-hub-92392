@@ -1,10 +1,10 @@
-
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MessageSquare, Zap, Copy, Instagram, Twitter, Linkedin, Facebook } from "lucide-react";
 import { useState, useMemo, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -16,6 +16,14 @@ import { QualityScorePreview } from "@/components/dashboard/QualityScorePreview"
 import { WorkflowSuggestions } from "@/components/dashboard/WorkflowSuggestions";
 import { ExportHub } from "@/components/dashboard/ExportHub";
 import { AskAIButton } from "@/components/dashboard/AskAIButton";
+import { ContentIdeaGenerator } from "@/components/social/ContentIdeaGenerator";
+import { HashtagResearch } from "@/components/social/HashtagResearch";
+import { PlatformTips } from "@/components/social/PlatformTips";
+import { ContentCalendar } from "@/components/social/ContentCalendar";
+import { ThreadCarouselCreator } from "@/components/social/ThreadCarouselCreator";
+import { EngagementHooks } from "@/components/social/EngagementHooks";
+import { FormattingOptimizer } from "@/components/social/FormattingOptimizer";
+import { VisualRecommendations } from "@/components/social/VisualRecommendations";
 
 const platforms = [
   { id: 'twitter', name: 'Twitter/X', icon: Twitter, charLimit: 280 },
@@ -23,6 +31,10 @@ const platforms = [
   { id: 'instagram', name: 'Instagram', icon: Instagram, charLimit: 2200 },
   { id: 'facebook', name: 'Facebook', icon: Facebook, charLimit: 63206 },
 ];
+
+const platformNameMap: Record<string, string> = {
+  twitter: "Twitter/X", linkedin: "LinkedIn", instagram: "Instagram", facebook: "Facebook",
+};
 
 export default function DashboardSocialMedia() {
   const [topic, setTopic] = useState("");
@@ -73,6 +85,30 @@ export default function DashboardSocialMedia() {
     return sections;
   }, [result]);
 
+  const handleAppendToResult = useCallback((text: string) => {
+    setResult(prev => prev + text);
+  }, []);
+
+  const handleApplyOptimized = useCallback((platformId: string, optimized: string) => {
+    setResult(prev => {
+      const regex = new RegExp(`(###\\s*${platformId}[\\s/]*(?:\\w*)\\s*\\n)[\\s\\S]*?(?=###|$)`, "i");
+      return prev.replace(regex, `$1${optimized}\n\n`);
+    });
+  }, []);
+
+  const handleAddHashtags = useCallback((platformId: string, tags: string[]) => {
+    const tagString = "\n\n" + tags.join(" ");
+    setResult(prev => {
+      const regex = new RegExp(`(###\\s*${platformId}[\\s/]*(?:\\w*)\\s*\\n[\\s\\S]*?)(?=###|$)`, "i");
+      const match = prev.match(regex);
+      if (match) {
+        return prev.replace(regex, match[1].trimEnd() + tagString + "\n\n");
+      }
+      return prev;
+    });
+    toast({ title: `${tags.length} hashtags added to ${platformNameMap[platformId]}` });
+  }, [toast]);
+
   const currentConfig = { topic, tone, selectedPlatforms };
   const loadConfig = useCallback((config: Record<string, any>) => {
     if (config.topic) setTopic(config.topic);
@@ -89,8 +125,14 @@ export default function DashboardSocialMedia() {
 
       <HistoryFavorites tool="social" currentConfig={currentConfig} onLoadConfig={loadConfig} />
 
+      {/* Content Idea Generator */}
+      <div className="mb-4">
+        <ContentIdeaGenerator onSelectIdea={setTopic} />
+      </div>
+
       <Card className="p-6">
         <div className="grid lg:grid-cols-2 gap-8">
+          {/* LEFT: Settings */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold flex items-center"><MessageSquare className="h-5 w-5 mr-2 text-pink-500" />Post Settings</h3>
             <div className="space-y-2">
@@ -126,21 +168,38 @@ export default function DashboardSocialMedia() {
                     }`}>
                     <Checkbox checked={selectedPlatforms.includes(p.id)} />
                     <p.icon className="h-4 w-4" />
-                    <div>
+                    <div className="flex-1">
                       <span className="text-sm font-medium">{p.name}</span>
                       <span className="text-xs text-muted-foreground ml-1">({p.charLimit.toLocaleString()})</span>
                     </div>
+                    {topic && (
+                      <HashtagResearch
+                        topic={topic}
+                        platform={p.id}
+                        platformName={p.name}
+                        onAddHashtags={(tags) => handleAddHashtags(p.id, tags)}
+                      />
+                    )}
                   </div>
                 ))}
               </div>
             </div>
+
+            {/* Platform Tips */}
+            <PlatformTips selectedPlatforms={selectedPlatforms} platformNames={platformNameMap} />
+
             <div className="flex items-center gap-2">
               <QualityScorePreview toolName="Social Media Suite" formData={currentConfig} disabled={!topic} />
               <Button onClick={handleGenerate} disabled={!topic || selectedPlatforms.length === 0 || isGenerating} className="flex-1" size="lg">
                 {isGenerating ? <><Zap className="mr-2 h-4 w-4 animate-spin" />Generating...</> : <><MessageSquare className="mr-2 h-4 w-4" />Generate Posts ({selectedPlatforms.length})</>}
               </Button>
             </div>
+
+            {/* Content Calendar */}
+            {topic && <ContentCalendar topic={topic} platforms={selectedPlatforms} />}
           </div>
+
+          {/* RIGHT: Output */}
           <div>
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold flex items-center"><Zap className="h-5 w-5 mr-2 text-pink-500" />Generated Posts</h3>
@@ -168,6 +227,14 @@ export default function DashboardSocialMedia() {
                         </div>
                       </div>
                       <div className="text-sm bg-muted/50 p-3 rounded whitespace-pre-wrap">{content}</div>
+                      <div className="mt-2">
+                        <FormattingOptimizer
+                          content={content}
+                          platform={pId}
+                          platformName={platform.name}
+                          onApply={(optimized) => handleApplyOptimized(pId, optimized)}
+                        />
+                      </div>
                     </Card>
                   );
                 })}
@@ -184,6 +251,20 @@ export default function DashboardSocialMedia() {
                 )}
               </div>
             )}
+
+            {/* Thread/Carousel Creator */}
+            {result && <div className="mt-4"><ThreadCarouselCreator content={result} /></div>}
+
+            {/* Engagement Hooks */}
+            {result && (
+              <div className="mt-4">
+                <EngagementHooks content={result} platforms={selectedPlatforms} onAppend={handleAppendToResult} />
+              </div>
+            )}
+
+            {/* Visual Recommendations */}
+            {result && <div className="mt-4"><VisualRecommendations content={result} /></div>}
+
             <WorkflowSuggestions
               contentType="social media posts"
               summary={result.substring(0, 200)}
