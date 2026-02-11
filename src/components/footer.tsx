@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Twitter, Linkedin, Youtube, Github } from "lucide-react";
+import logo from "@/assets/logo.webp";
 
 export function Footer() {
   return (
@@ -13,11 +14,10 @@ export function Footer() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
             {/* Company Info */}
             <div className="lg:col-span-2">
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">AI</span>
-                </div>
-                <span className="font-bold text-xl">Writer Pros</span>
+              <div className="flex items-center mb-4">
+                <Link to="/">
+                  <img src={logo} alt="AI Writer Pros" className="h-8 w-auto" />
+                </Link>
               </div>
               <p className="text-muted-foreground mb-6 max-w-md">
                 Professional AI writing tools that help content creators scale their writing. 

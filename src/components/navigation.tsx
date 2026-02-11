@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Menu, X, ChevronDown, LogOut, BookOpen, Newspaper, LifeBuoy, Lightbulb } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import logo from "@/assets/logo.webp";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,11 +28,8 @@ export function Navigation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
           <div className="flex items-center">
-            <Link to="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">AI</span>
-              </div>
-              <span className="font-bold text-xl">Writer Pros</span>
+            <Link to="/" className="flex items-center">
+              <img src={logo} alt="AI Writer Pros" className="h-8 w-auto" />
             </Link>
           </div>
 
