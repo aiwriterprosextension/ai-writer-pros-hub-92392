@@ -5,9 +5,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Mail, Zap, Copy } from "lucide-react";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { AIChatWidget } from "@/components/dashboard/AIChatWidget";
+import { ImproveInputButton } from "@/components/dashboard/ImproveInputButton";
+import { HistoryFavorites } from "@/components/dashboard/HistoryFavorites";
+import { QualityScorePreview } from "@/components/dashboard/QualityScorePreview";
+import { WorkflowSuggestions } from "@/components/dashboard/WorkflowSuggestions";
+import { ExportHub } from "@/components/dashboard/ExportHub";
+import { AskAIButton } from "@/components/dashboard/AskAIButton";
 
 export default function DashboardEmailGenerator() {
   const [topic, setTopic] = useState("");
@@ -17,6 +24,7 @@ export default function DashboardEmailGenerator() {
   const [sequenceLength, setSequenceLength] = useState("1");
   const [isGenerating, setIsGenerating] = useState(false);
   const [result, setResult] = useState("");
+  const [chatPrefill, setChatPrefill] = useState("");
   const { toast } = useToast();
 
   const handleGenerate = async () => {
@@ -38,10 +46,14 @@ export default function DashboardEmailGenerator() {
     }
   };
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(result);
-    toast({ title: "Copied!" });
-  };
+  const currentConfig = { topic, emailType, tone, audience, sequenceLength };
+  const loadConfig = useCallback((config: Record<string, any>) => {
+    if (config.topic) setTopic(config.topic);
+    if (config.emailType) setEmailType(config.emailType);
+    if (config.tone) setTone(config.tone);
+    if (config.audience) setAudience(config.audience);
+    if (config.sequenceLength) setSequenceLength(config.sequenceLength);
+  }, []);
 
   return (
     <div>
@@ -50,12 +62,20 @@ export default function DashboardEmailGenerator() {
         <p className="text-muted-foreground">Generate high-converting email campaigns, sequences, and newsletters.</p>
       </div>
 
+      <HistoryFavorites tool="email" currentConfig={currentConfig} onLoadConfig={loadConfig} />
+
       <Card className="p-6">
         <div className="grid lg:grid-cols-2 gap-8">
           <div className="space-y-4">
             <h3 className="text-lg font-semibold flex items-center"><Mail className="h-5 w-5 mr-2 text-red-500" />Email Settings</h3>
             <div className="space-y-2">
-              <Label>Email Topic / Purpose</Label>
+              <div className="flex items-center justify-between">
+                <Label>Email Topic / Purpose</Label>
+                <div className="flex gap-1">
+                  <ImproveInputButton fieldType="email topic" currentValue={topic} toolName="Email Generator" onAccept={setTopic} />
+                  <AskAIButton question="What makes a good email topic for high open rates?" onAsk={setChatPrefill} />
+                </div>
+              </div>
               <Input placeholder="e.g. Product launch announcement, Summer sale..." value={topic} onChange={(e) => setTopic(e.target.value)} />
             </div>
             <div className="grid grid-cols-2 gap-4">
@@ -88,7 +108,10 @@ export default function DashboardEmailGenerator() {
               </div>
             </div>
             <div className="space-y-2">
-              <Label>Target Audience</Label>
+              <div className="flex items-center justify-between">
+                <Label>Target Audience</Label>
+                <ImproveInputButton fieldType="target audience" currentValue={audience} toolName="Email Generator" onAccept={setAudience} />
+              </div>
               <Input placeholder="e.g. SaaS founders, fitness enthusiasts..." value={audience} onChange={(e) => setAudience(e.target.value)} />
             </div>
             <div className="space-y-2">
@@ -102,18 +125,21 @@ export default function DashboardEmailGenerator() {
                   <SelectItem value="7">7-Email Sequence</SelectItem>
                 </SelectContent>
               </Select>
-              {parseInt(sequenceLength) > 1 && (
-                <p className="text-xs text-muted-foreground">Generates a {sequenceLength}-email sequence with suggested timing.</p>
-              )}
             </div>
-            <Button onClick={handleGenerate} disabled={!topic || isGenerating} className="w-full" size="lg">
-              {isGenerating ? <><Zap className="mr-2 h-4 w-4 animate-spin" />Generating...</> : <><Mail className="mr-2 h-4 w-4" />Generate {parseInt(sequenceLength) > 1 ? `${sequenceLength}-Email Sequence` : 'Email Campaign'}</>}
-            </Button>
+            <div className="flex items-center gap-2">
+              <QualityScorePreview toolName="Email Generator" formData={currentConfig} disabled={!topic} />
+              <Button onClick={handleGenerate} disabled={!topic || isGenerating} className="flex-1" size="lg">
+                {isGenerating ? <><Zap className="mr-2 h-4 w-4 animate-spin" />Generating...</> : <><Mail className="mr-2 h-4 w-4" />Generate {parseInt(sequenceLength) > 1 ? `${sequenceLength}-Email Sequence` : 'Email Campaign'}</>}
+              </Button>
+            </div>
           </div>
           <div>
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold flex items-center"><Zap className="h-5 w-5 mr-2 text-red-500" />Generated Email</h3>
-              {result && <Button variant="outline" size="sm" onClick={handleCopy}><Copy className="h-3 w-3 mr-1" /> Copy</Button>}
+              <div className="flex gap-2">
+                {result && <ExportHub content={result} filename="email-campaign" />}
+                {result && <Button variant="outline" size="sm" onClick={() => { navigator.clipboard.writeText(result); toast({ title: "Copied!" }); }}><Copy className="h-3 w-3 mr-1" /> Copy</Button>}
+              </div>
             </div>
             <div className="bg-muted/50 rounded-lg p-4 min-h-[400px] max-h-[600px] overflow-y-auto whitespace-pre-wrap text-sm">
               {isGenerating ? (
@@ -125,9 +151,17 @@ export default function DashboardEmailGenerator() {
                 </div>
               )}
             </div>
+            <WorkflowSuggestions
+              contentType="email campaign"
+              summary={result.substring(0, 200)}
+              currentTool="Email Generator"
+              visible={!!result}
+            />
           </div>
         </div>
       </Card>
+
+      <AIChatWidget currentTool="email-generator" prefillQuestion={chatPrefill} onPrefillConsumed={() => setChatPrefill("")} />
     </div>
   );
 }

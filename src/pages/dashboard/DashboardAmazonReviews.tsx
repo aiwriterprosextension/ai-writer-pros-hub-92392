@@ -6,9 +6,16 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Chrome, Zap, Copy, Plus, X } from "lucide-react";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { AIChatWidget } from "@/components/dashboard/AIChatWidget";
+import { ImproveInputButton } from "@/components/dashboard/ImproveInputButton";
+import { HistoryFavorites } from "@/components/dashboard/HistoryFavorites";
+import { QualityScorePreview } from "@/components/dashboard/QualityScorePreview";
+import { WorkflowSuggestions } from "@/components/dashboard/WorkflowSuggestions";
+import { ExportHub } from "@/components/dashboard/ExportHub";
+import { AskAIButton } from "@/components/dashboard/AskAIButton";
 
 export default function DashboardAmazonReviews() {
   const [productName, setProductName] = useState("");
@@ -18,6 +25,7 @@ export default function DashboardAmazonReviews() {
   const [result, setResult] = useState("");
   const [mode, setMode] = useState<"single" | "compare">("single");
   const [comparisonProducts, setComparisonProducts] = useState<string[]>([""]);
+  const [chatPrefill, setChatPrefill] = useState("");
   const { toast } = useToast();
 
   const addComparisonProduct = () => {
@@ -56,14 +64,18 @@ export default function DashboardAmazonReviews() {
     }
   };
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(result);
-    toast({ title: "Copied!" });
-  };
-
   const canGenerate = mode === "single"
     ? !!productName
     : !!productName && comparisonProducts.some(p => p.trim());
+
+  const currentConfig = { productName, category, features, mode, comparisonProducts };
+  const loadConfig = useCallback((config: Record<string, any>) => {
+    if (config.productName) setProductName(config.productName);
+    if (config.category) setCategory(config.category);
+    if (config.features) setFeatures(config.features);
+    if (config.mode) setMode(config.mode);
+    if (config.comparisonProducts) setComparisonProducts(config.comparisonProducts);
+  }, []);
 
   return (
     <div>
@@ -71,6 +83,8 @@ export default function DashboardAmazonReviews() {
         <h1 className="text-2xl font-bold mb-1">Amazon Affiliate Reviews</h1>
         <p className="text-muted-foreground">Generate SEO-optimized product reviews and comparison tables.</p>
       </div>
+
+      <HistoryFavorites tool="amazon" currentConfig={currentConfig} onLoadConfig={loadConfig} />
 
       <div className="grid lg:grid-cols-2 gap-6">
         <Card className="p-6">
@@ -82,7 +96,13 @@ export default function DashboardAmazonReviews() {
 
             <TabsContent value="single" className="space-y-4">
               <div className="space-y-2">
-                <Label>Product Name</Label>
+                <div className="flex items-center justify-between">
+                  <Label>Product Name</Label>
+                  <div className="flex gap-1">
+                    <ImproveInputButton fieldType="product name" currentValue={productName} toolName="Amazon Reviews" onAccept={setProductName} />
+                    <AskAIButton question="What makes a compelling product review title?" onAsk={setChatPrefill} />
+                  </div>
+                </div>
                 <Input placeholder="e.g. Sony WH-1000XM5 Wireless Headphones" value={productName} onChange={(e) => setProductName(e.target.value)} />
               </div>
               <div className="space-y-2">
@@ -102,7 +122,10 @@ export default function DashboardAmazonReviews() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label>Key Features (optional)</Label>
+                <div className="flex items-center justify-between">
+                  <Label>Key Features (optional)</Label>
+                  <ImproveInputButton fieldType="product features" currentValue={features} toolName="Amazon Reviews" onAccept={setFeatures} />
+                </div>
                 <Input placeholder="e.g. Noise cancelling, 30h battery, USB-C..." value={features} onChange={(e) => setFeatures(e.target.value)} />
               </div>
             </TabsContent>
@@ -149,13 +172,16 @@ export default function DashboardAmazonReviews() {
             </TabsContent>
           </Tabs>
 
-          <Button onClick={handleGenerate} disabled={!canGenerate || isGenerating} className="w-full mt-4" size="lg">
-            {isGenerating ? (
-              <><Zap className="mr-2 h-4 w-4 animate-spin" />Generating {mode === "compare" ? "Comparison" : "Review"}...</>
-            ) : (
-              <><Chrome className="mr-2 h-4 w-4" />{mode === "compare" ? "Generate Comparison Table" : "Generate Product Review"}</>
-            )}
-          </Button>
+          <div className="flex items-center gap-2 mt-4">
+            <QualityScorePreview toolName="Amazon Reviews" formData={currentConfig} disabled={!canGenerate} />
+            <Button onClick={handleGenerate} disabled={!canGenerate || isGenerating} className="flex-1" size="lg">
+              {isGenerating ? (
+                <><Zap className="mr-2 h-4 w-4 animate-spin" />Generating {mode === "compare" ? "Comparison" : "Review"}...</>
+              ) : (
+                <><Chrome className="mr-2 h-4 w-4" />{mode === "compare" ? "Generate Comparison Table" : "Generate Product Review"}</>
+              )}
+            </Button>
+          </div>
         </Card>
 
         <Card className="p-6">
@@ -164,7 +190,10 @@ export default function DashboardAmazonReviews() {
               <Zap className="h-5 w-5 mr-2 text-amber-500" />
               {mode === "compare" ? "Product Comparison" : "Generated Review"}
             </h3>
-            {result && <Button variant="outline" size="sm" onClick={handleCopy}><Copy className="h-3 w-3 mr-1" /> Copy</Button>}
+            <div className="flex gap-2">
+              {result && <ExportHub content={result} filename={productName.replace(/\s+/g, '-').toLowerCase() || 'review'} />}
+              {result && <Button variant="outline" size="sm" onClick={() => { navigator.clipboard.writeText(result); toast({ title: "Copied!" }); }}><Copy className="h-3 w-3 mr-1" /> Copy</Button>}
+            </div>
           </div>
           <div className="bg-muted/50 rounded-lg p-4 min-h-[400px] max-h-[600px] overflow-y-auto whitespace-pre-wrap text-sm">
             {isGenerating ? (
@@ -178,8 +207,16 @@ export default function DashboardAmazonReviews() {
               </div>
             )}
           </div>
+          <WorkflowSuggestions
+            contentType={mode === "compare" ? "product comparison" : "product review"}
+            summary={result.substring(0, 200)}
+            currentTool="Amazon Reviews"
+            visible={!!result}
+          />
         </Card>
       </div>
+
+      <AIChatWidget currentTool="amazon-reviews" prefillQuestion={chatPrefill} onPrefillConsumed={() => setChatPrefill("")} />
     </div>
   );
 }

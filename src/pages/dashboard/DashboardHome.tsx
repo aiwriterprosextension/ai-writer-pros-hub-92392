@@ -6,9 +6,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
-import { BarChart3, FileText, Mail, MessageSquare, PenTool, Chrome, Shield, Zap, Clock, TrendingUp, User } from "lucide-react";
+import { BarChart3, FileText, Mail, MessageSquare, PenTool, Chrome, Shield, Zap, Clock, TrendingUp, User, Star, Lightbulb, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
+import { useState, useEffect } from "react";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 
 const toolMeta: Record<string, { label: string; icon: React.ElementType; color: string; path: string }> = {
   humanize: { label: "AI Humanizer", icon: Shield, color: "text-blue-500", path: "/dashboard/ai-humanizer" },
@@ -21,6 +23,8 @@ const toolMeta: Record<string, { label: string; icon: React.ElementType; color: 
 
 export default function DashboardHome() {
   const { user } = useAuth();
+  const [workflowTip, setWorkflowTip] = useState<string>("");
+  const [tipLoading, setTipLoading] = useState(false);
 
   const { data: generations = [], isLoading } = useQuery({
     queryKey: ["generations"],
@@ -33,6 +37,21 @@ export default function DashboardHome() {
       if (error) throw error;
       return data;
     },
+  });
+
+  const { data: favorites = [] } = useQuery({
+    queryKey: ["favorites-all"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("tool_configurations")
+        .select("*")
+        .eq("is_favorite", true)
+        .order("created_at", { ascending: false })
+        .limit(10);
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!user,
   });
 
   const totalGenerations = generations.length;
@@ -49,6 +68,28 @@ export default function DashboardHome() {
   const weekCount = generations.filter((g: any) => new Date(g.created_at) >= thisWeek).length;
 
   const mostUsedTool = Object.entries(toolCounts).sort((a, b) => b[1] - a[1])[0];
+
+  // Usage chart data
+  const chartData = Object.entries(toolMeta).map(([key, meta]) => ({
+    name: meta.label.split(" ")[0],
+    count: toolCounts[key] || 0,
+  }));
+
+  // AI workflow suggestion
+  useEffect(() => {
+    if (generations.length < 3 || workflowTip) return;
+    setTipLoading(true);
+    const toolSequence = generations.slice(0, 10).map((g: any) => g.tool).join(", ");
+    supabase.functions.invoke("ai-assistant", {
+      body: {
+        action: "chat",
+        currentTool: "dashboard",
+        messages: [{ role: "user", content: `Based on my recent tool usage pattern: ${toolSequence}, suggest a quick 1-sentence workflow tip to optimize my content creation.` }],
+      },
+    }).then(({ data }) => {
+      if (data?.result) setWorkflowTip(data.result);
+    }).finally(() => setTipLoading(false));
+  }, [generations.length]);
 
   const quickTools = [
     { key: "repurpose", label: "Repurpose Content", icon: FileText, path: "/dashboard/content-repurposing", gradient: "from-green-500 to-teal-500" },
@@ -68,6 +109,27 @@ export default function DashboardHome() {
           Welcome back, {user?.email?.split("@")[0] || "User"}
         </p>
       </div>
+
+      {/* AI Workflow Tip */}
+      {(workflowTip || tipLoading) && (
+        <Card className="mb-6 border-dashed border-2 border-purple-200 dark:border-purple-800 bg-purple-50/50 dark:bg-purple-950/10">
+          <CardContent className="pt-4 pb-4">
+            <div className="flex items-start gap-3">
+              <Lightbulb className="h-5 w-5 text-yellow-500 shrink-0 mt-0.5" />
+              <div>
+                <p className="text-sm font-semibold mb-1">Suggested Workflow</p>
+                {tipLoading ? (
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Loader2 className="h-3 w-3 animate-spin" /> Analyzing your usage patterns...
+                  </div>
+                ) : (
+                  <p className="text-sm text-muted-foreground">{workflowTip}</p>
+                )}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
@@ -149,6 +211,66 @@ export default function DashboardHome() {
         </div>
       </div>
 
+      {/* Favorites + Usage Chart */}
+      {(favorites.length > 0 || totalGenerations > 0) && (
+        <div className="grid lg:grid-cols-2 gap-6 mb-8">
+          {/* Favorites */}
+          {favorites.length > 0 && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <Star className="h-5 w-5 text-yellow-500" /> Quick Access Favorites
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  {favorites.slice(0, 5).map((fav: any) => {
+                    const meta = toolMeta[fav.tool] || { label: fav.tool, icon: FileText, path: "#" };
+                    const Icon = meta.icon;
+                    return (
+                      <Link key={fav.id} to={meta.path}>
+                        <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors">
+                          <Icon className="h-4 w-4 text-muted-foreground" />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium truncate">{fav.favorite_name || "Untitled"}</p>
+                            <p className="text-xs text-muted-foreground">{meta.label}</p>
+                          </div>
+                          <Badge variant="secondary" className="text-[10px]">
+                            {format(new Date(fav.created_at), "MMM d")}
+                          </Badge>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Usage Chart */}
+          {totalGenerations > 0 && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <BarChart3 className="h-5 w-5" /> Usage by Tool
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={200}>
+                  <BarChart data={chartData}>
+                    <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
+                    <XAxis dataKey="name" tick={{ fontSize: 11 }} className="text-muted-foreground" />
+                    <YAxis tick={{ fontSize: 11 }} className="text-muted-foreground" />
+                    <Tooltip />
+                    <Bar dataKey="count" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          )}
+        </div>
+      )}
+
       {/* Account + Recent Generations */}
       <div className="grid lg:grid-cols-3 gap-6">
         <Card>
@@ -189,9 +311,9 @@ export default function DashboardHome() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Clock className="h-5 w-5" />
-              Recent Generations
+              Recent Activity
             </CardTitle>
-            <CardDescription>Your latest AI-generated content</CardDescription>
+            <CardDescription>Your last 20 AI generations across all tools</CardDescription>
           </CardHeader>
           <CardContent>
             {isLoading ? (

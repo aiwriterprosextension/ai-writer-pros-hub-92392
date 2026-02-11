@@ -5,9 +5,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Bot, Shield, Zap, Copy, RefreshCw } from "lucide-react";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { AIChatWidget } from "@/components/dashboard/AIChatWidget";
+import { ImproveInputButton } from "@/components/dashboard/ImproveInputButton";
+import { HistoryFavorites } from "@/components/dashboard/HistoryFavorites";
+import { QualityScorePreview } from "@/components/dashboard/QualityScorePreview";
+import { WorkflowSuggestions } from "@/components/dashboard/WorkflowSuggestions";
+import { ExportHub } from "@/components/dashboard/ExportHub";
+import { AskAIButton } from "@/components/dashboard/AskAIButton";
 
 const intensityLabels: Record<string, { label: string; description: string }> = {
   light: { label: "Light", description: "Minimal changes, subtle rewording" },
@@ -20,6 +27,7 @@ export default function DashboardAIHumanizer() {
   const [outputText, setOutputText] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [intensity, setIntensity] = useState("medium");
+  const [chatPrefill, setChatPrefill] = useState("");
   const { toast } = useToast();
 
   const intensityFromSlider = (val: number) => {
@@ -56,6 +64,12 @@ export default function DashboardAIHumanizer() {
     toast({ title: "Copied!", description: "Humanized content copied to clipboard." });
   };
 
+  const currentConfig = { inputText, intensity };
+  const loadConfig = useCallback((config: Record<string, any>) => {
+    if (config.inputText) setInputText(config.inputText);
+    if (config.intensity) setIntensity(config.intensity);
+  }, []);
+
   const inputWordCount = inputText.trim() ? inputText.trim().split(/\s+/).length : 0;
   const outputWordCount = outputText.trim() ? outputText.trim().split(/\s+/).length : 0;
 
@@ -66,10 +80,13 @@ export default function DashboardAIHumanizer() {
         <p className="text-muted-foreground">Transform AI-generated text into natural, human-like content.</p>
       </div>
 
+      <HistoryFavorites tool="humanize" currentConfig={currentConfig} onLoadConfig={loadConfig} />
+
       <Card className="p-6">
         <div className="mb-6">
           <Label className="text-sm font-medium mb-3 block">
-            Humanization Intensity: <span className="text-primary font-semibold">{intensityLabels[intensity].label}</span>
+            Humanization Intensity: <span className="font-semibold">{intensityLabels[intensity].label}</span>
+            <AskAIButton question="What intensity level should I use for my content?" onAsk={setChatPrefill} />
           </Label>
           <Slider
             value={[sliderFromIntensity(intensity)]}
@@ -88,12 +105,18 @@ export default function DashboardAIHumanizer() {
           <div>
             <h3 className="text-lg font-semibold mb-2 flex items-center justify-between">
               <span className="flex items-center"><Bot className="h-5 w-5 mr-2 text-destructive" />AI-Generated Content</span>
-              {inputWordCount > 0 && <span className="text-xs text-muted-foreground font-normal">{inputWordCount} words</span>}
+              <div className="flex items-center gap-1">
+                {inputWordCount > 0 && <span className="text-xs text-muted-foreground font-normal">{inputWordCount} words</span>}
+              </div>
             </h3>
             <Textarea placeholder="Paste your AI-generated content here..." value={inputText} onChange={(e) => setInputText(e.target.value)} className="min-h-[300px] resize-none" />
-            <Button onClick={handleHumanize} disabled={!inputText || isProcessing} className="w-full mt-4">
-              {isProcessing ? <><Zap className="mr-2 h-4 w-4 animate-spin" />Humanizing...</> : <><Shield className="mr-2 h-4 w-4" />Humanize Content</>}
-            </Button>
+            <div className="flex items-center gap-2 mt-4">
+              <QualityScorePreview toolName="AI Humanizer" formData={currentConfig} disabled={!inputText} />
+              <div className="flex-1" />
+              <Button onClick={handleHumanize} disabled={!inputText || isProcessing} className="flex-1">
+                {isProcessing ? <><Zap className="mr-2 h-4 w-4 animate-spin" />Humanizing...</> : <><Shield className="mr-2 h-4 w-4" />Humanize Content</>}
+              </Button>
+            </div>
           </div>
           <div>
             <h3 className="text-lg font-semibold mb-2 flex items-center justify-between">
@@ -105,13 +128,25 @@ export default function DashboardAIHumanizer() {
               <Button variant="outline" disabled={!outputText || isProcessing} onClick={handleHumanize} size="sm">
                 <RefreshCw className="h-4 w-4 mr-1" /> Re-humanize
               </Button>
-              <Button variant="outline" disabled={!outputText} onClick={handleCopy} size="sm">
-                <Copy className="h-4 w-4 mr-1" /> Copy Result
-              </Button>
+              <div className="flex gap-2">
+                <ExportHub content={outputText} filename="humanized-content" />
+                <Button variant="outline" disabled={!outputText} onClick={handleCopy} size="sm">
+                  <Copy className="h-4 w-4 mr-1" /> Copy
+                </Button>
+              </div>
             </div>
           </div>
         </div>
+
+        <WorkflowSuggestions
+          contentType="humanized content"
+          summary={outputText.substring(0, 200)}
+          currentTool="AI Humanizer"
+          visible={!!outputText}
+        />
       </Card>
+
+      <AIChatWidget currentTool="ai-humanizer" prefillQuestion={chatPrefill} onPrefillConsumed={() => setChatPrefill("")} />
     </div>
   );
 }

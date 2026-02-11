@@ -5,9 +5,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { FileText, Zap, Copy, Instagram, Twitter, Linkedin, Facebook, Layers } from "lucide-react";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { AIChatWidget } from "@/components/dashboard/AIChatWidget";
+import { ImproveInputButton } from "@/components/dashboard/ImproveInputButton";
+import { HistoryFavorites } from "@/components/dashboard/HistoryFavorites";
+import { QualityScorePreview } from "@/components/dashboard/QualityScorePreview";
+import { WorkflowSuggestions } from "@/components/dashboard/WorkflowSuggestions";
+import { ExportHub } from "@/components/dashboard/ExportHub";
+import { AskAIButton } from "@/components/dashboard/AskAIButton";
 
 const contentFormats = [
   { id: 'twitter', name: 'Twitter Thread', icon: Twitter, description: '5-10 tweet thread' },
@@ -24,6 +31,7 @@ export default function DashboardContentRepurposing() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [results, setResults] = useState<Record<string, string>>({});
   const [tone, setTone] = useState("original");
+  const [chatPrefill, setChatPrefill] = useState("");
   const { toast } = useToast();
 
   const handleFormatToggle = (formatId: string) => {
@@ -53,7 +61,16 @@ export default function DashboardContentRepurposing() {
     toast({ title: "Copied!", description: `${formatName} copied to clipboard.` });
   };
 
+  const allResultsText = Object.entries(results).map(([k, v]) => `--- ${k} ---\n${v}`).join("\n\n");
+
   const inputWordCount = inputContent.trim() ? inputContent.trim().split(/\s+/).length : 0;
+
+  const currentConfig = { inputContent: inputContent.substring(0, 500), selectedFormats, tone };
+  const loadConfig = useCallback((config: Record<string, any>) => {
+    if (config.inputContent) setInputContent(config.inputContent);
+    if (config.selectedFormats) setSelectedFormats(config.selectedFormats);
+    if (config.tone) setTone(config.tone);
+  }, []);
 
   return (
     <div>
@@ -62,12 +79,17 @@ export default function DashboardContentRepurposing() {
         <p className="text-muted-foreground">Transform one piece of content into multiple platform-optimized formats.</p>
       </div>
 
+      <HistoryFavorites tool="repurpose" currentConfig={currentConfig} onLoadConfig={loadConfig} />
+
       <Card className="p-6">
         <div className="grid lg:grid-cols-2 gap-8">
           <div>
             <h3 className="text-lg font-semibold mb-4 flex items-center justify-between">
               <span className="flex items-center"><FileText className="h-5 w-5 mr-2 text-blue-500" />Original Content</span>
-              {inputWordCount > 0 && <span className="text-xs text-muted-foreground font-normal">{inputWordCount} words</span>}
+              <div className="flex items-center gap-1">
+                {inputWordCount > 0 && <span className="text-xs text-muted-foreground font-normal">{inputWordCount} words</span>}
+                <AskAIButton question="What's the best content length for repurposing?" onAsk={setChatPrefill} />
+              </div>
             </h3>
             <Textarea placeholder="Paste your blog post, article, or any content..." value={inputContent} onChange={(e) => setInputContent(e.target.value)} className="min-h-[200px] resize-none" />
             <div className="mt-4 space-y-2">
@@ -101,12 +123,18 @@ export default function DashboardContentRepurposing() {
                 ))}
               </div>
             </div>
-            <Button onClick={handleGenerate} disabled={!inputContent || selectedFormats.length === 0 || isGenerating} className="w-full mt-6" size="lg">
-              {isGenerating ? <><Zap className="mr-2 h-4 w-4 animate-spin" />Generating...</> : <><FileText className="mr-2 h-4 w-4" />Repurpose Content ({selectedFormats.length} formats)</>}
-            </Button>
+            <div className="flex items-center gap-2 mt-6">
+              <QualityScorePreview toolName="Content Repurposing" formData={currentConfig} disabled={!inputContent || selectedFormats.length === 0} />
+              <Button onClick={handleGenerate} disabled={!inputContent || selectedFormats.length === 0 || isGenerating} className="flex-1" size="lg">
+                {isGenerating ? <><Zap className="mr-2 h-4 w-4 animate-spin" />Generating...</> : <><FileText className="mr-2 h-4 w-4" />Repurpose Content ({selectedFormats.length} formats)</>}
+              </Button>
+            </div>
           </div>
           <div>
-            <h3 className="text-lg font-semibold mb-4 flex items-center"><Zap className="h-5 w-5 mr-2 text-green-500" />Repurposed Content</h3>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold flex items-center"><Zap className="h-5 w-5 mr-2 text-green-500" />Repurposed Content</h3>
+              {allResultsText && <ExportHub content={allResultsText} filename="repurposed-content" />}
+            </div>
             <div className="space-y-4 max-h-[600px] overflow-y-auto">
               {selectedFormats.length === 0 ? (
                 <div className="text-center py-12 text-muted-foreground">
@@ -133,9 +161,17 @@ export default function DashboardContentRepurposing() {
                 })
               )}
             </div>
+            <WorkflowSuggestions
+              contentType="repurposed content"
+              summary={allResultsText.substring(0, 200)}
+              currentTool="Content Repurposing"
+              visible={Object.keys(results).length > 0}
+            />
           </div>
         </div>
       </Card>
+
+      <AIChatWidget currentTool="content-repurposing" prefillQuestion={chatPrefill} onPrefillConsumed={() => setChatPrefill("")} />
     </div>
   );
 }
