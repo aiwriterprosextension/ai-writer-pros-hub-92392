@@ -17,12 +17,12 @@ import {
   MessageSquare,
   PenTool,
   ShoppingCart,
-  Settings,
   CreditCard,
-  Users,
   ArrowRight,
-  Bot,
   HelpCircle,
+  LifeBuoy,
+  MessageCircle,
+  Clock,
 } from "lucide-react";
 
 interface Article {
@@ -126,10 +126,10 @@ export default function KnowledgeBase() {
         <div className="max-w-4xl mx-auto text-center">
           <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">
             <BookOpen className="h-3 w-3 mr-1" />
-            Knowledge Base
+            Help & Support Center
           </Badge>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-secondary">
-            How Can We Help You?
+            Knowledge Base & Support
           </h1>
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
             Find guides, tutorials, and answers for every AI Writer Pros tool. Search or browse by category below.
@@ -242,23 +242,56 @@ export default function KnowledgeBase() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-2xl font-bold mb-3 text-secondary">Still Need Help?</h2>
-          <p className="text-muted-foreground mb-6">
-            Can't find what you're looking for? Our support team is here to help.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Button asChild>
-              <Link to="/support">
-                Contact Support
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-            <Button variant="outline" asChild>
-              <Link to="/best-practices">View Best Practices</Link>
-            </Button>
+      {/* Support Section */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30" id="support">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-10">
+            <h2 className="text-2xl font-bold mb-3 text-secondary">Still Need Help?</h2>
+            <p className="text-muted-foreground">
+              Can't find your answer above? Reach out — our team typically responds within a few hours.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Card className="text-center hover:shadow-md transition-shadow">
+              <CardHeader>
+                <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-2">
+                  <MessageCircle className="h-6 w-6 text-primary" />
+                </div>
+                <CardTitle className="text-base">Live Chat</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground mb-4">Chat with our support team in real-time during business hours (Mon–Fri, 9am–6pm EST).</p>
+                <Button variant="outline" size="sm" className="w-full">Start Chat</Button>
+              </CardContent>
+            </Card>
+            <Card className="text-center hover:shadow-md transition-shadow">
+              <CardHeader>
+                <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-2">
+                  <Mail className="h-6 w-6 text-primary" />
+                </div>
+                <CardTitle className="text-base">Email Support</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground mb-4">Send us a detailed message and we'll get back to you within 24 hours.</p>
+                <Button variant="outline" size="sm" className="w-full" asChild>
+                  <a href="mailto:support@aiwriterpros.com">Email Us</a>
+                </Button>
+              </CardContent>
+            </Card>
+            <Card className="text-center hover:shadow-md transition-shadow">
+              <CardHeader>
+                <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-2">
+                  <Clock className="h-6 w-6 text-primary" />
+                </div>
+                <CardTitle className="text-base">FAQ & Best Practices</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground mb-4">Browse expert tips and answers to frequently asked questions.</p>
+                <Button variant="outline" size="sm" className="w-full" asChild>
+                  <Link to="/best-practices">View Guide</Link>
+                </Button>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>

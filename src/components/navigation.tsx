@@ -100,7 +100,7 @@ export function Navigation() {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/support" className="flex items-center gap-2">
+                  <Link to="/knowledge-base#support" className="flex items-center gap-2">
                     <LifeBuoy className="h-4 w-4" />
                     Support Center
                   </Link>
@@ -189,7 +189,7 @@ export function Navigation() {
               <Link to="/blog" className="block px-3 py-2 text-base font-medium hover:text-primary transition-colors" onClick={() => setIsOpen(false)}>
                 📖 Blog & Updates
               </Link>
-              <Link to="/support" className="block px-3 py-2 text-base font-medium hover:text-primary transition-colors" onClick={() => setIsOpen(false)}>
+              <Link to="/knowledge-base#support" className="block px-3 py-2 text-base font-medium hover:text-primary transition-colors" onClick={() => setIsOpen(false)}>
                 🆘 Support Center
               </Link>
               <Link to="/best-practices" className="block px-3 py-2 text-base font-medium hover:text-primary transition-colors" onClick={() => setIsOpen(false)}>
