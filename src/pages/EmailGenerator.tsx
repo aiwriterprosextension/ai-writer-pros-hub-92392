@@ -117,14 +117,14 @@ export default function EmailGenerator() {
 
       <FeaturesGrid
         title="Complete Email Marketing Suite"
-        subtitle="Everything you need to create email campaigns that open, engage, and convert."
+        subtitle="Everything you need to create email campaigns that open, engage, and convert — powered by AI intelligence."
         features={[
           { icon: Mail, title: "6 Campaign Templates", description: "Pre-built for every occasion", bullets: ["Welcome sequences", "Product launches", "Newsletters", "Sales funnels", "Re-engagement", "Promotional"], gradient: "from-red-500 to-pink-500" },
           { icon: Layers, title: "Multi-Email Sequences", description: "Complete funnel automation", bullets: ["3, 5, or 7-email series", "Suggested send timing", "Progressive messaging", "CTA optimization"], gradient: "from-blue-500 to-purple-500" },
-          { icon: Target, title: "Audience Targeting", description: "Personalized for every segment", bullets: ["Custom audience input", "Tone adaptation", "Industry-specific language", "Persona matching"], gradient: "from-green-500 to-teal-500" },
-          { icon: BarChart3, title: "Subject Line Optimization", description: "Maximize open rates", bullets: ["A/B subject variants", "Power word integration", "Length optimization", "Emoji suggestions"], gradient: "from-amber-500 to-orange-500" },
-          { icon: Settings, title: "5 Tone Options", description: "Match your brand voice", bullets: ["Professional", "Friendly", "Urgent", "Casual", "Formal"], gradient: "from-indigo-500 to-blue-500" },
-          { icon: Clock, title: "Send Timing Suggestions", description: "Know when to send each email", bullets: ["Optimal send times", "Sequence spacing", "Follow-up intervals", "Industry benchmarks"], gradient: "from-purple-500 to-pink-500" },
+          { icon: Target, title: "AI Audience Intelligence", description: "Smart audience profiling", bullets: ["Industry-based targeting", "Awareness level matching", "Demographic customization", "Auto-persona generation"], gradient: "from-green-500 to-teal-500" },
+          { icon: BarChart3, title: "Subject Line Generator", description: "5 AI-optimized variants", bullets: ["Urgency-focused lines", "Curiosity-driven hooks", "Benefit-led openers", "Estimated open rates"], gradient: "from-amber-500 to-orange-500" },
+          { icon: Settings, title: "AI Topic Ideas & Type Matching", description: "Never start from scratch", bullets: ["10 topic ideas per industry", "Auto email type detection", "Match % suggestions", "Campaign goal targeting"], gradient: "from-indigo-500 to-blue-500" },
+          { icon: Clock, title: "Strategy Advisor & A/B Testing", description: "Data-driven optimization", bullets: ["Sequence strategy planner", "A/B test variations", "CTA goal optimizer", "Pre-generation scoring"], gradient: "from-purple-500 to-pink-500" },
         ]}
       />
 

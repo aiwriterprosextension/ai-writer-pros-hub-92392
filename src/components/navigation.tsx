@@ -29,7 +29,7 @@ export function Navigation() {
         <div className="flex justify-between items-center py-4">
           <div className="flex items-center">
             <Link to="/" className="flex items-center">
-              <img src={logo} alt="AI Writer Pros" className="h-8 w-auto" />
+              <img src={logo} alt="AI Writer Pros" className="h-10 w-auto" />
             </Link>
           </div>
 

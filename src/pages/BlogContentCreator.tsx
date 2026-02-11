@@ -121,14 +121,14 @@ export default function BlogContentCreator() {
 
       <FeaturesGrid
         title="Complete Blog Creation Suite"
-        subtitle="Everything you need to create blog content that ranks, engages, and converts."
+        subtitle="AI-powered topic research, keyword analysis, outline building, SEO scoring, and multi-format export."
         features={[
-          { icon: Search, title: "Keyword Optimization", description: "AI-powered keyword integration", bullets: ["Target keyword focus", "Natural placement", "Density tracking", "Semantic keywords"], gradient: "from-green-500 to-teal-500" },
-          { icon: BarChart3, title: "Readability Analysis", description: "Built-in content scoring", bullets: ["Flesch reading score", "Grade level assessment", "Sentence length analysis", "Structure review"], gradient: "from-blue-500 to-purple-500" },
-          { icon: Download, title: "Export Options", description: "Multiple formats supported", bullets: ["Markdown export", "HTML export", "Clipboard copy", "SEO meta included"], gradient: "from-amber-500 to-orange-500" },
-          { icon: PenTool, title: "5 Writing Tones", description: "Match any brand voice", bullets: ["Informative", "Conversational", "Authoritative", "Beginner-Friendly", "Technical"], gradient: "from-red-500 to-pink-500" },
-          { icon: TrendingUp, title: "SEO Structure", description: "Optimized for search engines", bullets: ["H1-H3 hierarchy", "Meta descriptions", "Internal link suggestions", "Schema-ready format"], gradient: "from-indigo-500 to-blue-500" },
-          { icon: FileText, title: "Flexible Word Counts", description: "800 to 4,000 words", bullets: ["Short posts (800w)", "Standard (1,500w)", "Long-form (2,500w)", "Pillar content (4,000w)"], gradient: "from-purple-500 to-pink-500" },
+          { icon: Search, title: "AI Topic & Keyword Research", description: "Smart content discovery", bullets: ["10 trending topics per niche", "3-tier keyword research", "Volume & difficulty scores", "Long-tail variations"], gradient: "from-green-500 to-teal-500" },
+          { icon: PenTool, title: "Outline & Section Builder", description: "Progressive article creation", bullets: ["Interactive outline editor", "Section-by-section mode", "Drag-to-reorder sections", "Progress tracking"], gradient: "from-blue-500 to-purple-500" },
+          { icon: BarChart3, title: "SEO & Readability Dashboard", description: "Real-time content scoring", bullets: ["SEO score (1-100)", "Flesch-Kincaid grading", "Keyword density tracking", "Meta description generator"], gradient: "from-amber-500 to-orange-500" },
+          { icon: Target, title: "8 Tones & Audience Profiling", description: "Precision targeting", bullets: ["8 expanded tone options", "Reader persona generator", "Content purpose optimizer", "Per-section tone mixing"], gradient: "from-red-500 to-pink-500" },
+          { icon: Download, title: "Editor & Multi-Format Export", description: "Built-in content editing", bullets: ["Rich text editor", "AI rewrite actions", "5 export formats", "Fact-checking assistant"], gradient: "from-indigo-500 to-blue-500" },
+          { icon: FileText, title: "Visual & Repurposing", description: "Complete content workflow", bullets: ["Visual placement suggestions", "Image prompt generation", "One-click repurposing", "Content series creation"], gradient: "from-purple-500 to-pink-500" },
         ]}
       />
 

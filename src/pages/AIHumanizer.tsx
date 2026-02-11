@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Bot, Shield, CheckCircle, Zap, Star, Users, FileText, Eye, Lock, GraduationCap, Briefcase, PenTool, Settings } from "lucide-react";
+import { Bot, Shield, CheckCircle, Zap, Star, Users, FileText, Eye, Lock, GraduationCap, Briefcase, PenTool, Settings, Layers } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { SEOHead } from "@/components/landing/SEOHead";
 import { TrustBar } from "@/components/landing/TrustBar";
@@ -156,14 +156,14 @@ export default function AIHumanizer() {
 
       <FeaturesGrid
         title="Advanced Humanization Technology"
-        subtitle="Enterprise-grade AI rewriting that preserves your message while making it undetectable."
+        subtitle="AI pattern analysis, 7 writing styles, 15 industry customizations, bulk processing, and version alternatives."
         features={[
-          { icon: Shield, title: "99% Bypass Rate", description: "Beats all major detectors", bullets: ["GPTZero bypass", "Turnitin safe", "Originality.ai bypass", "Content at Scale bypass"], gradient: "from-green-500 to-teal-500" },
-          { icon: Star, title: "Quality Preservation", description: "Meaning stays intact", bullets: ["Original meaning preserved", "Natural flow maintained", "Grammar polished", "Tone consistency"], gradient: "from-blue-500 to-purple-500" },
-          { icon: Settings, title: "Adjustable Intensity", description: "Light, medium, or heavy rewrite", bullets: ["Light: subtle changes", "Medium: balanced rewrite", "Heavy: complete overhaul", "Real-time preview"], gradient: "from-amber-500 to-orange-500" },
-          { icon: Zap, title: "Instant Processing", description: "Results in seconds", bullets: ["Real-time humanization", "No word limits", "One-click copy", "Re-humanize option"], gradient: "from-red-500 to-pink-500" },
-          { icon: Eye, title: "Side-by-Side View", description: "Compare input and output", bullets: ["Word count tracking", "Before/after comparison", "Quality indicators", "Change highlighting"], gradient: "from-indigo-500 to-blue-500" },
-          { icon: Lock, title: "Privacy First", description: "Your content stays private", bullets: ["No content storage", "Encrypted processing", "GDPR compliant", "No data sharing"], gradient: "from-purple-500 to-pink-500" },
+          { icon: Eye, title: "AI Pattern Analyzer", description: "Pre-humanization intelligence", bullets: ["AI detection score (0-100%)", "Flagged patterns with reasons", "Content type detection", "Intensity recommendation"], gradient: "from-green-500 to-teal-500" },
+          { icon: Settings, title: "Style & Industry Control", description: "Deep customization", bullets: ["7 writing style options", "15 industry adaptations", "Readability target slider", "Content source detector"], gradient: "from-blue-500 to-purple-500" },
+          { icon: Shield, title: "Intensity & Comparison", description: "Full control over output", bullets: ["3-level intensity slider", "Side-by-side diff view", "Before/after metrics", "Synchronized scrolling"], gradient: "from-amber-500 to-orange-500" },
+          { icon: Layers, title: "Bulk & Version Control", description: "Process at scale", bullets: ["Paragraph-by-paragraph mode", "3 alternative versions", "Version blending", "Per-paragraph regeneration"], gradient: "from-red-500 to-pink-500" },
+          { icon: Star, title: "Originality & Quality", description: "Beyond detection bypass", bullets: ["Uniqueness scoring", "Cliché detection", "Rephrasing suggestions", "Platform destination tuning"], gradient: "from-indigo-500 to-blue-500" },
+          { icon: Lock, title: "Export & Integration", description: "Seamless workflow", bullets: ["5 export formats", "Tracked changes in .docx", "Send to Blog Creator", "Send to Email Generator"], gradient: "from-purple-500 to-pink-500" },
         ]}
       />
 

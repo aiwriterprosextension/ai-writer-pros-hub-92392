@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MessageSquare, CheckCircle, Users, Star, Zap, Copy, Instagram, Twitter, Linkedin, Facebook, Calendar, Hash, TrendingUp, Target, Clock, BarChart3, Briefcase, ShoppingCart } from "lucide-react";
+import { MessageSquare, CheckCircle, Users, Star, Zap, Copy, Instagram, Twitter, Linkedin, Facebook, Calendar, Hash, TrendingUp, Target, Clock, BarChart3, Briefcase, ShoppingCart, Layers } from "lucide-react";
 import { SEOHead } from "@/components/landing/SEOHead";
 import { TrustBar } from "@/components/landing/TrustBar";
 import { ProblemSolution } from "@/components/landing/ProblemSolution";
@@ -112,14 +112,14 @@ export default function SocialMediaSuite() {
 
       <FeaturesGrid
         title="Your Complete Social Media Toolkit"
-        subtitle="Platform-optimized content creation with intelligent character tracking and hashtag suggestions."
+        subtitle="AI-powered content creation with smart hashtag research, engagement optimization, and visual recommendations."
         features={[
-          { icon: Instagram, title: "Instagram Captions", description: "Engaging captions up to 2,200 chars", bullets: ["Story-driven captions", "Hashtag suggestions", "CTA integration", "Emoji optimization"], gradient: "from-pink-500 to-rose-500" },
-          { icon: Twitter, title: "Twitter/X Posts", description: "Concise tweets within 280 chars", bullets: ["Thread generation", "Hashtag optimization", "Engagement hooks", "Reply suggestions"], gradient: "from-blue-500 to-blue-600" },
-          { icon: Linkedin, title: "LinkedIn Content", description: "Professional posts up to 3,000 chars", bullets: ["Thought leadership format", "Hook-first structure", "Industry hashtags", "CTA for engagement"], gradient: "from-blue-600 to-blue-700" },
-          { icon: Facebook, title: "Facebook Posts", description: "Versatile posts for all audiences", bullets: ["Story-based format", "Share-worthy hooks", "Group-optimized", "Event promotion"], gradient: "from-blue-700 to-blue-800" },
-          { icon: Hash, title: "Smart Hashtags", description: "AI-powered hashtag suggestions", bullets: ["Trending hashtags", "Niche-specific tags", "Reach optimization", "Platform-appropriate"], gradient: "from-green-500 to-teal-500" },
-          { icon: BarChart3, title: "Character Tracking", description: "Never exceed platform limits", bullets: ["Real-time counting", "Over-limit warnings", "Per-platform display", "Optimized length"], gradient: "from-amber-500 to-orange-500" },
+          { icon: MessageSquare, title: "Content Idea Generator", description: "10 ideas per business type", bullets: ["Industry-filtered ideas", "Platform recommendations", "Engagement potential scores", "One-click topic fill"], gradient: "from-pink-500 to-rose-500" },
+          { icon: Hash, title: "Smart Hashtag Research", description: "Categorized AI research", bullets: ["High-volume (100K+ uses)", "Niche-specific (10K-50K)", "Trending hashtags", "Optimal count per platform"], gradient: "from-blue-500 to-blue-600" },
+          { icon: Calendar, title: "Content Calendar & Timing", description: "AI posting schedule", bullets: ["Best day/time per platform", "Weekly calendar view", "Export to ICS", "Platform-specific reasoning"], gradient: "from-blue-600 to-blue-700" },
+          { icon: Layers, title: "Thread & Carousel Creator", description: "Multi-format conversion", bullets: ["5-10 tweet threads", "LinkedIn carousel slides", "Character counts per slide", "Hook optimization"], gradient: "from-blue-700 to-blue-800" },
+          { icon: Target, title: "Engagement & Formatting", description: "Maximize interaction", bullets: ["Comment-boosting questions", "Poll idea generation", "Strategic emoji placement", "Before/after formatting"], gradient: "from-green-500 to-teal-500" },
+          { icon: BarChart3, title: "Visual Recommendations", description: "AI creative direction", bullets: ["Visual type suggestions", "Color palette with hex codes", "Image generation prompts", "Platform-specific output"], gradient: "from-amber-500 to-orange-500" },
         ]}
       />
 
