@@ -6,9 +6,9 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Link } from "react-router-dom";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { FileText, ArrowRight, Zap, Star, Users, Instagram, Twitter, Linkedin, Facebook, Layers, Target, TrendingUp, Briefcase, ShoppingCart, PenTool, RefreshCw, Copy } from "lucide-react";
-import { useRef } from "react";
 import { SEOHead } from "@/components/landing/SEOHead";
 import { TrustBar } from "@/components/landing/TrustBar";
 import { ProblemSolution } from "@/components/landing/ProblemSolution";
@@ -22,9 +22,6 @@ import { FeaturesGrid } from "@/components/landing/FeaturesGrid";
 import { MockToolPreview } from "@/components/landing/MockToolPreview";
 
 export default function ContentRepurposing() {
-  const toolRef = useRef<HTMLDivElement>(null);
-  const scrollToTool = () => toolRef.current?.scrollIntoView({ behavior: "smooth" });
-
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
@@ -50,8 +47,8 @@ export default function ContentRepurposing() {
               Stop creating from scratch for every platform. Paste your blog post, article, or any content and transform it into Twitter threads, LinkedIn posts, Instagram captions, email newsletters, and more — with customizable tone settings.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-              <Button size="lg" className="text-lg px-8" onClick={scrollToTool}>
-                Repurpose My Content Now <RefreshCw className="ml-2 h-5 w-5" />
+              <Button size="lg" className="text-lg px-8" asChild>
+                <Link to="/auth">Repurpose My Content Now <RefreshCw className="ml-2 h-5 w-5" /></Link>
               </Button>
             </div>
             <div className="flex items-center justify-center flex-wrap gap-6 text-sm text-muted-foreground">
@@ -62,7 +59,7 @@ export default function ContentRepurposing() {
           </div>
 
           {/* Mock Tool */}
-          <div className="max-w-6xl mx-auto" ref={toolRef}>
+          <div className="max-w-6xl mx-auto">
             <MockToolPreview toolName="Content Repurposing" dashboardPath="/dashboard/content-repurposing" gradient="from-green-500 to-teal-500">
               <div className="grid lg:grid-cols-2 gap-8">
                 <div>
@@ -160,7 +157,7 @@ export default function ContentRepurposing() {
           { icon: Copy, title: "Copy & Distribute", description: "Copy each formatted output and paste directly into your platform or scheduler." },
         ]}
         ctaText="Repurpose My Content Now"
-        onCtaClick={scrollToTool}
+        ctaLink="/auth"
       />
 
       <UseCases

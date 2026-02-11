@@ -5,9 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Link } from "react-router-dom";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Mail, Users, Star, Zap, Target, TrendingUp, BarChart3, Clock, Layers, Settings, Briefcase, ShoppingCart, Heart } from "lucide-react";
-import { useRef } from "react";
 import { SEOHead } from "@/components/landing/SEOHead";
 import { TrustBar } from "@/components/landing/TrustBar";
 import { ProblemSolution } from "@/components/landing/ProblemSolution";
@@ -21,9 +21,6 @@ import { FeaturesGrid } from "@/components/landing/FeaturesGrid";
 import { MockToolPreview } from "@/components/landing/MockToolPreview";
 
 export default function EmailGenerator() {
-  const toolRef = useRef<HTMLDivElement>(null);
-  const scrollToTool = () => toolRef.current?.scrollIntoView({ behavior: "smooth" });
-
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
@@ -49,8 +46,8 @@ export default function EmailGenerator() {
               Stop staring at blank screens. Generate complete email campaigns, multi-step sequences, and high-converting newsletters in seconds — with AI-optimized subject lines, body copy, and CTAs for any audience.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-              <Button size="lg" className="text-lg px-8" onClick={scrollToTool}>
-                Generate My Email Now <Mail className="ml-2 h-5 w-5" />
+              <Button size="lg" className="text-lg px-8" asChild>
+                <Link to="/auth">Generate My Email Now <Mail className="ml-2 h-5 w-5" /></Link>
               </Button>
             </div>
             <div className="flex items-center justify-center flex-wrap gap-6 text-sm text-muted-foreground">
@@ -61,7 +58,7 @@ export default function EmailGenerator() {
           </div>
 
           {/* Mock Tool */}
-          <div className="max-w-6xl mx-auto" ref={toolRef}>
+          <div className="max-w-6xl mx-auto">
             <MockToolPreview toolName="Email Generator" dashboardPath="/dashboard/email-generator" gradient="from-red-500 to-pink-500">
               <div className="grid lg:grid-cols-2 gap-8">
                 <div className="space-y-4">
@@ -138,7 +135,7 @@ export default function EmailGenerator() {
           { icon: Mail, title: "Send & Convert", description: "Copy to your email platform, customize details, and start your campaign." },
         ]}
         ctaText="Create My Email Campaign"
-        onCtaClick={scrollToTool}
+        ctaLink="/auth"
       />
 
       <UseCases

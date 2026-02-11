@@ -5,9 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Link } from "react-router-dom";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { PenTool, Users, Star, Zap, Search, TrendingUp, Download, FileText, BarChart3, Target, Briefcase, BookOpen, GraduationCap } from "lucide-react";
-import { useRef } from "react";
 import { SEOHead } from "@/components/landing/SEOHead";
 import { TrustBar } from "@/components/landing/TrustBar";
 import { ProblemSolution } from "@/components/landing/ProblemSolution";
@@ -21,9 +21,6 @@ import { FeaturesGrid } from "@/components/landing/FeaturesGrid";
 import { MockToolPreview } from "@/components/landing/MockToolPreview";
 
 export default function BlogContentCreator() {
-  const toolRef = useRef<HTMLDivElement>(null);
-  const scrollToTool = () => toolRef.current?.scrollIntoView({ behavior: "smooth" });
-
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
@@ -49,8 +46,8 @@ export default function BlogContentCreator() {
               Generate comprehensive, SEO-optimized blog posts with built-in readability analysis, keyword density tracking, and one-click export to Markdown or HTML. From 800-word posts to 4,000-word pillar content — all optimized for search engines.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-              <Button size="lg" className="text-lg px-8" onClick={scrollToTool}>
-                Generate My Blog Post Now <PenTool className="ml-2 h-5 w-5" />
+              <Button size="lg" className="text-lg px-8" asChild>
+                <Link to="/auth">Generate My Blog Post Now <PenTool className="ml-2 h-5 w-5" /></Link>
               </Button>
             </div>
             <div className="flex items-center justify-center flex-wrap gap-6 text-sm text-muted-foreground">
@@ -61,7 +58,7 @@ export default function BlogContentCreator() {
           </div>
 
           {/* Mock Tool */}
-          <div className="max-w-6xl mx-auto" ref={toolRef}>
+          <div className="max-w-6xl mx-auto">
             <MockToolPreview toolName="Blog Content Creator" dashboardPath="/dashboard/blog-creator" gradient="from-indigo-500 to-purple-500">
               <div className="grid lg:grid-cols-2 gap-8">
                 <div className="space-y-4">
@@ -142,7 +139,7 @@ export default function BlogContentCreator() {
           { icon: Download, title: "Export & Publish", description: "Export to Markdown, HTML, or copy to clipboard. Paste into your CMS and publish." },
         ]}
         ctaText="Write My Blog Post"
-        onCtaClick={scrollToTool}
+        ctaLink="/auth"
       />
 
       <UseCases

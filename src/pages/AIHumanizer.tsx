@@ -2,12 +2,10 @@
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Bot, Shield, CheckCircle, Zap, Star, Users, FileText, Eye, Lock, GraduationCap, Briefcase, PenTool, Settings } from "lucide-react";
-import { useRef } from "react";
 import { Slider } from "@/components/ui/slider";
 import { SEOHead } from "@/components/landing/SEOHead";
 import { TrustBar } from "@/components/landing/TrustBar";
@@ -20,11 +18,11 @@ import { FAQSection } from "@/components/landing/FAQSection";
 import { FinalCTA } from "@/components/landing/FinalCTA";
 import { FeaturesGrid } from "@/components/landing/FeaturesGrid";
 import { MockToolPreview } from "@/components/landing/MockToolPreview";
+import { Card } from "@/components/ui/card";
+import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 
 export default function AIHumanizer() {
-  const toolRef = useRef<HTMLDivElement>(null);
-  const scrollToTool = () => toolRef.current?.scrollIntoView({ behavior: "smooth" });
-
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
@@ -61,8 +59,8 @@ export default function AIHumanizer() {
               Transform AI-generated content into natural, human-like text that bypasses all major AI detection tools — GPTZero, Turnitin, Originality.ai, and Content at Scale. Adjustable intensity from light touch-ups to complete rewrites.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-              <Button size="lg" className="text-lg px-8" onClick={scrollToTool}>
-                Humanize My Content Now <Shield className="ml-2 h-5 w-5" />
+              <Button size="lg" className="text-lg px-8" asChild>
+                <Link to="/auth">Humanize My Content Now <Shield className="ml-2 h-5 w-5" /></Link>
               </Button>
             </div>
             <div className="flex items-center justify-center flex-wrap gap-6 text-sm text-muted-foreground">
@@ -73,7 +71,7 @@ export default function AIHumanizer() {
           </div>
 
           {/* Mock Tool Preview */}
-          <div className="max-w-5xl mx-auto" ref={toolRef}>
+          <div className="max-w-5xl mx-auto">
             <MockToolPreview toolName="AI Humanizer" dashboardPath="/dashboard/ai-humanizer" gradient="from-blue-500 to-purple-500">
               <div className="mb-6">
                 <Label className="text-sm font-medium mb-3 block">Humanization Intensity: <span className="font-semibold">Medium</span></Label>
@@ -105,7 +103,6 @@ export default function AIHumanizer() {
         { label: "Avg. Rating", value: "4.8/5", icon: "star" },
       ]} />
 
-      {/* Problem-Solution */}
       <ProblemSolution
         problems={[
           "AI detectors flagging your content as machine-generated",
@@ -157,7 +154,6 @@ export default function AIHumanizer() {
         </div>
       </section>
 
-      {/* Features Grid */}
       <FeaturesGrid
         title="Advanced Humanization Technology"
         subtitle="Enterprise-grade AI rewriting that preserves your message while making it undetectable."
@@ -171,7 +167,6 @@ export default function AIHumanizer() {
         ]}
       />
 
-      {/* How It Works */}
       <HowItWorks
         steps={[
           { icon: Bot, title: "Paste AI Content", description: "Copy your AI-generated text from ChatGPT, Claude, or any AI tool and paste it into the input field." },
@@ -179,10 +174,9 @@ export default function AIHumanizer() {
           { icon: Shield, title: "Get Human Content", description: "Click humanize and receive undetectable, natural-sounding text in seconds. Copy and use anywhere." },
         ]}
         ctaText="Try It Free Now"
-        onCtaClick={scrollToTool}
+        ctaLink="/auth"
       />
 
-      {/* Use Cases */}
       <UseCases
         title="Who Uses AI Humanizer?"
         subtitle="Trusted by students, professionals, and content creators worldwide."
@@ -196,7 +190,6 @@ export default function AIHumanizer() {
         ]}
       />
 
-      {/* Testimonials */}
       <Testimonials
         heading="Trusted by 10,000+ Content Creators"
         testimonials={[
@@ -209,7 +202,6 @@ export default function AIHumanizer() {
         ]}
       />
 
-      {/* Comparison Table */}
       <ComparisonTable
         title="Why AI Writer Pros Humanizer Leads the Market"
         ourName="AI Writer Pros"
@@ -226,7 +218,6 @@ export default function AIHumanizer() {
         ]}
       />
 
-      {/* FAQ */}
       <FAQSection
         toolName="the AI Humanizer"
         faqs={[
@@ -241,7 +232,6 @@ export default function AIHumanizer() {
         ]}
       />
 
-      {/* Final CTA */}
       <FinalCTA
         headline="Ready to Make Your AI Content Undetectable?"
         subheadline="Join 10,000+ users who trust AI Writer Pros Humanizer to bypass all AI detection tools."
