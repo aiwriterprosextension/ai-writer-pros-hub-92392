@@ -34,6 +34,10 @@ import KnowledgeBase from "./pages/KnowledgeBase";
 import BestPractices from "./pages/BestPractices";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
+import KBCreatingAccount from "./pages/kb/KBCreatingAccount";
+import KBNavigatingDashboard from "./pages/kb/KBNavigatingDashboard";
+import KBFirstAIGeneration from "./pages/kb/KBFirstAIGeneration";
+import KBAICreditsUsage from "./pages/kb/KBAICreditsUsage";
 
 const queryClient = new QueryClient();
 
@@ -72,6 +76,10 @@ const App = () => (
               <Route path="/blog" element={<Blog />} />
               <Route path="/knowledge-base" element={<KnowledgeBase />} />
               <Route path="/best-practices" element={<BestPractices />} />
+              <Route path="/knowledge-base/creating-account" element={<KBCreatingAccount />} />
+              <Route path="/knowledge-base/navigating-dashboard" element={<KBNavigatingDashboard />} />
+              <Route path="/knowledge-base/first-ai-generation" element={<KBFirstAIGeneration />} />
+              <Route path="/knowledge-base/ai-credits-usage" element={<KBAICreditsUsage />} />
               <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
