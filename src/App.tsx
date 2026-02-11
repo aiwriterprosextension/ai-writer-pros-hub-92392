@@ -28,8 +28,9 @@ import DashboardProfile from "./pages/dashboard/DashboardProfile";
 import Features from "./pages/Features";
 import Pricing from "./pages/Pricing";
 import Blog from "./pages/Blog";
-import Tutorials from "./pages/Tutorials";
 import Support from "./pages/Support";
+import KnowledgeBase from "./pages/KnowledgeBase";
+import BestPractices from "./pages/BestPractices";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 
@@ -66,8 +67,9 @@ const App = () => (
               <Route path="/features" element={<Features />} />
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/blog" element={<Blog />} />
-              <Route path="/tutorials" element={<Tutorials />} />
               <Route path="/support" element={<Support />} />
+              <Route path="/knowledge-base" element={<KnowledgeBase />} />
+              <Route path="/best-practices" element={<BestPractices />} />
               <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
             </Routes>

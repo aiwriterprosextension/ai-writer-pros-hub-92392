@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Menu, X, ChevronDown, LogOut } from "lucide-react";
+import { Menu, X, ChevronDown, LogOut, BookOpen, Newspaper, LifeBuoy, Lightbulb } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import {
   DropdownMenu,
@@ -82,12 +82,39 @@ export function Navigation() {
             <Link to="/pricing" className="text-sm font-medium hover:text-primary transition-colors">
               Pricing
             </Link>
-            <Link to="/blog" className="text-sm font-medium hover:text-primary transition-colors">
-              Blog
-            </Link>
-            <Link to="/support" className="text-sm font-medium hover:text-primary transition-colors">
-              Support
-            </Link>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex items-center space-x-1 text-sm font-medium hover:text-primary transition-colors">
+                <span>Resources</span>
+                <ChevronDown className="h-4 w-4" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-56">
+                <DropdownMenuItem asChild>
+                  <Link to="/knowledge-base" className="flex items-center gap-2">
+                    <BookOpen className="h-4 w-4" />
+                    Knowledge Base
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/blog" className="flex items-center gap-2">
+                    <Newspaper className="h-4 w-4" />
+                    Blog & Updates
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/support" className="flex items-center gap-2">
+                    <LifeBuoy className="h-4 w-4" />
+                    Support Center
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/best-practices" className="flex items-center gap-2">
+                    <Lightbulb className="h-4 w-4" />
+                    Best Practices Guide
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             
             <div className="flex items-center space-x-4">
               <ThemeToggle />
@@ -140,17 +167,35 @@ export function Navigation() {
               <Link to="/content-repurposing" className="block px-3 py-2 text-base font-medium hover:text-primary transition-colors" onClick={() => setIsOpen(false)}>
                 📝 Content Repurposing
               </Link>
+              <Link to="/email-generator" className="block px-3 py-2 text-base font-medium hover:text-primary transition-colors" onClick={() => setIsOpen(false)}>
+                📧 Email Generator
+              </Link>
+              <Link to="/social-media-suite" className="block px-3 py-2 text-base font-medium hover:text-primary transition-colors" onClick={() => setIsOpen(false)}>
+                📱 Social Media Suite
+              </Link>
+              <Link to="/blog-content-creator" className="block px-3 py-2 text-base font-medium hover:text-primary transition-colors" onClick={() => setIsOpen(false)}>
+                📚 Blog Content Creator
+              </Link>
               <Link to="/features" className="block px-3 py-2 text-base font-medium hover:text-primary transition-colors" onClick={() => setIsOpen(false)}>
                 Features
               </Link>
               <Link to="/pricing" className="block px-3 py-2 text-base font-medium hover:text-primary transition-colors" onClick={() => setIsOpen(false)}>
                 Pricing
               </Link>
+              <div className="px-3 py-2">
+                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">Resources</p>
+              </div>
+              <Link to="/knowledge-base" className="block px-3 py-2 text-base font-medium hover:text-primary transition-colors" onClick={() => setIsOpen(false)}>
+                📚 Knowledge Base
+              </Link>
               <Link to="/blog" className="block px-3 py-2 text-base font-medium hover:text-primary transition-colors" onClick={() => setIsOpen(false)}>
-                Blog
+                📖 Blog & Updates
               </Link>
               <Link to="/support" className="block px-3 py-2 text-base font-medium hover:text-primary transition-colors" onClick={() => setIsOpen(false)}>
-                Support
+                🆘 Support Center
+              </Link>
+              <Link to="/best-practices" className="block px-3 py-2 text-base font-medium hover:text-primary transition-colors" onClick={() => setIsOpen(false)}>
+                💡 Best Practices Guide
               </Link>
               <div className="flex flex-col space-y-2 px-3 py-2">
                 {user ? (
