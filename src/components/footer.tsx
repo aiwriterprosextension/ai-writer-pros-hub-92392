@@ -93,16 +93,6 @@ export function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/blog" className="text-muted-foreground hover:text-foreground transition-colors">
-                    Blog
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/tutorials" className="text-muted-foreground hover:text-foreground transition-colors">
-                    Tutorials
-                  </Link>
-                </li>
-                <li>
                   <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
                     About Us
                   </a>
@@ -115,29 +105,29 @@ export function Footer() {
               </ul>
             </div>
 
-            {/* Support */}
+            {/* Resources */}
             <div>
-              <h4 className="font-semibold mb-4">Support</h4>
+              <h4 className="font-semibold mb-4">Resources</h4>
               <ul className="space-y-2 text-sm">
                 <li>
-                  <Link to="/support" className="text-muted-foreground hover:text-foreground transition-colors">
-                    Help Center
+                  <Link to="/knowledge-base" className="text-muted-foreground hover:text-foreground transition-colors">
+                    Knowledge Base
                   </Link>
                 </li>
                 <li>
-                  <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-                    Contact Us
-                  </a>
+                  <Link to="/blog" className="text-muted-foreground hover:text-foreground transition-colors">
+                    Blog & Updates
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-                    API Documentation
-                  </a>
+                  <Link to="/support" className="text-muted-foreground hover:text-foreground transition-colors">
+                    Support Center
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-                    Status Page
-                  </a>
+                  <Link to="/best-practices" className="text-muted-foreground hover:text-foreground transition-colors">
+                    Best Practices Guide
+                  </Link>
                 </li>
                 <li>
                   <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">

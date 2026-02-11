@@ -23,7 +23,6 @@ import {
   Clock,
   CheckCircle,
   ArrowRight,
-  Chrome,
   Bot,
   FileText,
   Mail,
@@ -32,7 +31,8 @@ import {
   ShoppingCart,
   Briefcase,
   Share2,
-  UserPlus
+  UserPlus,
+  GraduationCap
 } from "lucide-react";
 
 const seoSchema = {
@@ -89,7 +89,6 @@ const comparisonRows = [
   { feature: "Built-In Templates", us: true, competitor1: false, competitor2: true },
   { feature: "Bulk Generation", us: true, competitor1: false, competitor2: false },
   { feature: "Free Trial (No Credit Card)", us: true, competitor1: true, competitor2: false },
-  { feature: "Chrome Extension", us: true, competitor1: false, competitor2: false },
   { feature: "Dedicated Email Generator", us: true, competitor1: false, competitor2: true },
 ];
 
@@ -99,6 +98,7 @@ const useCases = [
   { title: "Social Media Managers", description: "Repurpose blog content into platform-optimized posts for Twitter/X, LinkedIn, Instagram, and Facebook. Save hours of manual rewriting every week.", icon: Share2, example: "Turn one blog post into 10+ social media posts using Content Repurposing." },
   { title: "Email Marketers", description: "Craft compelling email sequences, newsletters, and promotional campaigns with AI. Improve open rates with subject line optimization and A/B copy variants.", icon: Mail, example: "Use the Email Generator to build a 5-email welcome sequence in under 10 minutes." },
   { title: "Agencies & Teams", description: "Scale content production across multiple clients without sacrificing quality. Maintain brand voice consistency with configurable tone and style settings.", icon: Briefcase, example: "Manage 10+ client accounts from a single AI Writer Pros dashboard." },
+  { title: "Educators & Students", description: "Create polished academic papers, study guides, and course materials. Humanize AI-assisted writing to maintain authenticity and academic integrity.", icon: GraduationCap, example: "Use the AI Humanizer to refine research drafts while keeping your original voice intact." },
 ];
 
 const faqs = [
@@ -185,57 +185,48 @@ export default function Index() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Available Tools */}
-            <Card className="relative overflow-hidden border-2 border-green-200 bg-green-50/50 dark:border-green-800 dark:bg-green-950/50">
-              <div className="absolute top-4 right-4">
-                <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                  Available Now
-                </Badge>
-              </div>
+            {/* Amazon Affiliate Assistant */}
+            <Card className="relative overflow-hidden hover:shadow-md transition-shadow">
               <CardHeader>
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-gradient-to-r from-amber-500 to-orange-500 rounded-lg">
-                    <Chrome className="h-6 w-6 text-white" />
+                    <ShoppingCart className="h-6 w-6 text-white" />
                   </div>
                   <div>
                     <CardTitle className="text-lg">Amazon Affiliate Assistant</CardTitle>
-                    <CardDescription>Chrome Extension</CardDescription>
+                    <CardDescription>AI-Powered Product Reviews</CardDescription>
                   </div>
                 </div>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground mb-4">
-                  Generate Amazon product reviews in minutes. Our most popular tool with 25,000+ active users. Auto-extract product data, create SEO-optimized reviews with pros, cons, and comparison tables.
+                  Generate high-converting Amazon product reviews with AI. Auto-extract product data, create SEO-optimized reviews with pros, cons, comparison tables, and FTC-compliant disclosures.
                 </p>
                 <div className="space-y-2 mb-6">
                   <div className="flex items-center text-sm">
                     <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-                    Auto product research
+                    Auto product data extraction
                   </div>
                   <div className="flex items-center text-sm">
                     <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-                    SEO-optimized reviews
+                    SEO-optimized reviews with pros & cons
                   </div>
                   <div className="flex items-center text-sm">
                     <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-                    Bulk generation
+                    Comparison tables & FAQ builder
                   </div>
                 </div>
                 <Link to="/amazon-affiliate-extension">
                   <Button className="w-full">
-                    Get Started
+                    Learn More
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>
               </CardContent>
             </Card>
 
-            <Card className="relative overflow-hidden border-2 border-green-200 bg-green-50/50 dark:border-green-800 dark:bg-green-950/50">
-              <div className="absolute top-4 right-4">
-                <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                  Available Now
-                </Badge>
-              </div>
+            {/* AI Humanizer */}
+            <Card className="relative overflow-hidden hover:shadow-md transition-shadow">
               <CardHeader>
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-gradient-to-r from-primary to-primary/70 rounded-lg">
@@ -249,82 +240,73 @@ export default function Index() {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground mb-4">
-                  Make AI content undetectable. Bypass AI detection tools like GPTZero and Originality.ai with advanced humanization that preserves quality and readability.
+                  Make AI content undetectable with advanced humanization. Analyze AI patterns, adjust tone and style per industry, and get before/after detection scores — all in one powerful tool.
                 </p>
                 <div className="space-y-2 mb-6">
                   <div className="flex items-center text-sm">
                     <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-                    99% undetectable rate
+                    AI pattern analyzer with detection score
                   </div>
                   <div className="flex items-center text-sm">
                     <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-                    Maintains quality
+                    Tone, style & industry customization
                   </div>
                   <div className="flex items-center text-sm">
                     <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-                    Bulk processing
+                    Bulk processing & version alternatives
                   </div>
                 </div>
                 <Link to="/ai-humanizer">
                   <Button className="w-full">
-                    Try Now
+                    Learn More
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>
               </CardContent>
             </Card>
 
-            <Card className="relative overflow-hidden border-2 border-green-200 bg-green-50/50 dark:border-green-800 dark:bg-green-950/50">
-              <div className="absolute top-4 right-4">
-                <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                  Available Now
-                </Badge>
-              </div>
+            {/* Content Repurposing */}
+            <Card className="relative overflow-hidden hover:shadow-md transition-shadow">
               <CardHeader>
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-gradient-to-r from-green-500 to-teal-500 rounded-lg">
                     <FileText className="h-6 w-6 text-white" />
                   </div>
                   <div>
-                    <CardTitle className="text-lg">Content Repurposing Tool</CardTitle>
+                    <CardTitle className="text-lg">Content Repurposing</CardTitle>
                     <CardDescription>Multi-Format Content</CardDescription>
                   </div>
                 </div>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground mb-4">
-                  Turn 1 piece of content into 10+ formats. Blog posts to social media, email newsletters, and video scripts in seconds with AI-powered repurposing.
+                  Turn 1 piece of content into 10+ formats. AI analyzes your content, recommends best formats, customizes per platform, and generates hashtags, visuals, and posting schedules.
                 </p>
                 <div className="space-y-2 mb-6">
                   <div className="flex items-center text-sm">
                     <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-                    10+ content formats
+                    Smart content analyzer & format matching
                   </div>
                   <div className="flex items-center text-sm">
                     <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-                    Platform optimization
+                    Platform-specific customization & CTA generator
                   </div>
                   <div className="flex items-center text-sm">
                     <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
-                    Instant generation
+                    Hashtags, scheduling & batch export
                   </div>
                 </div>
                 <Link to="/content-repurposing">
                   <Button className="w-full">
-                    Try Now
+                    Learn More
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>
               </CardContent>
             </Card>
 
-            {/* Coming Soon Tools */}
-            <Card className="relative overflow-hidden border-2 border-orange-200 bg-orange-50/50 dark:border-orange-800 dark:bg-orange-950/50">
-              <div className="absolute top-4 right-4">
-                <Badge className="bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200">
-                  Coming Soon
-                </Badge>
-              </div>
+            {/* Email Generator */}
+            <Card className="relative overflow-hidden hover:shadow-md transition-shadow">
               <CardHeader>
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-gradient-to-r from-red-500 to-pink-500 rounded-lg">
@@ -337,24 +319,34 @@ export default function Index() {
                 </div>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground mb-6">
-                  AI-powered email campaigns that convert. Join waitlist for early access to advanced email automation with subject line optimization.
+                <p className="text-muted-foreground mb-4">
+                  Create high-converting email campaigns with AI. Generate subject lines, build email sequences, A/B test variations, and optimize for opens and clicks across any audience.
                 </p>
+                <div className="space-y-2 mb-6">
+                  <div className="flex items-center text-sm">
+                    <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
+                    AI subject line generator & A/B testing
+                  </div>
+                  <div className="flex items-center text-sm">
+                    <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
+                    Multi-step email sequence builder
+                  </div>
+                  <div className="flex items-center text-sm">
+                    <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
+                    Audience targeting & preview scoring
+                  </div>
+                </div>
                 <Link to="/email-generator">
-                  <Button variant="outline" className="w-full">
-                    Join Waitlist
+                  <Button className="w-full">
+                    Learn More
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>
               </CardContent>
             </Card>
 
-            <Card className="relative overflow-hidden border-2 border-orange-200 bg-orange-50/50 dark:border-orange-800 dark:bg-orange-950/50">
-              <div className="absolute top-4 right-4">
-                <Badge className="bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200">
-                  Coming Soon
-                </Badge>
-              </div>
+            {/* Social Media Suite */}
+            <Card className="relative overflow-hidden hover:shadow-md transition-shadow">
               <CardHeader>
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-gradient-to-r from-pink-500 to-rose-500 rounded-lg">
@@ -367,24 +359,34 @@ export default function Index() {
                 </div>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground mb-6">
-                  Create engaging, platform-optimized posts across Twitter/X, LinkedIn, Instagram, and Facebook. Get notified when our comprehensive social suite launches.
+                <p className="text-muted-foreground mb-4">
+                  Create engaging, platform-optimized social posts for Twitter/X, LinkedIn, Instagram, and Facebook. Generate content ideas, threads, carousels, and hashtag strategies with AI.
                 </p>
+                <div className="space-y-2 mb-6">
+                  <div className="flex items-center text-sm">
+                    <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
+                    Content calendar & idea generator
+                  </div>
+                  <div className="flex items-center text-sm">
+                    <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
+                    Thread & carousel creator
+                  </div>
+                  <div className="flex items-center text-sm">
+                    <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
+                    Hashtag research & engagement hooks
+                  </div>
+                </div>
                 <Link to="/social-media-suite">
-                  <Button variant="outline" className="w-full">
-                    Join Waitlist
+                  <Button className="w-full">
+                    Learn More
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>
               </CardContent>
             </Card>
 
-            <Card className="relative overflow-hidden border-2 border-orange-200 bg-orange-50/50 dark:border-orange-800 dark:bg-orange-950/50">
-              <div className="absolute top-4 right-4">
-                <Badge className="bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200">
-                  Coming Soon
-                </Badge>
-              </div>
+            {/* Blog Content Creator */}
+            <Card className="relative overflow-hidden hover:shadow-md transition-shadow">
               <CardHeader>
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg">
@@ -397,12 +399,26 @@ export default function Index() {
                 </div>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground mb-6">
-                  SEO-optimized blog posts that rank on Google. Be first to try our advanced blog creation tool with built-in keyword research and content scoring.
+                <p className="text-muted-foreground mb-4">
+                  Generate SEO-optimized blog posts that rank on Google. AI handles topic research, outlines, section-by-section writing, readability analysis, and keyword optimization.
                 </p>
+                <div className="space-y-2 mb-6">
+                  <div className="flex items-center text-sm">
+                    <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
+                    Topic generator & keyword research
+                  </div>
+                  <div className="flex items-center text-sm">
+                    <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
+                    Outline builder & section-by-section writing
+                  </div>
+                  <div className="flex items-center text-sm">
+                    <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
+                    SEO analysis & readability scoring
+                  </div>
+                </div>
                 <Link to="/blog-content-creator">
-                  <Button variant="outline" className="w-full">
-                    Join Waitlist
+                  <Button className="w-full">
+                    Learn More
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>
