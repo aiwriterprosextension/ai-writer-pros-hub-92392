@@ -86,6 +86,30 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_predictions: {
+        Row: {
+          created_at: string
+          id: string
+          prediction_data: Json
+          tool_name: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          prediction_data?: Json
+          tool_name: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          prediction_data?: Json
+          tool_name?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       audience_personas: {
         Row: {
           created_at: string
@@ -238,6 +262,98 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      email_campaigns: {
+        Row: {
+          audience: string | null
+          content: string | null
+          created_at: string
+          cta_goal: string | null
+          deleted_at: string | null
+          id: string
+          is_draft: boolean | null
+          prediction_data: Json | null
+          sequence_length: number | null
+          subject_lines: Json | null
+          tone: string | null
+          topic: string
+          type: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          audience?: string | null
+          content?: string | null
+          created_at?: string
+          cta_goal?: string | null
+          deleted_at?: string | null
+          id?: string
+          is_draft?: boolean | null
+          prediction_data?: Json | null
+          sequence_length?: number | null
+          subject_lines?: Json | null
+          tone?: string | null
+          topic: string
+          type?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          audience?: string | null
+          content?: string | null
+          created_at?: string
+          cta_goal?: string | null
+          deleted_at?: string | null
+          id?: string
+          is_draft?: boolean | null
+          prediction_data?: Json | null
+          sequence_length?: number | null
+          subject_lines?: Json | null
+          tone?: string | null
+          topic?: string
+          type?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      email_sequences: {
+        Row: {
+          campaign_id: string | null
+          content: string | null
+          created_at: string
+          email_number: number
+          id: string
+          subject_line: string | null
+          user_id: string
+        }
+        Insert: {
+          campaign_id?: string | null
+          content?: string | null
+          created_at?: string
+          email_number: number
+          id?: string
+          subject_line?: string | null
+          user_id: string
+        }
+        Update: {
+          campaign_id?: string | null
+          content?: string | null
+          created_at?: string
+          email_number?: number
+          id?: string
+          subject_line?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_sequences_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "email_campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       fact_check_flags: {
         Row: {

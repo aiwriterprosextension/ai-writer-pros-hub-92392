@@ -301,6 +301,100 @@ Flag 3-8 claims.`;
         break;
       }
 
+      // === EMAIL GENERATOR SPECIFIC ACTIONS ===
+
+      case "email-topic-ideas": {
+        const { industry, campaignGoal, seasonEvent } = body;
+        systemPrompt = `You are an email marketing strategist. Generate specific, actionable email campaign topic ideas. Respond with ONLY valid JSON, no markdown:
+[
+  { "title": "<topic title>", "description": "<1 sentence description>" }
+]
+Provide exactly 10 topics.`;
+        userPrompt = `Generate 10 email campaign topic ideas for a ${industry} business with goal of ${campaignGoal}${seasonEvent ? ` during ${seasonEvent}` : ''}. Make them specific and actionable.`;
+        break;
+      }
+
+      case "email-audience-profile": {
+        const { industry, problem, awarenessLevel, demographics } = body;
+        systemPrompt = `You are an email marketing expert. Create a concise target audience description for email campaigns. Return ONLY the audience description text (2-3 sentences), no JSON, no headers.`;
+        userPrompt = `Create a detailed target audience description for email campaign. Industry: ${industry}, Problem: "${problem}", Awareness: ${awarenessLevel}, Demographics: ${demographics || 'not specified'}. Write 2-3 sentences describing who they are, what they need, and how to speak to them.`;
+        break;
+      }
+
+      case "email-type-suggestion": {
+        const { topic } = body;
+        systemPrompt = `You are an email marketing analyst. Analyze the topic and suggest the best email type. Respond with ONLY valid JSON, no markdown:
+{
+  "suggestedType": "<promotional|welcome|newsletter|product-launch|re-engagement|sales>",
+  "matchPercent": <50-100>,
+  "reason": "<one sentence explanation>"
+}`;
+        userPrompt = `Analyze this email topic: "${topic}". Which email type is best: Promotional, Welcome Sequence, Newsletter, Product Launch, Re-engagement, or Sales Sequence? Provide percentage match and one-sentence reason.`;
+        break;
+      }
+
+      case "email-subject-lines": {
+        const { topic, audience, emailType } = body;
+        systemPrompt = `You are an email subject line expert. Generate compelling subject line variations. Respond with ONLY valid JSON, no markdown:
+[
+  {
+    "text": "<subject line>",
+    "style": "<Urgency|Curiosity|Benefit|Personalization|Question>",
+    "estimatedOpenRate": "<e.g. 18-24%>"
+  }
+]
+Provide exactly 5 subject lines.`;
+        userPrompt = `Generate 5 compelling email subject line variations. Topic: "${topic}", Audience: "${audience || 'general'}", Type: ${emailType || 'promotional'}. Styles: 1) urgency-focused, 2) curiosity-driven, 3) benefit-led, 4) personalization, 5) question-based.`;
+        break;
+      }
+
+      case "email-sequence-strategy": {
+        const { campaignGoal, timeline, audienceTemp } = body;
+        systemPrompt = `You are an email sequence strategist. Create an email sequence plan. Respond with ONLY valid JSON, no markdown:
+{
+  "totalEmails": <1-7>,
+  "suggestedTone": "<professional|friendly|urgent|casual|formal>",
+  "emails": [
+    {
+      "number": <1-7>,
+      "purpose": "<purpose of this email>",
+      "dayAfterPrevious": <days>,
+      "subjectAngle": "<suggested subject angle>"
+    }
+  ]
+}`;
+        userPrompt = `Create an email sequence strategy. Goal: ${campaignGoal}, Timeline: ${timeline}, Audience Temperature: ${audienceTemp}. Suggest: optimal number of emails (1-7), purpose of each, days between emails, and subject angle for each.`;
+        break;
+      }
+
+      case "email-preview-score": {
+        const { topic, audience, emailType, tone, sequenceLength, ctaGoal } = body;
+        systemPrompt = `You are an email marketing analyst. Predict campaign performance. Respond with ONLY valid JSON, no markdown:
+{
+  "openRate": "<e.g. 20-28%>",
+  "conversionPotential": "<Low|Medium|High>",
+  "conversionPercent": "<e.g. 3-5%>",
+  "spamRisk": <1-10>,
+  "overallScore": <1-100>,
+  "warnings": ["<warning 1>"],
+  "suggestions": ["<suggestion 1>", "<suggestion 2>"]
+}`;
+        userPrompt = `Analyze this email campaign setup and predict performance. Topic: "${topic}", Audience: "${audience}", Type: ${emailType}, Tone: ${tone}, Sequence: ${sequenceLength} emails, CTA Goal: ${ctaGoal || 'not set'}. Provide expected open rate, conversion potential, spam risk, and suggestions.`;
+        break;
+      }
+
+      case "email-ab-variations": {
+        const { content } = body;
+        systemPrompt = `You are an email copywriting expert. Create 2 A/B test variations of the email. Respond with ONLY valid JSON, no markdown:
+{
+  "variationB": { "approach": "Story-driven", "content": "<full email variation>" },
+  "variationC": { "approach": "Data-focused", "content": "<full email variation>" }
+}
+Keep the core message the same but change the approach.`;
+        userPrompt = `Create 2 A/B test variations of this email:\n\n${(content || '').substring(0, 3000)}\n\nVariation B: story-driven approach. Variation C: data-focused approach. Keep core message same.`;
+        break;
+      }
+
       // === AMAZON AFFILIATE SPECIFIC ACTIONS ===
 
       case "extract-product": {
