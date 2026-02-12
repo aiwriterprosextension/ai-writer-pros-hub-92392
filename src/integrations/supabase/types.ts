@@ -550,6 +550,63 @@ export type Database = {
         }
         Relationships: []
       }
+      user_subscriptions: {
+        Row: {
+          created_at: string
+          generation_limit: number
+          generations_today: number
+          id: string
+          is_trial_active: boolean
+          last_generation_date: string | null
+          last_word_reset: string | null
+          plan: string
+          stripe_customer_id: string | null
+          stripe_subscription_id: string | null
+          trial_ends_at: string | null
+          trial_started_at: string | null
+          updated_at: string
+          user_id: string
+          word_limit: number
+          words_used_this_month: number
+        }
+        Insert: {
+          created_at?: string
+          generation_limit?: number
+          generations_today?: number
+          id?: string
+          is_trial_active?: boolean
+          last_generation_date?: string | null
+          last_word_reset?: string | null
+          plan?: string
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          trial_ends_at?: string | null
+          trial_started_at?: string | null
+          updated_at?: string
+          user_id: string
+          word_limit?: number
+          words_used_this_month?: number
+        }
+        Update: {
+          created_at?: string
+          generation_limit?: number
+          generations_today?: number
+          id?: string
+          is_trial_active?: boolean
+          last_generation_date?: string | null
+          last_word_reset?: string | null
+          plan?: string
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          trial_ends_at?: string | null
+          trial_started_at?: string | null
+          updated_at?: string
+          user_id?: string
+          word_limit?: number
+          words_used_this_month?: number
+        }
+        Relationships: []
+      }
       visual_content_suggestions: {
         Row: {
           alt_text: string | null
