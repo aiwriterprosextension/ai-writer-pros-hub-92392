@@ -101,7 +101,7 @@ export function Navigation() {
                 <DropdownMenuItem asChild>
                   <Link to="/blog" className="flex items-center gap-2">
                     <Newspaper className="h-4 w-4" />
-                    Blog & Updates
+                    Blog
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
@@ -192,7 +192,7 @@ export function Navigation() {
                 📚 Knowledge Base
               </Link>
               <Link to="/blog" className="block px-3 py-2 text-base font-medium hover:text-primary transition-colors" onClick={() => setIsOpen(false)}>
-                📖 Blog & Updates
+                📖 Blog
               </Link>
               <Link to="/knowledge-base#support" className="block px-3 py-2 text-base font-medium hover:text-primary transition-colors" onClick={() => setIsOpen(false)}>
                 🆘 Support Center
