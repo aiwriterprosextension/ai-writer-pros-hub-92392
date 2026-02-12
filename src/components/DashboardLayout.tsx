@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { UsageMeter } from "@/components/dashboard/UsageMeter";
 import logo from "@/assets/logo.webp";
 
 const sidebarItems = [
@@ -82,6 +83,10 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
             );
           })}
         </nav>
+        {/* Usage meter */}
+        <div className="px-3 pb-2">
+          <UsageMeter />
+        </div>
 
         {/* Bottom section */}
         <div className="p-4 border-t border-sidebar-border space-y-3">

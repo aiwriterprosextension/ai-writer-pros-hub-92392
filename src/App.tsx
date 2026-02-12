@@ -7,8 +7,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { ThemeProvider } from "@/components/theme-provider";
 import { AuthProvider } from "@/hooks/useAuth";
+import { SubscriptionProvider } from "@/hooks/useSubscription";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { ExitIntentPopup } from "@/components/landing/ExitIntentPopup";
+import { ToolGate } from "@/components/dashboard/ToolGate";
 import { SocialProofPopup } from "@/components/landing/SocialProofPopup";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
@@ -75,6 +77,7 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider defaultTheme="system" storageKey="ai-writer-pros-theme">
       <AuthProvider>
+        <SubscriptionProvider>
         <TooltipProvider>
           <Toaster />
           <Sonner />
@@ -93,12 +96,12 @@ const App = () => (
               <Route path="/blog-content-creator" element={<BlogContentCreator />} />
               <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}>
                 <Route index element={<DashboardHome />} />
-                <Route path="ai-humanizer" element={<DashboardAIHumanizer />} />
+                <Route path="ai-humanizer" element={<ToolGate toolId="ai-humanizer" toolName="AI Humanizer"><DashboardAIHumanizer /></ToolGate>} />
                 <Route path="email-generator" element={<DashboardEmailGenerator />} />
                 <Route path="social-media" element={<DashboardSocialMedia />} />
                 <Route path="blog-creator" element={<DashboardBlogCreator />} />
-                <Route path="amazon-reviews" element={<DashboardAmazonReviews />} />
-                <Route path="content-repurposing" element={<DashboardContentRepurposing />} />
+                <Route path="amazon-reviews" element={<ToolGate toolId="amazon-reviews" toolName="Amazon Affiliate Assistant"><DashboardAmazonReviews /></ToolGate>} />
+                <Route path="content-repurposing" element={<ToolGate toolId="content-repurposing" toolName="Content Repurposing"><DashboardContentRepurposing /></ToolGate>} />
                 <Route path="profile" element={<DashboardProfile />} />
               </Route>
               <Route path="/features" element={<Features />} />
@@ -145,6 +148,7 @@ const App = () => (
             </Routes>
           </BrowserRouter>
         </TooltipProvider>
+        </SubscriptionProvider>
       </AuthProvider>
     </ThemeProvider>
   </QueryClientProvider>
