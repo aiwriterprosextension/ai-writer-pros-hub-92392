@@ -101,7 +101,7 @@ export default function AIHumanizer() {
             {/* Mock Tool Preview */}
             <div className="max-w-5xl mx-auto relative animate-fade-in-up delay-200">
               <div className="absolute -inset-1 bg-gradient-to-r from-primary to-purple-600 rounded-2xl blur opacity-20"></div>
-              <MockToolPreview className="relative bg-card border shadow-2xl rounded-xl overflow-hidden">
+              <MockToolPreview toolName="AI Humanizer" dashboardPath="/dashboard/ai-humanizer" gradient="from-primary to-secondary">
                 <div className="p-4 border-b bg-muted/30 flex justify-between items-center">
                   <div className="flex space-x-2">
                     <div className="w-3 h-3 rounded-full bg-red-500"></div>
@@ -290,4 +290,4 @@ export default function AIHumanizer() {
     </div>
   );
 }
-```
+
