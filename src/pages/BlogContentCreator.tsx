@@ -1,5 +1,6 @@
 
 import { Navigation } from "@/components/navigation";
+import { FromOurBlog } from "@/components/blog/FromOurBlog";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -191,6 +192,11 @@ export default function BlogContentCreator() {
           { question: "What tones are available?", answer: "Choose from Informative, Conversational, Authoritative, Beginner-Friendly, or Technical to match your content strategy." },
           { question: "Is there a free tier?", answer: "Yes, you can generate blog posts for free. Premium plans unlock longer articles and advanced features." },
         ]}
+      />
+
+      <FromOurBlog
+        postIds={["ai-for-blog-writing", "ai-writing-prompts-tips-techniques", "edit-ai-content-checklist"]}
+        heading="Blog Writing Resources"
       />
 
       <FinalCTA

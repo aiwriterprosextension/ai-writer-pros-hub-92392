@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Clock, ArrowRight, Mail, ChevronRight } from "lucide-react";
 import { blogCategories, getCategoryBySlug } from "@/data/blog-categories";
 import { getPostsByCategory } from "@/data/blog-posts";
+import { BlogFeaturedImage } from "@/components/blog/BlogFeaturedImage";
 import NotFound from "./NotFound";
 
 export default function BlogCategory() {
@@ -114,10 +115,14 @@ export default function BlogCategory() {
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {supportingPosts.map((post) => (
                 <Link key={post.id} to={`/blog/${post.categorySlug}/${post.slug}`}>
-                  <Card className="h-full overflow-hidden group hover:shadow-lg transition-shadow">
-                    <div className="aspect-video bg-muted flex items-center justify-center">
-                      <span className="text-2xl opacity-40">📄</span>
-                    </div>
+                    <Card className="h-full overflow-hidden group hover:shadow-lg transition-shadow">
+                      <BlogFeaturedImage
+                        categorySlug={post.categorySlug}
+                        title={post.title}
+                        isPillar={post.isPillar}
+                        alt={post.featuredImageAlt}
+                        size="sm"
+                      />
                     <CardContent className="p-5">
                       <h3 className="font-semibold text-sm leading-snug mb-2 group-hover:text-primary transition-colors line-clamp-2">
                         {post.title}

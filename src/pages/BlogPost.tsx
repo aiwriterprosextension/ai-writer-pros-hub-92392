@@ -1,5 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { useState, useEffect, useMemo } from "react";
+import authorPhoto from "@/assets/john-lawrence.jpg";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { SEOHead } from "@/components/landing/SEOHead";
@@ -9,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Clock, ArrowRight, ChevronRight, Share2, Linkedin, Twitter, Facebook, ChevronUp } from "lucide-react";
 import { blogCategories, getCategoryBySlug } from "@/data/blog-categories";
 import { getPostBySlug, getRelatedPosts, type BlogPost } from "@/data/blog-posts";
+import { BlogFeaturedImage } from "@/components/blog/BlogFeaturedImage";
 import NotFound from "./NotFound";
 
 function TableOfContents({ content }: { content: string }) {
@@ -87,9 +89,11 @@ function AuthorBio({ post }: { post: BlogPost }) {
   return (
     <div className="border rounded-lg p-6 bg-muted/30 mt-12">
       <div className="flex items-start gap-4">
-        <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-lg shrink-0">
-          {post.author.name.split(" ").map((n) => n[0]).join("")}
-        </div>
+        <img
+          src={authorPhoto}
+          alt={`${post.author.name} - AI Writer Pros founder and content marketing strategist`}
+          className="w-14 h-14 rounded-full object-cover shrink-0"
+        />
         <div>
           <h3 className="font-semibold">{post.author.name}</h3>
           <p className="text-sm text-muted-foreground mt-1 leading-relaxed">{post.author.bio}</p>
@@ -174,6 +178,17 @@ export default function BlogPostPage() {
             {post.updatedAt !== post.publishedAt && <span>Updated {post.updatedAt}</span>}
             <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" />{post.readTime}</span>
             <span>{post.wordCount.toLocaleString()} words</span>
+          </div>
+
+          {/* Featured Image */}
+          <div className="mb-8">
+            <BlogFeaturedImage
+              categorySlug={post.categorySlug}
+              title={post.title}
+              isPillar={post.isPillar}
+              alt={post.featuredImageAlt}
+              size="lg"
+            />
           </div>
 
           {/* Share */}

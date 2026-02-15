@@ -1,5 +1,6 @@
 
 import { Navigation } from "@/components/navigation";
+import { FromOurBlog } from "@/components/blog/FromOurBlog";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -207,6 +208,11 @@ export default function ContentRepurposing() {
           { question: "How long should my input content be?", answer: "Any length works, but 300+ words provide enough material for the AI to generate high-quality repurposed content." },
           { question: "Is there a free tier?", answer: "Yes, you can repurpose content for free. Premium plans unlock advanced tone options and additional features." },
         ]}
+      />
+
+      <FromOurBlog
+        postIds={["ai-content-strategy-playbook", "ai-social-media-strategy", "ai-writing-best-practices"]}
+        heading="Content Strategy Resources"
       />
 
       <FinalCTA
