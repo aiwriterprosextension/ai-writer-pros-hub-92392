@@ -15,7 +15,8 @@ import { FinalCTA } from "@/components/landing/FinalCTA";
 import { 
   Play, Star, Users, TrendingUp, Shield, Zap, Clock, CheckCircle, 
   ArrowRight, Bot, FileText, Mail, MessageSquare, PenTool, 
-  ShoppingCart, Briefcase, Share2, UserPlus, GraduationCap 
+  ShoppingCart, Briefcase, Share2, UserPlus, GraduationCap,
+  BarChart3 // Fixed: Added missing import here
 } from "lucide-react";
 
 // Improvement #7: Internal Linking inside FAQs (Converted to JSX)
