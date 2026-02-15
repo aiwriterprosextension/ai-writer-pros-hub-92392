@@ -1,5 +1,6 @@
 
 import { Navigation } from "@/components/navigation";
+import { FromOurBlog } from "@/components/blog/FromOurBlog";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -208,6 +209,11 @@ export default function SocialMediaSuite() {
           { question: "What tone options are available?", answer: "Choose from Engaging, Professional, Casual, Humorous, or Inspirational to match your brand voice." },
           { question: "Is there a free tier?", answer: "Yes, you can generate social media posts for free. Premium plans unlock additional features." },
         ]}
+      />
+
+      <FromOurBlog
+        postIds={["ai-social-media-strategy", "ai-content-strategy-playbook", "ai-writing-best-practices"]}
+        heading="Social Media Resources"
       />
 
       <FinalCTA

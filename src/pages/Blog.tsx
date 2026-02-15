@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Clock, ArrowRight, Mail, Search } from "lucide-react";
 import { blogCategories } from "@/data/blog-categories";
 import { blogPosts, getFeaturedPosts } from "@/data/blog-posts";
+import { BlogFeaturedImage } from "@/components/blog/BlogFeaturedImage";
 
 const POSTS_PER_PAGE = 12;
 
@@ -125,10 +126,14 @@ export default function Blog() {
             <div className="grid md:grid-cols-3 gap-6">
               {featured.map((post) => (
                 <Link key={post.id} to={`/blog/${post.categorySlug}/${post.slug}`}>
-                  <Card className="h-full overflow-hidden group hover:shadow-lg transition-shadow">
-                    <div className="aspect-video bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center">
-                      <span className="text-4xl">📝</span>
-                    </div>
+                    <Card className="h-full overflow-hidden group hover:shadow-lg transition-shadow">
+                      <BlogFeaturedImage
+                        categorySlug={post.categorySlug}
+                        title={post.title}
+                        isPillar={post.isPillar}
+                        alt={post.featuredImageAlt}
+                        size="md"
+                      />
                     <CardContent className="p-5">
                       <Badge variant="outline" className="mb-2 text-[10px] uppercase tracking-wider">
                         {blogCategories.find((c) => c.slug === post.categorySlug)?.name}
@@ -190,10 +195,14 @@ export default function Blog() {
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {paginatedPosts.map((post) => (
                 <Link key={post.id} to={`/blog/${post.categorySlug}/${post.slug}`}>
-                  <Card className="h-full overflow-hidden group hover:shadow-lg transition-shadow cursor-pointer">
-                    <div className="aspect-video bg-muted flex items-center justify-center">
-                      <span className="text-2xl opacity-50">{post.isPillar ? "⭐" : "📄"}</span>
-                    </div>
+                    <Card className="h-full overflow-hidden group hover:shadow-lg transition-shadow cursor-pointer">
+                      <BlogFeaturedImage
+                        categorySlug={post.categorySlug}
+                        title={post.title}
+                        isPillar={post.isPillar}
+                        alt={post.featuredImageAlt}
+                        size="sm"
+                      />
                     <CardContent className="p-5">
                       <Badge variant="outline" className="mb-2 text-[10px] uppercase tracking-wider">
                         {blogCategories.find((c) => c.slug === post.categorySlug)?.name}

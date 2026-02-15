@@ -14,15 +14,16 @@ export interface BlogPost {
   wordCount: number;
   isPillar: boolean;
   featured: boolean;
+  featuredImageAlt: string;
   content: string;
   internalLinks: { text: string; url: string }[];
   externalLinks: { text: string; url: string }[];
 }
 
 const author = {
-  name: "Alex Morgan",
-  bio: "Alex Morgan is the founder of AI Writer Pros and a content marketing strategist with 10+ years of experience. Alex has helped over 500 businesses integrate AI writing tools into their content workflows, generating millions of words of optimized content.",
-  avatar: "/og-image.png",
+  name: "John Lawrence",
+  bio: "John Lawrence is the founder of AI Writer Pros and a content marketing strategist with 10+ years of experience. John has helped over 500 businesses integrate AI writing tools into their content workflows, generating millions of words of optimized content.",
+  avatar: "",
 };
 
 export const blogPosts: BlogPost[] = [
@@ -43,6 +44,7 @@ export const blogPosts: BlogPost[] = [
     wordCount: 3200,
     isPillar: true,
     featured: true,
+    featuredImageAlt: "Complete guide to AI writing in 2025 showing how AI content generation works with workflow diagram for beginners and professionals",
     content: `## What is AI Writing?
 
 AI writing, also called AI content generation, refers to using artificial intelligence software to create written content. These tools use advanced machine learning models trained on vast amounts of text data to generate human-like writing based on prompts you provide.
@@ -217,6 +219,7 @@ Start experimenting today with free tools, master the fundamentals, and graduall
     wordCount: 1600,
     isPillar: false,
     featured: false,
+    featuredImageAlt: "Diagram explaining AI content generation process from input prompt to neural network processing to generated output text",
     content: `## Defining AI Content Generation
 
 AI content generation is the process of using machine learning models to create original written, visual, or audio content based on human-provided instructions called prompts. Unlike templates, mail merge, or simple text automation, AI content generation produces unique, contextually appropriate content each time it runs.
@@ -338,6 +341,7 @@ Want to explore how different AI content generation tools compare? [Read our com
     wordCount: 1600,
     isPillar: false,
     featured: false,
+    featuredImageAlt: "Side-by-side comparison chart of AI-generated versus human-written content showing differences in speed quality creativity and cost",
     content: `## The Great Comparison: AI vs Human Writing
 
 As AI writing tools become mainstream — with over 65% of content marketers now using them regularly — understanding the real differences between AI-generated and human-written content is critical for making strategic decisions about your content creation approach.
@@ -484,6 +488,7 @@ The AI vs. human writing debate is a false dichotomy. The future isn't AI replac
     wordCount: 3500,
     isPillar: true,
     featured: true,
+    featuredImageAlt: "Comprehensive ranking and comparison table of the 15 best AI writing tools and software platforms for content creation in 2025",
     content: `## Why This Review Matters
 
 The AI writing tools market has exploded. There are now over 100 platforms claiming to be the "best AI writer," ranging from free browser extensions to enterprise platforms costing thousands per month. Choosing the wrong tool wastes money and, worse, produces subpar content that hurts your brand.
@@ -719,6 +724,7 @@ For power users who prefer maximum flexibility, **ChatGPT Plus or Claude Pro** d
     wordCount: 1800,
     isPillar: false,
     featured: false,
+    featuredImageAlt: "In-depth Jasper AI review dashboard showing content quality scores features pricing analysis and comparison with alternatives in 2025",
     content: `## What is Jasper AI?
 
 Jasper AI (formerly Jarvis) is one of the most well-known AI writing platforms, targeting marketing teams and content creators. Originally launched in 2021, Jasper has evolved from a simple copywriting assistant into a comprehensive marketing content platform with brand voice management, team collaboration, and campaign planning features.
@@ -857,6 +863,7 @@ However, for individual creators, small teams, and anyone focused on content var
     wordCount: 1600,
     isPillar: false,
     featured: false,
+    featuredImageAlt: "List of the 10 best free AI writing tools available in 2025 with feature comparison table and quality ratings",
     content: `## Why Start With Free AI Writing Tools?
 
 Before investing in premium AI writing software, it makes sense to experiment with free options. Free tools let you learn prompt engineering basics, understand AI writing capabilities and limitations, and determine which features matter most to you — all without financial risk.
@@ -1024,6 +1031,7 @@ When you're ready to upgrade, AI Writer Pros Pro at $19/month unlocks all six to
     wordCount: 2800,
     isPillar: true,
     featured: true,
+    featuredImageAlt: "AI content strategy playbook showing workflow framework for scaling content marketing production 5-10x with artificial intelligence tools",
     content: `## Why You Need an AI Content Strategy
 
 Publishing more content isn't a strategy. Publishing the right content, efficiently, at scale — that's a strategy.
@@ -1245,6 +1253,7 @@ Creating content is only half the equation. AI can help with distribution too �
     wordCount: 1500,
     isPillar: false,
     featured: false,
+    featuredImageAlt: "Step-by-step guide showing how to use AI tools for blog writing from topic research through SEO optimization and publishing",
     content: `## The AI Blog Writing Workflow
 
 Writing a great blog post with AI isn't about typing "write me a blog post" and hitting publish. It's a structured process that combines AI's speed and knowledge with your expertise and editorial judgment. Here's the complete workflow we use to produce blog posts that rank and convert.
@@ -1384,6 +1393,7 @@ This multiplication effect means every blog post drives traffic across multiple 
     wordCount: 1500,
     isPillar: false,
     featured: false,
+    featuredImageAlt: "30-day social media content calendar template with AI-generated posts for LinkedIn Twitter Instagram and TikTok platforms",
     content: `## Create a Month of Social Media Content in 2 Hours
 
 Social media demands consistency, but creating daily content across multiple platforms is exhausting. AI changes the equation entirely. With the right strategy, you can plan and draft an entire month of social media content in a single 2-hour session.
@@ -1543,6 +1553,7 @@ Use this data to refine your AI prompts and content mix each month. Double down 
     wordCount: 3200,
     isPillar: true,
     featured: false,
+    featuredImageAlt: "Collection of 50 plus AI writing prompts tips and techniques for creating better content with the CRAFT prompt engineering framework",
     content: `## Why Technique Matters More Than Tools
 
 You could use the most expensive AI writing tool on the market and still produce mediocre content. Or you could use a free tool with the right techniques and consistently create exceptional work. The difference isn't the technology — it's your technique.
@@ -1736,6 +1747,7 @@ Rate every piece before publishing (1-5 scale):
     wordCount: 1400,
     isPillar: false,
     featured: false,
+    featuredImageAlt: "10-step quality checklist for editing AI-generated content showing before and after examples of improved writing",
     content: `## Why Editing AI Content is Non-Negotiable
 
 Publishing unedited AI content is like serving a meal without tasting it first. It might be fine, but the risks are too high: factual errors that damage credibility, generic phrasing that fails to engage, and AI "tells" that signal low effort to your readers.
@@ -1919,6 +1931,7 @@ This 30-45 minute investment transforms AI output that's "okay" into content tha
     wordCount: 1500,
     isPillar: false,
     featured: false,
+    featuredImageAlt: "15 essential AI writing best practices for professional content creation results including prompt engineering and editing tips",
     content: `## 15 Best Practices for Professional AI Writing
 
 After creating thousands of pieces of AI-assisted content, patterns emerge. Some practices consistently produce excellent results. Others waste time or compromise quality. Here are the 15 best practices that make the biggest difference.
@@ -2039,6 +2052,7 @@ The difference in results is dramatic: professional AI-assisted content performs
     wordCount: 2500,
     isPillar: true,
     featured: true,
+    featuredImageAlt: "State of AI writing industry report 2025 showing market statistics adoption trends technology developments and expert predictions",
     content: `## Executive Summary
 
 The AI writing industry enters 2025 at an inflection point. What began as a novelty for early adopters has become a mainstream business tool, with 67% of content marketers now using AI writing tools regularly — up from 35% just eighteen months ago.
@@ -2244,6 +2258,7 @@ Redesign your content operation for AI-native workflows. Redefine team roles (st
     wordCount: 1500,
     isPillar: false,
     featured: false,
+    featuredImageAlt: "Comparison of ChatGPT versus specialized AI writing tools showing when to use each approach for different content creation needs",
     content: `## The Central Question
 
 ChatGPT can write virtually anything. Specialized AI writing tools are built for specific content types. So why would anyone pay for a specialized tool when ChatGPT is available for $20/month (or free)?
@@ -2389,6 +2404,7 @@ The real question isn't "which should I use?" — it's "how should I combine the
     wordCount: 1400,
     isPillar: false,
     featured: false,
+    featuredImageAlt: "Google AI content guidelines 2025 breakdown showing E-E-A-T requirements helpful content system and ranking factors for AI-generated content",
     content: `## Google's Official Position on AI Content
 
 Google's stance on AI-generated content has evolved from cautious ambiguity to clear, practical guidance. The core message: **Google doesn't care how content is created — it cares about whether content is helpful, reliable, and people-first.**

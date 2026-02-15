@@ -1,5 +1,6 @@
 
 import { Navigation } from "@/components/navigation";
+import { FromOurBlog } from "@/components/blog/FromOurBlog";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -196,6 +197,11 @@ export default function AmazonAffiliateExtension() {
           { question: "Can I add my affiliate links?", answer: "Yes! The generated reviews include natural CTA placement points where you can insert your Amazon affiliate links for maximum click-through rates." },
           { question: "Is there a free tier?", answer: "Yes, you can generate reviews for free. Premium plans unlock comparison tables and advanced features." },
         ]}
+      />
+
+      <FromOurBlog
+        postIds={["best-ai-writing-tools-2025", "ai-content-strategy-playbook", "google-ai-content-guidelines"]}
+        heading="Affiliate Marketing Resources"
       />
 
       <FinalCTA

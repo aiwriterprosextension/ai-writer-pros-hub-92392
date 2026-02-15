@@ -1,5 +1,6 @@
 
 import { Navigation } from "@/components/navigation";
+import { FromOurBlog } from "@/components/blog/FromOurBlog";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -230,6 +231,11 @@ export default function AIHumanizer() {
           { question: "Can I use this for academic papers?", answer: "Yes, many students use our tool for AI-assisted academic writing. However, always follow your institution's policies on AI tool usage." },
           { question: "How fast is the processing?", answer: "Most content is humanized in under 10 seconds, regardless of length. Complex or heavy-mode processing may take slightly longer." },
         ]}
+      />
+
+      <FromOurBlog
+        postIds={["complete-guide-ai-writing", "ai-writing-best-practices", "google-ai-content-guidelines"]}
+        heading="Learn More About AI Writing"
       />
 
       <FinalCTA

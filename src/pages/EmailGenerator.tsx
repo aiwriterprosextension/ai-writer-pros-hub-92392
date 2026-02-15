@@ -1,5 +1,6 @@
 
 import { Navigation } from "@/components/navigation";
+import { FromOurBlog } from "@/components/blog/FromOurBlog";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -188,6 +189,11 @@ export default function EmailGenerator() {
           { question: "Can I customize the tone?", answer: "Absolutely! Choose from Professional, Friendly, Urgent, Casual, or Formal tones to match your brand voice perfectly." },
           { question: "Is there a free tier?", answer: "Yes, you can generate emails for free. Premium plans unlock multi-email sequences and advanced features." },
         ]}
+      />
+
+      <FromOurBlog
+        postIds={["ai-content-strategy-playbook", "ai-writing-prompts-tips-techniques", "best-ai-writing-tools-2025"]}
+        heading="Email Marketing Resources"
       />
 
       <FinalCTA
