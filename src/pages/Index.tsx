@@ -135,8 +135,7 @@ export default function Index() {
             </Badge>
             
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6 text-secondary">
-              Professional AI Writing Tools
-              <br />
+              Professional AI Writing Tools <br />
               <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
                 That Actually Work
               </span>
