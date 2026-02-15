@@ -1,358 +1,318 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- CORE PAGES -->
   <url>
     <loc>https://aiwriterpros.com/</loc>
-    <changefreq>weekly</changefreq>
+    <lastmod>2026-02-15</lastmod>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://aiwriterpros.com/features</loc>
+    <lastmod>2026-02-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://aiwriterpros.com/pricing</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/ai-writer-pros-review</loc>
+    <lastmod>2026-02-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://aiwriterpros.com/blog</loc>
+    <lastmod>2025-02-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/amazon-affiliate-extension</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/ai-humanizer</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/content-repurposing</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/email-generator</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/social-media-suite</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/blog-content-creator</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/knowledge-base</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/best-practices</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://aiwriterpros.com/about</loc>
+    <lastmod>2026-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://aiwriterpros.com/contact</loc>
+    <lastmod>2026-01-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+
+  <!-- TOOL LANDING PAGES (Priority Boosted to 1.0) -->
   <url>
-    <loc>https://aiwriterpros.com/auth</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/privacy-policy</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/terms-of-service</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/knowledge-base/creating-account</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/knowledge-base/navigating-dashboard</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/knowledge-base/first-ai-generation</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/knowledge-base/ai-credits-usage</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/knowledge-base/pattern-analyzer</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/knowledge-base/humanization-intensity</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/knowledge-base/industry-customization</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/knowledge-base/bulk-humanization</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/knowledge-base/before-after-scores</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/knowledge-base/content-analyzer</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/knowledge-base/platform-customization</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/knowledge-base/multi-length-versions</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/knowledge-base/hashtag-scheduling</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/knowledge-base/batch-export</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/knowledge-base/email-sequences</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/knowledge-base/ab-testing-emails</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/knowledge-base/audience-targeting-emails</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/knowledge-base/twitter-threads</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/knowledge-base/content-calendar</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/knowledge-base/hashtag-research</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/knowledge-base/topic-keywords</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/knowledge-base/outline-builder</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/knowledge-base/seo-readability</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/knowledge-base/product-extraction</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/knowledge-base/seo-reviews</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/knowledge-base/ftc-disclosure</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/knowledge-base/managing-subscription</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/knowledge-base/profile-settings</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/knowledge-base/team-management</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://aiwriterpros.com/blog/ai-writing-fundamentals</loc>
+    <loc>https://aiwriterpros.com/amazon-affiliate-extension</loc>
     <lastmod>2026-02-15</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://aiwriterpros.com/blog/ai-tools-software-reviews</loc>
+    <loc>https://aiwriterpros.com/ai-humanizer</loc>
     <lastmod>2026-02-15</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://aiwriterpros.com/blog/content-strategy-use-cases</loc>
+    <loc>https://aiwriterpros.com/content-repurposing</loc>
     <lastmod>2026-02-15</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://aiwriterpros.com/blog/writing-tips-techniques</loc>
+    <loc>https://aiwriterpros.com/email-generator</loc>
     <lastmod>2026-02-15</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://aiwriterpros.com/blog/industry-news-trends</loc>
+    <loc>https://aiwriterpros.com/social-media-suite</loc>
     <lastmod>2026-02-15</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>1.0</priority>
   </url>
+  <url>
+    <loc>https://aiwriterpros.com/blog-content-creator</loc>
+    <lastmod>2026-02-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- BLOG POSTS: Category 1 (Fundamentals) -->
   <url>
     <loc>https://aiwriterpros.com/blog/ai-writing-fundamentals/complete-guide-ai-writing</loc>
     <lastmod>2025-02-12</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://aiwriterpros.com/blog/ai-writing-fundamentals/what-is-ai-content-generation</loc>
     <lastmod>2025-02-10</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://aiwriterpros.com/blog/ai-writing-fundamentals/ai-vs-human-writing</loc>
     <lastmod>2025-02-08</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
+
+  <!-- BLOG POSTS: Category 2 (Tools & Reviews) -->
   <url>
     <loc>https://aiwriterpros.com/blog/ai-tools-reviews/best-ai-writing-tools-2025</loc>
     <lastmod>2025-02-11</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://aiwriterpros.com/blog/ai-tools-reviews/jasper-ai-review-2025</loc>
     <lastmod>2025-02-09</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://aiwriterpros.com/blog/ai-tools-reviews/best-free-ai-writing-tools</loc>
     <lastmod>2025-02-07</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
+
+  <!-- BLOG POSTS: Category 3 (Content Strategy) -->
   <url>
     <loc>https://aiwriterpros.com/blog/content-strategy/ai-content-strategy-playbook</loc>
     <lastmod>2025-02-10</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://aiwriterpros.com/blog/content-strategy/ai-for-blog-writing</loc>
     <lastmod>2025-02-06</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://aiwriterpros.com/blog/content-strategy/ai-social-media-strategy</loc>
     <lastmod>2025-02-04</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
+
+  <!-- BLOG POSTS: Category 4 (Writing Tips) -->
   <url>
     <loc>https://aiwriterpros.com/blog/writing-tips/ai-writing-prompts-tips-techniques</loc>
     <lastmod>2025-02-09</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://aiwriterpros.com/blog/writing-tips/edit-ai-content-checklist</loc>
     <lastmod>2025-02-05</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://aiwriterpros.com/blog/writing-tips/ai-writing-best-practices</loc>
     <lastmod>2025-02-03</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
+
+  <!-- BLOG POSTS: Category 5 (Industry News) -->
   <url>
     <loc>https://aiwriterpros.com/blog/ai-news-trends/state-of-ai-writing-2025</loc>
     <lastmod>2025-02-11</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://aiwriterpros.com/blog/ai-news-trends/chatgpt-vs-specialized-writers</loc>
     <lastmod>2025-02-07</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://aiwriterpros.com/blog/ai-news-trends/google-ai-content-guidelines</loc>
     <lastmod>2025-02-02</lastmod>
     <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- KNOWLEDGE BASE -->
+  <url>
+    <loc>https://aiwriterpros.com/knowledge-base</loc>
+    <lastmod>2026-01-01</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://aiwriterpros.com/knowledge-base/creating-account</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://aiwriterpros.com/knowledge-base/navigating-dashboard</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://aiwriterpros.com/knowledge-base/first-ai-generation</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://aiwriterpros.com/knowledge-base/ai-credits-usage</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://aiwriterpros.com/knowledge-base/pattern-analyzer</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://aiwriterpros.com/knowledge-base/humanization-intensity</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://aiwriterpros.com/knowledge-base/industry-customization</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://aiwriterpros.com/knowledge-base/bulk-humanization</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://aiwriterpros.com/knowledge-base/before-after-scores</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://aiwriterpros.com/knowledge-base/content-analyzer</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://aiwriterpros.com/knowledge-base/platform-customization</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://aiwriterpros.com/knowledge-base/multi-length-versions</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://aiwriterpros.com/knowledge-base/hashtag-scheduling</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://aiwriterpros.com/knowledge-base/batch-export</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://aiwriterpros.com/knowledge-base/email-sequences</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://aiwriterpros.com/knowledge-base/ab-testing-emails</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://aiwriterpros.com/knowledge-base/audience-targeting-emails</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://aiwriterpros.com/knowledge-base/twitter-threads</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://aiwriterpros.com/knowledge-base/content-calendar</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://aiwriterpros.com/knowledge-base/hashtag-research</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://aiwriterpros.com/knowledge-base/topic-keywords</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://aiwriterpros.com/knowledge-base/outline-builder</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://aiwriterpros.com/knowledge-base/seo-readability</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://aiwriterpros.com/knowledge-base/product-extraction</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://aiwriterpros.com/knowledge-base/seo-reviews</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://aiwriterpros.com/knowledge-base/ftc-disclosure</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://aiwriterpros.com/knowledge-base/managing-subscription</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://aiwriterpros.com/knowledge-base/profile-settings</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://aiwriterpros.com/knowledge-base/team-management</loc>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- LEGAL PAGES -->
+  <url>
+    <loc>https://aiwriterpros.com/privacy-policy</loc>
+    <lastmod>2026-01-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://aiwriterpros.com/terms-of-service</loc>
+    <lastmod>2026-01-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
 </urlset>
