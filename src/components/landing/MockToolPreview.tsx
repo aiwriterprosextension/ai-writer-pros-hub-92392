@@ -4,10 +4,11 @@ import { Badge } from "@/components/ui/badge";
 import { Lock } from "lucide-react";
 import { Link } from "react-router-dom";
 interface MockToolPreviewProps {
-  toolName: string;
-  dashboardPath: string;
-  gradient: string;
-  children: React.ReactNode;
+  toolName?: string;
+  dashboardPath?: string;
+  gradient?: string;
+  children?: React.ReactNode;
+  className?: string;
 }
 export function MockToolPreview({
   toolName,
