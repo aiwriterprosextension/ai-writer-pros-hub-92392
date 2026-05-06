@@ -2,7 +2,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 
 interface FAQ {
   question: string;
-  answer: string;
+  answer: React.ReactNode;
 }
 
 interface FAQSectionProps {

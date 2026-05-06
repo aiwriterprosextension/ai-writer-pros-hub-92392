@@ -8,6 +8,7 @@ interface MockToolPreviewProps {
   dashboardPath: string;
   gradient: string;
   children: React.ReactNode;
+  className?: string;
 }
 export function MockToolPreview({
   toolName,
